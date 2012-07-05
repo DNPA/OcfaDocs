@@ -1,0 +1,45 @@
+While reading through the documentation you will come across a lot of high level terms that
+have similar but slightly differing meanings.
+We will need to discuss a litle bit of the history and context in order to be able to explain the 
+sometimes subtile difference between the concepts. 
+We will not cover this in great depth, just sufficiently to get you acquainted
+with some terms that are used in the documentation.
+
+For historical reasons, some concepts come with multiple names in different parts
+of the documentation. We will try to clear this up here by way of discussing
+some of the history and context.
+
+The concept of a guarded process chain approach for digital forensics was named 'digitale wasstraat'
+by the FIOD (the dutch IRS). This term when translated to English would roughly translate
+to 'Carwash' or 'Digital Carwash'. These terms are used within the documentation to denote
+the guarded process chain approach as implemented in this project.
+
+Some years ago an attempt was made by four dutch law enforcement organisations (FIOD/KLPD/NFI/NMA)
+to streamline their efforts and try to find common ground in solving the challenges posed within
+and between some specific links within this guarded process chain approach that was introduced by the 
+FIOD. 
+
+From this cooperation, each of the above organisations went out and built their own 
+implementation of this 'Digital Carwash' concept according to its own specific needs.
+
+The Dutch national police focused first on the links that were concerned with processing acquired
+digital evidence of many acquisitions at a central location, and making the processed information
+searchable on both raw data and structured extracted metadata. The whole KLPD version of the
+'Digital Washing Machine' was called 'Digiwash'.
+
+The 'digiwash' can be seen as being divided into a frontend and a backend. The backend makes up most
+of the codebase and is known by the following equivalent names:
+
+*  (Open) Computer Forensics Architecture
+*  Digital Washing Machine
+*  Digital Wringer
+
+The frontend is known by the names 'DUIF' and 'WDFE'.
+
+The FIOD/KLPD further cooperated on building a lightweight windows system within the digital carwash
+paradigm. This windows based system is known as 'WashBrush', and its modules, that can also be used
+by the open computer forensics architecture are known as 'win32 satellites'. The  open computer forensics 
+architecture module needed to attach a win32 satellite to the  open computer forensics architecture,
+is known as the 'win32 proxy'.
+
+

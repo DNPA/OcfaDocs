@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h2>The OCFA XML evidence metadata representation library</h2>
+The XML evidence metadata representation library is used to map
+metadata to and from xml. The xml metadata is divided into <i>top-level</i>
+metadata and <i>job-level</i> metadata. The library provides an API
+used by modules for extraction of top-level metadata, and for the
+iteration over the job-level metadata. Furthermore, the API provides
+access for modules to add job-level metadata to the <i>active job</i>
+within the xml.
+<h4>Top-level metadata</h4>
+The top-level metadata contains fields uniquely identifying the data:
+<ul>
+  <li>case : A string identifying the investigation code or name of the
+evidence node. </li>
+  <li>src : The physical source of the evidence, mostly equivalent to a
+label on impounded property. </li>
+  <li>item : The specific media within the labeled physical source, for
+example 'firsthdu' </li>
+  <li>id : A string uniquely identifying the evidence data or node
+within the item. </li>
+</ul>
+Next to this, there are a few fields of top-level metadata:
+<ul>
+  <li>location: this defines a human parsable path to the evidence
+data. </li>
+  <li>sha1: the sha1 digest of the data. </li>
+  <li>md5: the md5 digest of the data. </li>
+</ul>
+<h4>Job-level metadata</h4>
+In the open computer forensics architecture evidence data gets
+communicated between different programs. Each of these programs will in
+effect do a particular <i>job</i> with the evidence. If the xml gets
+first accessed, the job gets started, and when the xml gets <i>closed</i>
+the job ends. The program will implicitly add its identity (module
+instance) metadata to the job, and will also implicitly add start and
+stop timestamps to the job metadata. Next to the implicit metadata,
+many programs (modules) will add metadata explicitly depending on their
+functionality. Metadata in the open computer forensics architecture
+consists of key/value pairs where the key is a simple text string and
+the value is defined by the MetaDataValue subtype. MetaDataValues exist
+in the following subtypes:
+<ul>
+  <li>ScalarMetaValue : a single <i>Scalar</i> </li>
+  <li>ArrayMetaValue : an array of zero or more Scalars </li>
+  <li>TableMetaValue : a two dimensional array of Scalars and an array
+of column names. </li>
+</ul>
+The atomic MetaDataValue content is the Scalar. A Scalar can hold
+either an unicode string, an integer, a floating point number or a <i>DateTime</i>
+value.
+<h4>Child references</h4>
+Next to adding metadata, many <a href="../ocfamodules/dissectors.html">dissectors</a>
+will derive new evidence data from existing evidence data. When this
+happens, in fact a child node is created and added to the evidence. A
+special kind of metadata added by these modules is the child reference.
+Child references are added at the job level.
+<h4>Evidence logging</h4>
+Next to metadata, a module may want to log information that is only
+relevant to the specific evidence. For this, the library allows the
+module to add loglines to the joblevel.<br>
+<br>
+</body>
+</html>

@@ -1,0 +1,41 @@
+This text describes the usage of the overview interface.
+
+The overview interface will only be available if makeoverview was run by the administrator.
+Given that makeoverview currently has some scalability issues, your administrator might
+have legitimate reasons why makeoverview could not have been run, or could not have been
+run completely.
+
+The toplevel of the overview interface will show you a two dimensional matrix of the
+investigation. The matrix will contain a row for each distinct item, a wildcard row
+for each distinct evidence source, and a wildcard row for the full case.
+The matrix will contain a column for each distinct metadata source, and a wildcard
+row for all digest sources combined.
+If you are looking for distinctly unique files, it is suggested to look at the UNDEF
+digest source. As all data processed within a case will if unknown be added to the
+SELF digestsource after the first occurence, the UNDEF will contain only first occurences 
+of each file within the case.
+
+From the toplevel overview you can choose either a base 'overview' or an overview of the images.
+The images overview should provide you with a thumbnail view of all graphical image files in the 
+investigation. This should alow one to easily find specific types of images.
+Each thumbnail will contain a deep link to the browsetree interface entry of the image.
+
+Next to the images interface, the toplevel overview links to distinct overview pages within
+the evidencesource/item and digestsource context as identified in the top level matrix.
+An overview will for each identified metadata name show (depending of the metadata type and
+number of distinct values) display either:
+
+*  A list of each distinct value for the metadata and the number of occurences.
+*  A list of the 'most common' value for the metadata and the number of occurences.
+*  For timestamp metadata, a link to one or more calender views.
+
+The distinct values are selectable in a small form with a view button, that when activated will
+go to a result page (as in the regular search interface).
+It is important to note that the result page holds a query input field, and using this query
+input field it is possible to do a scoped keyword search within the results.
+
+The calender view will show a calender for a particular year and a particular timestamp metadata name.
+The dates with matching data are links that again point to result pages (as in the regular search interface).
+Again the query input field of the result page can be used to do a scoped keyword search within the results.
+
+

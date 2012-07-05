@@ -1,0 +1,66 @@
+The open computer forensics architecture has some important issues that need careful attention
+with respect to the usage of fileservers. First of all we need to look at the reason that you want to
+use a fileserver.
+
+1) Usage of a file server as 'working disk space' for the the open computer forensics architecture.
+
+   Given that the open computer forensics architecture has a heavy usage of its working space,
+   it is from a performance point of view always UNWISE to use an external fileserver. 
+   Instead you should prefer the usage of a SAN connection. If the workingspace needs to be shared,
+   for example for the windows satellite system, you should instead make the Linux application server
+   into a fileserver. Please consult the samba documentation on how to set up a file server for
+   windows clients on a Linux machine.
+
+2) Usage of a fileserver for communication with the win32 satellite system.
+
+  NOTE:  It is a known bug in the ocfa configuration and in this operating procedure that windows
+  connectivity is not case-clean at this moment, the first actions are a workaround for this problem.
+
+  Prior to switching between cases, and prior to starting on a new case, you MUST make sure that
+  the directory /var/ocfa/windows is devoid of any old data. This means that the only content
+  in this directory should be sub directories without any file in it, that themselves only contain
+  a single sub directory called 'in'.
+
+  Now you should consult the samba admin documentation for your linux distribution on how to share
+  the /var/ocfa/windows directory with your windows system.
+  
+  It is suggested from a performance point of view that the windows satellite server is either:
+  *  connected to the linux application server using a network cross cable,
+  *  run as a second zone on the same server as the linux application server using Xen.
+
+3) Usage of a fileserver for the source evidence.
+
+  If at all possible you should try to put a copy of the source evidences on the same filesystem that the
+  repository is on. If you can do so, this will give you a high performance boost with the current version,
+  and an even bigger performance and storage requirements boost once carvfs has been integrated into the 
+  open computer forensics architecture.
+  This means you should either put the image files directly on the local system (or its SAN slice), or
+  should run a samba or nfs fileserver on your linux application server. 
+  If you use any non microsoft operating system on the client side, you are strongly sugested to use NFS,
+  if possible use NFS version 4 instead of version 3, it has important speed and security features that
+  you should want. Consult the documentation of your OS for information on how to configure NFS to use
+  version 4 of the protocol.
+
+  If the client side is windows, you will need to use a samba server instead. Even though samba windows
+  connectivity has major issues that we will get into next, The NFS clients on windows that we tested so 
+  far had even larger issues concerned with their usage. Section 4 explains what to avoid when using
+  samba.
+
+4) Usage as samba fileserver for source evidence.
+
+  Most issues with samba/windows interconnectivity are related to internationalisation issues and concurrent access
+  issues. A first start at avoiding these issues comes with running the application server as samba server for
+  the windows clients instead of making the application server an smb cleint.
+  The second step we should take is to 'by default' put images on the server. The ocfa sleuthkit module is able
+  to work on most images that encase can work with, but not all. If the sleuthkit module fails, and mounting
+  the image partitions read only from linux (both native and the fuse ntfs tools) results in filesystem errors,
+  than and only than should you use encase to create an export and write it to the samba fileserver.
+
+5) Usage of a windows fileserver for source evidence.
+
+  Usage of this posibility is STRONGLY discouraged. Major problems are known to have happened with this configuration
+  and performance is absolutely sub-optimal. If however after these warnings you still think you need to use
+  this configuration, please at least take the image approach as described for 4.
+
+
+  

@@ -1,0 +1,551 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<XMI xmlns:UML="org.omg/standards/UML" verified="false" timestamp="" xmi.version="1.2" >
+<XMI.header>
+<XMI.documentation>
+<XMI.exporter>umbrello uml modeller http://uml.sf.net</XMI.exporter>
+   <XMI.exporterVersion>1.1</XMI.exporterVersion>  </XMI.documentation>
+  <XMI.model xmi.name="fs" href="/home/wasstraat/0.5/doc/technicaldesign/fs.xmi" />
+  <XMI.metamodel xmi.name="UML" href="UML.xml" xmi.version="1.3" /> </XMI.header>
+ <XMI.content>
+<docsettings viewid="401" documentation="" uniqueid="681" />
+  <umlobjects>
+<UML:Class stereotype="" package="" xmi.id="321" abstract="0" documentation="The base implementation of the FsFileSystem" name="BasicFsFileSystem" static="0" scope="200" >
+<UML:Operation stereotype="" package="" xmi.id="494" type="string" abstract="0" documentation="As described in FsFileSystem::getCharset" name="getCharset" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="495" type="bool" abstract="0" documentation="As described in FsFileSystem::getIgnoreGUids" name="getIgnoreGUids" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="496" type="void" abstract="0" documentation="As described in FsFileSystem::setIgnoreGUids" name="setIgnoreGUids" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="497" type="bool" abstract="0" documentation="As described in FsFileSystem::setIgnoreTimeStamps" name="setIgnoreTimeStamps" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="498" type="bool" abstract="0" documentation="As described in FsFileSystem::canDoDeletedNodes" name="canDoDeletedNodes" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="499" type="bool" abstract="0" documentation="As described in FsFileSystem::canDoSystemNodes" name="canDoSystemNodes" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="500" type="bool" abstract="0" documentation="As described in FsFileSystem::canDoUnalocatedNodes" name="canDoUnalocatedNodes" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="501" type="bool" abstract="0" documentation="As described in FsFileSystem::setIgnoreDeletedNodes" name="setIgnoreDeletedNodes" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="502" type="bool" abstract="0" documentation="As described in FsFileSystem::setIgnoreSystemNodes" name="setIgnoreSystemNodes" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="503" type="bool" abstract="0" documentation="As described in FsFileSystem::setIgnoreUnalocatedNodes" name="setIgnoreUnalocatedNodes" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="505" type="void" abstract="0" documentation="As described in FsFileSystem::getConnectedNode" name="getConnectedNode" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="string" abstract="0" documentation="" name="path" static="0" scope="200" />
+     <UML:Parameter stereotype="" package="" xmi.id="2" value="" type="FsConnectedNode **" abstract="0" documentation="" name="node" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="539" type="uid_t" abstract="0" documentation="As described in FsFileSystem::getFsOwner" name="getFsOwner" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="524" type="bool" abstract="0" documentation="as described for FsEntity::hasSubEntities, always returns true." name="hasSubEntities" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="525" type="void" abstract="0" documentation="as described for FsEntity::resetSubEntityIterator" name="resetSubEntityIterator" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="526" type="bool" abstract="0" documentation="as described for FsEntity::nextSubEntity" name="nextSubEntity" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="527" type="void" abstract="0" documentation="as described for FsEntity::getCurrentSubEntity" name="getCurrentSubEntity" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="FsEntity **" abstract="0" documentation="" name="subent" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="528" type="string" abstract="0" documentation="as described for FsEntity::getCurrentSubEntityRelation" name="getCurrentSubEntityRelation" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="520" type="dev_t" abstract="0" documentation="A protected method that allows derived classes to access the device number of the filesystem device." name="getDevNum" static="0" scope="202" />   </UML:Class>
+   <UML:Class stereotype="" package="" xmi.id="402" abstract="0" documentation="FsEntity is the base class for filesystems and any data or directory entry that can be identified as part of a filesystem." name="FsEntity" static="0" scope="200" >
+<UML:Operation stereotype="" package="" xmi.id="403" type="string" abstract="1" documentation="Returns the UTF8 name of the FsEntity" name="getName" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="416" type="bool" abstract="1" documentation="Returns if the FsEntity has any content." name="hasContent" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="404" type="bool" abstract="1" documentation="Determines if the FsEntity is readable." name="isReadOnly" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="541" type="bool" abstract="1" documentation="This method returns if the content or subentities are currently readable. If they are, the only valid way to make them readable is by using the unLinkOnDestruct method on this node and all its sub nodes.
+The reason for this is that changing read permissions will make future runs gather invalidated metadata on this entity." name="isReadable" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="405" type="void" abstract="1" documentation="Get an istream handle to the data section of the FsEntity" name="openStream" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="406" type="void" abstract="1" documentation="re initialize the stream" name="closeStream" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="543" type="size_t" abstract="1" documentation="Read a block of data from the stream into a buffer." name="streamRead" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="char *" abstract="0" documentation="Pointer to the start of a buffer to be used for writing." name="buf" static="0" scope="200" />
+     <UML:Parameter stereotype="" package="" xmi.id="2" value="" type="size_t" abstract="0" documentation="The number of bytes to read into the buffer." name="count" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="407" type="void" abstract="1" documentation="Take the MetaMap from the FsEntity in order to suply it to
+the evidence library. Note, this operation only returns a valid
+meta map ones, and returns NULL on a second call." name="takeMetaMap" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="map &lt;string, misc:MetaValue *> **" abstract="0" documentation="" name="map" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="408" type="bool" abstract="1" documentation="Determines if the FsEntity has any sub FsEntities that could be iterated over." name="hasSubEntities" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="409" type="void" abstract="1" documentation="Initialize and/or reset the subentity iterator." name="resetSubEntityIterator" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="410" type="bool" abstract="1" documentation="Increment the sub entity iterator, returns false if the last subentity was already active." name="nextSubEntity" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="411" type="void" abstract="1" documentation="Creates a new FsEntity object for the active sub entity." name="getCurrentSubEntity" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="FsEntity **" abstract="0" documentation="" name="subent" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="436" type="string" abstract="1" documentation="Get the relation name between the FsEntity and its
+current sub entity. " name="getCurrentSubEntityRelation" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="413" type="bool" abstract="1" documentation="Determines if the system level entity represented by the FsEntity can be deleted in a recursive process, either explicitly or by cascading.
+" name="isRecursivelyUnlinkable" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="414" type="void" abstract="1" documentation="Prepares the system entity represented by the FsEntity object for being deleted on destuction of the FsEntuty object. Note: this operation changes the file permissions and possibly ownerhips on files regardless of their prior settings to allow for reading, writing and execution by the current user." name="unlinkOnDestruct" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="641" type="string" abstract="1" documentation="This method will for FsEntities that represent a file try to return a string containing a path that could be used by the repository for soft linking.
+
+For this operation to return a pathe the folowing conditions must be met:
+
+* The FsEntity must represent a regular file.
+* The file resides on a read only filesystem.
+* The file is readable to any memeber of the 'ocfa' group.
+* The config parameter 'staticmounts' is set to 'true'." name="getSoftLinkablePath" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="656" type="string" abstract="1" documentation="This method will, if aplicable to the
+subtype of FsEntity return a path that can be used to create a hardlink to. This can be used to optimize making a copy from a workingdir to a repository.
+* The FsEntity must represent a regular file.
+* The file resides on a read only filesystem.
+* The caller must have checked with the FileSystemSelector that the file and the repository reside on the same device." name="getHardLinkablePath" static="0" scope="200" />   </UML:Class>
+   <UML:Class stereotype="" package="" xmi.id="417" abstract="0" documentation="The FileSystemSelector  is a static component used for the selection and initialisation of  the most suitable implementation of  FsFileSystem subclass for the selected type of filesystem." name="FileSystemSelector" static="0" scope="200" >
+<UML:Operation stereotype="" package="" xmi.id="421" type="bool" abstract="0" documentation="This method is used to select a single filesystem as the active filesystem, and to create and initialize a FsFilesystem object of a proper subclass, and initialize it in a proper maner suitable for the suplied path. If no charset is suplied as second argument, this call will (next to the filesystem) try to automaticly determine the apropriate encoding. If the AUTO encoding determining fails, this method will return false." name="selectAndInit" static="1" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="string" abstract="0" documentation="" name="path" static="0" scope="200" />
+     <UML:Parameter stereotype="" package="" xmi.id="2" value="&quot;AUTO&quot;" type="string" abstract="0" documentation="" name="charset" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="422" type="FsFileSystem *" abstract="0" documentation="This method returns a pointer to the FsFileSystem object for the currently selected filesystem." name="getFileSystem" static="1" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="651" type="bool" abstract="0" documentation="This method is used to select an encase export as the active (pseudo) filesystem, and to create and initialize a FsFilesystem object of a proper subclass, and initialize it in a proper maner suitable for the suplied path. If no charset is suplied as second argument, this call will (next to the filesystem) try to automaticly determine the apropriate encoding. If the AUTO encoding determining fails, this method will return false." name="selectAndInitEncaseExport" static="1" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="string" abstract="0" documentation="" name="path" static="0" scope="200" />
+     <UML:Parameter stereotype="" package="" xmi.id="2" value="AUTO" type="string" abstract="0" documentation="" name="charset" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="652" type="void" abstract="0" documentation="This method must be used after a filesystem is selected to globaly set the active 'timesource' reference. All datetime metadata that is gathered on the active filesystem will get this timesource. Please note that offsets and timesource normalisation is not done in this library, so measures for that should be taken in libofamodule." name="baptize" static="1" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="string" abstract="0" documentation="" name="timesource" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="654" type="bool" abstract="0" documentation="This method can be used to check if two paths reside on the same device. " name="checkIfSameDevice" static="1" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="string" abstract="0" documentation="" name="first" static="0" scope="200" />
+     <UML:Parameter stereotype="" package="" xmi.id="2" value="" type="string" abstract="0" documentation="" name="second" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="655" type="string" abstract="0" documentation="" name="getTimeSource" static="1" scope="200" />   </UML:Class>
+   <UML:Class stereotype="" package="" xmi.id="424" abstract="0" documentation="This subclass of FsEntity represents a currently selected
+filesystem." name="FsFileSystem" static="0" scope="200" >
+<UML:Operation stereotype="" package="" xmi.id="429" type="string" abstract="1" documentation="Get the (either auto detected or implicitly set) character set
+used for nodenames on the filesystem. " name="getCharset" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="430" type="void" abstract="1" documentation="Check to tetermine if uid/gid information will be ignored and will not be added as stat metadata." name="getIgnoreGUids" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="432" type="void" abstract="1" documentation="Change the uid/gid ignoring behaviour. By default these fields will be ignored if either:
+* the filesystem is mounted rw
+* the filesystem is mounted with uid=xxx flag
+To defer from this pollicy this method could be used." name="setIgnoreGUids" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="bool" abstract="0" documentation="" name="ignore" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="433" type="void" abstract="1" documentation="By default the FsFilesystem will look at timestamp information. In some cases the data however could be copied data, and the timestamps could be meaningless.
+In order to configure the FsFilesystem to ignore timestamps this method is available." name="setIgnoreTimeStamps" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="bool" abstract="0" documentation="" name="ignore" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="437" type="bool" abstract="1" documentation="Method that is used to ask the implementation of an FsFilesystem implementation class wether it can extract
+deleted nodes from a filesystem." name="canDoDeletedNodes" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="438" type="bool" abstract="1" documentation="Method that is used to ask the implementation of an FsFilesystem implementation class wether it can extract
+system nodes from a filesystem." name="canDoSystemNodes" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="439" type="bool" abstract="1" documentation="Method that is used to ask the implementation of an FsFilesystem implementation class wether it can extract
+unalocated nodes from a filesystem." name="canDoUnalocatedNodes" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="440" type="void" abstract="1" documentation="By default, a FsFilesystem that can extract deleted nodes from the filesystem will do so. This method allows to change this default." name="SetIgnoreDeletedNodes" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="bool" abstract="0" documentation="" name="ignoge" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="442" type="void" abstract="1" documentation="By default, a FsFilesystem that can extract system nodes from the filesystem will do so. This method allows to change this default." name="setIgnoreSystemNodes" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="bool" abstract="0" documentation="" name="ignore" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="443" type="void" abstract="1" documentation="By default, a FsFilesystem that can extract  unalocated nodes from the filesystem will do so. This method allows to change this default." name="setIgnoreUnalocatedNodes" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="bool" abstract="0" documentation="" name="ignore" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="444" type="void" abstract="1" documentation="This method alows to directly create a ConnectedNode object that repesents a particular dir of file as located on the filesystem. This method will throw an exception if the suplied path does not reside on the particular filesystem." name="getConnectedNode" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="string" abstract="0" documentation="" name="path" static="0" scope="200" />
+     <UML:Parameter stereotype="" package="" xmi.id="2" value="" type="FsConnectedNode **" abstract="0" documentation="" name="node" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="540" type="uid_t" abstract="1" documentation="Returns the uid that was used if the filesystem was mounted with a uid=xxx flag, or 0 if the filesystem was mounted without this flag. If the returned uid is the same as the efective uid of the running process, it would be a reasonable assumption that the filesystem would be fully readable to the effective uid." name="getFsOwner" static="0" scope="200" />   </UML:Class>
+   <UML:Class stereotype="" package="" xmi.id="425" abstract="0" documentation="This class is used to represent directories,files etc that are part of the main directory structure on a filesystem." name="FsConnectedNode" static="0" scope="200" />
+   <UML:Class stereotype="" package="" xmi.id="426" abstract="0" documentation="This class represents filesystem entries that have a defined system interface, but that are not accessible truegh the normal directory tree of the filesystem. This includes things like the BootRecord, but also things like the NTFS $Extend directory." name="FsSystemNode" static="0" scope="200" />
+   <UML:Class stereotype="" package="" xmi.id="427" abstract="0" documentation="This sublass of FsEntity is used for files and directories that are not linked into the main directory tree and also are no
+system nodes." name="FsDeletedNode" static="0" scope="200" />
+   <UML:Class stereotype="" package="" xmi.id="428" abstract="0" documentation="This type of FsEntity represents a continious data section on the filesystem that is not allocated to any inode in the filesystem." name="FsUnalocatedNode" static="0" scope="200" />
+   <UML:Class stereotype="" package="" xmi.id="446" abstract="0" documentation="This class implements some of the basic functionality of the FsEntity. The methods of FsEntity not defined here have will throw an exception. The folowing methods have an empty implementation:
+isReadable() returns true, asStream() returns 0, isUnlinkable() returns false." name="BasicFsEntity" static="0" scope="200" >
+<UML:Operation stereotype="" package="" xmi.id="453" type="string" abstract="0" documentation="as described for FsEntity::getName" name="getName" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="458" type="bool" abstract="0" documentation="as described for FsEntity::isReadOnly" name="isReadOnly" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="542" type="bool" abstract="0" documentation="as described for FsEntity::isReadable" name="isReadable" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="466" type="void" abstract="0" documentation="as described for FsEntity::takeMetaMap" name="takeMetaMap" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="map &lt;string, misc:MetaValue *> **" abstract="0" documentation="" name="map" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="661" type="bool" abstract="0" documentation="" name="hasContent" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="662" type="size_t" abstract="0" documentation="" name="streamRead" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="663" type="bool" abstract="0" documentation="default return false implementation." name="isRecursivelyUnlinkable" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="664" type="string" abstract="0" documentation="default return empty string implementation" name="getSoftLinkablePath" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="665" type="string" abstract="0" documentation="" name="getHardLinkablePath" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="667" type="bool" abstract="0" documentation="" name="hasSubEntities" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="666" type="void" abstract="0" documentation="" name="unlinkOnDestruct" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="467" type="void" abstract="0" documentation="Protected method that allows derived classes of BasicFsEntity to add extra meta data." name="addMetaValue" static="0" scope="202" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="string" abstract="0" documentation="" name="name" static="0" scope="200" />
+     <UML:Parameter stereotype="" package="" xmi.id="2" value="" type="misc::MetaValue **" abstract="0" documentation="" name="val" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="454" type="void" abstract="0" documentation="Protected method to update the name of the FsEntity
+by a derived object." name="updateName" static="0" scope="202" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="string" abstract="0" documentation="" name="name" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="460" type="bool" abstract="0" documentation="Protected method used to fetch the flag that is used to determine if the derived object of FsEntity will need to unlink the system entity represented by that object on its own destrucion." name="getUnlinkOnDestruct" static="0" scope="202" />   </UML:Class>
+   <UML:Class stereotype="" package="" xmi.id="447" abstract="0" documentation="This class is the basic implementation of the FsConnectedNode." name="BasicFsConnectedNode" static="0" scope="200" >
+<UML:Operation stereotype="" package="" xmi.id="473" type="bool" abstract="0" documentation="as described for FsEntity::getSize" name="hasContent" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="474" type="bool" abstract="0" documentation="as described for FsEntity::isReadable , determines the readability by checking if either:
+* The ACLs declare it world readable
+* The entity is owned by the effective uid of the active
+  process, and the ACLs declare it user readable.
+* The ACLs declare it group readable, and the group
+  ownership of the entity is the 'ocfa' group.
+But in case of a directory also the folowing:
+* The ACLs declare it world executable
+* The entity is owned by the effective uid of the active
+  process, and the ACLs declare it user executable.
+* The ACLs declare it group executable, and the group
+  ownership of the entity is the 'ocfa' group." name="isReadable" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="475" type="void" abstract="0" documentation="as described for FsEntity::openStream" name="openStream" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="476" type="void" abstract="0" documentation="as described for FsEntity::closeStream" name="closeStream" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="544" type="size_t" abstract="0" documentation="" name="streamRead" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="char *" abstract="0" documentation="" name="buf" static="0" scope="200" />
+     <UML:Parameter stereotype="" package="" xmi.id="2" value="" type="size_t" abstract="0" documentation="" name="count" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="477" type="bool" abstract="0" documentation="as described for FsEntity::hasSubEntities, returns true in the case of directories, false otherwise." name="hasSubEntities" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="478" type="void" abstract="0" documentation="as described for FsEntity::resetSubEntityIterator" name="resetSubEntityIterator" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="479" type="bool" abstract="0" documentation="as described for FsEntity::nextSubEntity" name="nextSubEntry" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="480" type="void" abstract="0" documentation="as described for FsEntity::getCurrentSubEntry,
+returns a newly created BasicFsConnectedNode from the
+directory entry that is currently active." name="getCurrentSubEntry" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="FsEntity **" abstract="0" documentation="" name="subent" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="481" type="string" abstract="0" documentation="as described for FsEntity::getCurrentSubEntityRelation, returns &quot;direntry::&lt;inodetype>&quot;." name="getCurrentSubEntityRelation" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="482" type="bool" abstract="0" documentation="as described for FsEntity::isUnlinkable, returns true on files,
+on dirs it returns true under any the folowing conditions:
+* The dir is world w+x
+* The file is owned by the effective uid, and is owner w+x
+* The file is group owned by the 'ocfa' group and is group w+x" name="isRecursivelyUnlinkable" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="642" type="string" abstract="0" documentation="" name="getSoftLinkablePath" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="678" type="string" abstract="0" documentation="" name="getHardLinkablePath" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="679" type="string" abstract="0" documentation="" name="getInodeType" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="483" type="struct stat *" abstract="0" documentation="This protected method suplies derived classes with access to the basic stat structure." name="getStat" static="0" scope="202" />
+    <UML:Operation stereotype="" package="" xmi.id="484" type="string" abstract="0" documentation="This protected method suplies derived classes with access to the path of the node." name="getPath" static="0" scope="202" />
+    <UML:Operation stereotype="" package="" xmi.id="490" type="bool" abstract="0" documentation="This protected method provides derived classes with information if they should ignore uid/gid type information." name="getIgnoreGUids" static="0" scope="202" />
+    <UML:Operation stereotype="" package="" xmi.id="491" type="void" abstract="0" documentation="This protected method provides derived classes with information if they should ignore timestamp information." name="getIgnoreTimestamps" static="0" scope="202" />
+    <UML:Operation stereotype="" package="" xmi.id="492" type="string" abstract="0" documentation="This protected method provides derived classes with the charset used by the filesystem for representation of nodenames." name="getCharset" static="0" scope="202" />
+    <UML:Operation stereotype="" package="" xmi.id="680" type="string" abstract="0" documentation="" name="getSubentName" static="0" scope="202" />
+    <UML:Operation stereotype="" package="" xmi.id="681" type="void" abstract="0" documentation="" name="setCurrentSubEntityRelation" static="0" scope="202" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="string" abstract="0" documentation="" name="val" static="0" scope="200" />    </UML:Operation>   </UML:Class>
+   <UML:Class stereotype="" package="" xmi.id="448" abstract="0" documentation="This class extends the BasicFsConnectedNode by adding aditional unix specific stat information as metadata." name="UnixConnectedNode" static="0" scope="200" >
+<UML:Operation stereotype="" package="" xmi.id="532" type="void" abstract="0" documentation="as described in FsEntity::getCurrentSubEntry" name="getCurrentSubEntity" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="FsEntry **" abstract="0" documentation="" name="subent" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="677" type="string" abstract="0" documentation="" name="getInodeType" static="0" scope="200" />   </UML:Class>
+   <UML:Class stereotype="" package="" xmi.id="449" abstract="0" documentation="This class extends the BasicFsConnectedNode by adding aditional NTFS specific stat information as metadata." name="NtfsConnectedNode" static="0" scope="200" >
+<UML:Operation stereotype="" package="" xmi.id="533" type="void" abstract="0" documentation="as described in FsEntity::getCurrentSubEntry" name="getCurrentSubEntity" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="FsEntity **" abstract="0" documentation="" name="subent" static="0" scope="200" />    </UML:Operation>   </UML:Class>
+   <UML:Class stereotype="" package="" xmi.id="450" abstract="0" documentation="This simple subclass of BasicFsFileSystem for only extends the function of its baseclass by returning UnixConnectedNode's where the baseclass would return BasicFsConnectedNode's." name="UnixFileSystem" static="0" scope="200" >
+<UML:Operation stereotype="" package="" xmi.id="530" type="void" abstract="0" documentation="as described for FsFileSystem::getCurrentSubEntity" name="getCurrentSubEntity" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="FsEntity **" abstract="0" documentation="" name="subent" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="531" type="void" abstract="0" documentation="as described for FsFileSystem::getConnectedNode" name="getConnectedNode" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="string" abstract="0" documentation="" name="path" static="0" scope="200" />
+     <UML:Parameter stereotype="" package="" xmi.id="2" value="" type="FsConnectedNode **" abstract="0" documentation="" name="node" static="0" scope="200" />    </UML:Operation>   </UML:Class>
+   <UML:Class stereotype="" package="" xmi.id="451" abstract="0" documentation="This simple subclass of BasicFsFileSystem for 0.5 only extends the function of its baseclass by returning NtfsConnectedNode's where the baseclass would return BasicFsConnectedNode's. The 0.7 version will override more functionality allowing for FsSystemNode's,FsUnalocatedNode's and FsDeletedNode's to be fetched from an object of this class." name="NtfsFileSystem" static="0" scope="200" >
+<UML:Operation stereotype="" package="" xmi.id="535" type="void" abstract="0" documentation="as described for FsFileSystem::getCurrentSubEntity" name="getCurrentSubEntity" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="FsEntity **" abstract="0" documentation="" name="subent" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="536" type="void" abstract="0" documentation="as described for FsFileSystem::getConnectedNode" name="getConnectedNode" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="string" abstract="0" documentation="" name="path" static="0" scope="200" />
+     <UML:Parameter stereotype="" package="" xmi.id="2" value="" type="FsConnectedNode **" abstract="0" documentation="" name="node" static="0" scope="200" />    </UML:Operation>   </UML:Class>
+   <UML:Class stereotype="" package="" xmi.id="548" abstract="0" documentation="" name="Mod" static="0" scope="200" />
+   <UML:Class stereotype="" package="" xmi.id="587" abstract="0" documentation="" name="storelib" static="0" scope="200" />
+   <UML:Class stereotype="" package="" xmi.id="612" abstract="0" documentation="" name="evidencelib" static="0" scope="200" />
+   <UML:Class stereotype="" package="" xmi.id="643" abstract="0" documentation="This class, in the 0.7 version of libocfafs, should give access to
+NTFS alternate streams." name="NtfsAlternateStream" static="0" scope="200" >
+<UML:Operation stereotype="" package="" xmi.id="674" type="void" abstract="0" documentation="" name="openStream" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="675" type="void" abstract="0" documentation="" name="closeStream" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="676" type="size_t" abstract="0" documentation="" name="streamRead" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="char *" abstract="0" documentation="" name="buf" static="0" scope="200" />
+     <UML:Parameter stereotype="" package="" xmi.id="2" value="" type="size_t" abstract="0" documentation="" name="size" static="0" scope="200" />    </UML:Operation>   </UML:Class>
+   <UML:Class stereotype="" package="" xmi.id="644" abstract="0" documentation="" name="EncaseExportOfFilesystem" static="0" scope="200" />
+   <UML:Class stereotype="" package="" xmi.id="645" abstract="0" documentation="This class implements some of the basic functionality for FsEntities that are implemented with the use of filedumps of entities that were not originally connectednode files, and thus dont have any valid metadata oher than size that can be derived from the file that contains the node its data." name="BasicFileDump" static="0" scope="200" >
+<UML:Operation stereotype="" package="" xmi.id="657" type="bool" abstract="0" documentation="" name="hasContent" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="658" type="void" abstract="0" documentation="" name="openstream" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="659" type="void" abstract="0" documentation="" name="closestream" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="660" type="size_t" abstract="0" documentation="" name="streamRead" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="char *" abstract="0" documentation="" name="buf" static="0" scope="200" />
+     <UML:Parameter stereotype="" package="" xmi.id="2" value="" type="size_t" abstract="0" documentation="" name="size" static="0" scope="200" />    </UML:Operation>   </UML:Class>
+   <UML:Class stereotype="" package="" xmi.id="646" abstract="0" documentation="A filedump implementation of the deleted file. This is used by the EncaseExportOfFilesystem." name="FileDumpOfDeletedNode" static="0" scope="200" />
+   <UML:Class stereotype="" package="" xmi.id="647" abstract="0" documentation="A filedump implementation of the unalocated node. This is used by the EncaseExportOfFilesystem." name="FileDumpOfUnalocatedNode" static="0" scope="200" />
+   <UML:Class stereotype="" package="" xmi.id="648" abstract="0" documentation="An encase export of a filesystem holds in the toplevel dir both the regular files and dirs (connected nodes) and filedumps of non connected nodes. This subclass of the BasicFsConnectedNode discards these filedumps as to represent the topdir of the filesystem." name="EncaseExportTopNode" static="0" scope="200" >
+<UML:Operation stereotype="" package="" xmi.id="669" type="bool" abstract="0" documentation="" name="nextSubEntity" static="0" scope="200" />   </UML:Class>
+   <UML:Class stereotype="" package="" xmi.id="649" abstract="0" documentation="This sublass of the BasicFsFilesystem represents a dummy filesystem that is actualy just an encase export. The subnodes it produces are one EncaseExportTopNode, one FileDumpOfUnalocatedNode, and possibly some FileDumpOfDeletedNode's." name="EncaseExportOfFileSystem" static="0" scope="200" >
+<UML:Operation stereotype="" package="" xmi.id="670" type="void" abstract="0" documentation="" name="getCurrentSubEntity" static="0" scope="200" >
+<UML:Parameter stereotype="" package="" xmi.id="1" value="" type="FsEntity **" abstract="0" documentation="" name="subent" static="0" scope="200" />    </UML:Operation>
+    <UML:Operation stereotype="" package="" xmi.id="671" type="void" abstract="0" documentation="" name="resetSubEntityIterator" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="672" type="bool" abstract="0" documentation="" name="nextSubEntity" static="0" scope="200" />
+    <UML:Operation stereotype="" package="" xmi.id="673" type="string" abstract="0" documentation="" name="getCurrentSubEntityRelation" static="0" scope="200" />   </UML:Class>
+   <UML:Class stereotype="" package="" xmi.id="650" abstract="0" documentation="This class and its subclasses need to be defined for the 0.7 version of libocfafs.
+" name="NtfsSystemNode" static="0" scope="200" />  </umlobjects>
+  <diagrams>
+<diagram snapgrid="1" showattsig="1" fillcolor="#ffffc0" showgrid="1" showopsig="1" usefillcolor="1" snapx="20" snapy="20" showatts="1" xmi.id="401" documentation="This is the initial class diagram for the ocfa:fs library for the
+interface and the 0.5 implementation. The yellow/orange classes are the interface, where no implementation will be done in 0.5 for the orange classes. The green and blue classes are the 0.5 implementation, where the blue classes will not get directly instansiates." type="402" showops="1" showpackage="0" name="ClassDiagram Interface + 0.5" localid="30000" showstereotype="0" showscope="1" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" linecolor="#ff0000" >
+<widgets>
+<UML:ConceptWidget usesdiagramfillcolour="0" width="446" showattsigs="601" usesdiagramusefillcolour="0" x="780" linecolour="#ff0000" y="40" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="120" usefillcolor="1" showattributes="1" xmi.id="417" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="425" showattsigs="601" usesdiagramusefillcolour="0" x="800" linecolour="#ff0000" y="400" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="216" usefillcolor="1" showattributes="1" xmi.id="424" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="121" showattsigs="601" usesdiagramusefillcolour="0" x="40" linecolour="#ff0000" y="360" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="32" usefillcolor="1" showattributes="1" xmi.id="425" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="104" showattsigs="601" usesdiagramusefillcolour="0" x="480" linecolour="#ff0000" y="40" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="32" usefillcolor="1" showattributes="1" xmi.id="426" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="104" showattsigs="601" usesdiagramusefillcolour="0" x="520" linecolour="#ff0000" y="440" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="32" usefillcolor="1" showattributes="1" xmi.id="427" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="122" showattsigs="601" usesdiagramusefillcolour="0" x="360" linecolour="#ff0000" y="400" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="32" usefillcolor="1" showattributes="1" xmi.id="428" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="425" showattsigs="601" usesdiagramusefillcolour="0" x="800" linecolour="#ff0000" y="640" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#a9ff96" height="312" usefillcolor="1" showattributes="1" xmi.id="321" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="306" showattsigs="601" usesdiagramusefillcolour="0" x="20" linecolour="#ff0000" y="720" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#a9ff96" height="360" usefillcolor="1" showattributes="1" xmi.id="447" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="306" showattsigs="601" usesdiagramusefillcolour="0" x="20" linecolour="#ff0000" y="1220" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#a9ff96" height="56" usefillcolor="1" showattributes="1" xmi.id="448" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="309" showattsigs="601" usesdiagramusefillcolour="0" x="500" linecolour="#ff0000" y="1160" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#ffce7e" height="40" usefillcolor="1" showattributes="1" xmi.id="449" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="425" showattsigs="601" usesdiagramusefillcolour="0" x="640" linecolour="#ff0000" y="1080" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#a9ff96" height="56" usefillcolor="1" showattributes="1" xmi.id="450" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="425" showattsigs="601" usesdiagramusefillcolour="0" x="880" linecolour="#ff0000" y="1240" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#ffce7e" height="56" usefillcolor="1" showattributes="1" xmi.id="451" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="391" showattsigs="601" usesdiagramusefillcolour="0" x="360" linecolour="#ff0000" y="600" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#a8fff9" height="248" usefillcolor="1" showattributes="1" xmi.id="446" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="391" showattsigs="601" usesdiagramusefillcolour="0" x="40" linecolour="#ff0000" y="20" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="296" usefillcolor="1" showattributes="1" xmi.id="402" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="296" showattsigs="601" usesdiagramusefillcolour="0" x="120" linecolour="#ff0000" y="480" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#ffce7e" height="72" usefillcolor="1" showattributes="1" xmi.id="643" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="296" showattsigs="601" usesdiagramusefillcolour="0" x="480" linecolour="#ff0000" y="120" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#a8fff9" height="88" usefillcolor="1" showattributes="1" xmi.id="645" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="158" showattsigs="601" usesdiagramusefillcolour="0" x="680" linecolour="#ff0000" y="260" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#a9ff96" height="32" usefillcolor="1" showattributes="1" xmi.id="646" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="176" showattsigs="601" usesdiagramusefillcolour="0" x="500" linecolour="#ff0000" y="240" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#a9ff96" height="32" usefillcolor="1" showattributes="1" xmi.id="647" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="155" showattsigs="601" usesdiagramusefillcolour="0" x="360" linecolour="#ff0000" y="920" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#a9ff96" height="40" usefillcolor="1" showattributes="1" xmi.id="648" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="309" showattsigs="601" usesdiagramusefillcolour="0" x="540" linecolour="#ff0000" y="980" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#a9ff96" height="88" usefillcolor="1" showattributes="1" xmi.id="649" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />
+     <UML:ConceptWidget usesdiagramfillcolour="0" width="117" showattsigs="601" usesdiagramusefillcolour="0" x="640" linecolour="#ff0000" y="60" showopsigs="601" usesdiagramlinecolour="0" fillcolour="#ffce7e" height="32" usefillcolor="1" showattributes="1" xmi.id="650" showoperations="1" showpackage="0" showscope="1" showstereotype="0" font="adobe-helvetica,7,-1,5,0,0,0,0,0,0" />    </widgets>
+    <messages/>
+    <associations>
+<UML:AssocWidget totalcounta="2" indexa="1" totalcountb="2" indexb="1" widgetbid="447" widgetaid="448" documentation="" type="500" >
+<linepath>
+<startpoint startx="173" starty="1220" />
+       <endpoint endx="173" endy="1080" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="3" indexb="2" widgetbid="447" widgetaid="449" documentation="" type="500" >
+<linepath>
+<startpoint startx="654" starty="1160" />
+       <endpoint endx="326" endy="960" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="3" indexb="1" widgetbid="321" widgetaid="450" documentation="" type="500" >
+<linepath>
+<startpoint startx="852" starty="1080" />
+       <endpoint endx="941" endy="952" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="3" indexb="2" widgetbid="321" widgetaid="451" documentation="" type="500" >
+<linepath>
+<startpoint startx="1092" starty="1240" />
+       <endpoint endx="1083" endy="952" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="3" indexa="1" totalcountb="2" indexb="1" widgetbid="446" widgetaid="321" documentation="" type="500" >
+<linepath>
+<startpoint startx="800" starty="744" />
+       <endpoint endx="751" endy="724" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="3" indexa="2" totalcountb="2" indexb="1" widgetbid="446" widgetaid="447" documentation="" type="500" >
+<linepath>
+<startpoint startx="224" starty="720" />
+       <endpoint endx="360" endy="724" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="5" indexb="1" widgetbid="402" widgetaid="425" documentation="" type="500" >
+<linepath>
+<startpoint startx="100" starty="360" />
+       <endpoint endx="118" endy="316" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="4" indexb="1" widgetbid="402" widgetaid="426" documentation="" type="500" >
+<linepath>
+<startpoint startx="480" starty="56" />
+       <endpoint endx="431" endy="94" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="3" indexa="1" totalcountb="5" indexb="2" widgetbid="402" widgetaid="428" documentation="" type="500" >
+<linepath>
+<startpoint startx="400" starty="400" />
+       <endpoint endx="196" endy="316" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="3" indexa="1" totalcountb="5" indexb="4" widgetbid="402" widgetaid="427" documentation="" type="500" >
+<linepath>
+<startpoint startx="554" starty="440" />
+       <endpoint endx="352" endy="316" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="4" indexb="3" widgetbid="402" widgetaid="424" documentation="" type="500" >
+<linepath>
+<startpoint startx="800" starty="508" />
+       <endpoint endx="431" endy="242" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="5" indexb="3" widgetbid="402" widgetaid="446" documentation="" type="500" >
+<linepath>
+<startpoint startx="555" starty="600" />
+       <endpoint endx="274" endy="316" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="2" indexb="1" widgetbid="424" widgetaid="321" documentation="" type="500" >
+<linepath>
+<startpoint startx="1012" starty="640" />
+       <endpoint endx="1012" endy="616" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="3" indexa="1" totalcountb="3" indexb="1" widgetbid="425" widgetaid="447" documentation="" type="500" >
+<linepath>
+<startpoint startx="122" starty="720" />
+       <endpoint endx="80" endy="392" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="4" indexb="2" widgetbid="402" widgetaid="645" documentation="" type="500" >
+<linepath>
+<startpoint startx="480" starty="164" />
+       <endpoint endx="431" endy="168" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="3" indexb="2" widgetbid="428" widgetaid="647" documentation="" type="500" >
+<linepath>
+<startpoint startx="588" starty="272" />
+       <endpoint endx="441" endy="400" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="3" indexb="1" widgetbid="645" widgetaid="647" documentation="" type="500" >
+<linepath>
+<startpoint startx="588" starty="240" />
+       <endpoint endx="578" endy="208" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="3" indexb="2" widgetbid="645" widgetaid="646" documentation="" type="500" >
+<linepath>
+<startpoint startx="759" starty="260" />
+       <endpoint endx="677" endy="208" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="3" indexb="2" widgetbid="427" widgetaid="646" documentation="" type="500" >
+<linepath>
+<startpoint startx="759" starty="292" />
+       <endpoint endx="589" endy="440" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="3" indexb="1" widgetbid="447" widgetaid="648" documentation="" type="500" >
+<linepath>
+<startpoint startx="437" starty="920" />
+       <endpoint endx="326" endy="840" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="3" indexb="2" widgetbid="321" widgetaid="649" documentation="" type="500" >
+<linepath>
+<startpoint startx="694" starty="980" />
+       <endpoint endx="800" endy="848" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="2" indexb="1" widgetbid="426" widgetaid="650" documentation="" type="500" >
+<linepath>
+<startpoint startx="640" starty="76" />
+       <endpoint endx="584" endy="56" />      </linepath>     </UML:AssocWidget>
+     <UML:AssocWidget totalcounta="2" indexa="1" totalcountb="3" indexb="2" widgetbid="425" widgetaid="643" documentation="" type="500" >
+<linepath>
+<startpoint startx="268" starty="480" />
+       <endpoint endx="120" endy="392" />      </linepath>     </UML:AssocWidget>    </associations>   </diagram>
+   <diagram snapgrid="0" showattsig="1" fillcolor="#ffffc0" showgrid="0" showopsig="1" usefillcolor="1" snapx="10" snapy="10" showatts="1" xmi.id="547" documentation="" type="403" showops="1" showpackage="0" name="sequence diagram" localid="29996" showstereotype="0" showscope="1" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" linecolor="#ff0000" >
+<widgets>
+<UML:ObjectWidget usesdiagramfillcolour="0" width="63" usesdiagramusefillcolour="0" x="519" linecolour="#ff0000" y="47" instancename="" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="68" usefillcolor="1" length="1024" xmi.id="548" decon="1" localid="29999" multipleinstance="0" drawasactor="1" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:ObjectWidget usesdiagramfillcolour="0" width="189" usesdiagramusefillcolour="0" x="734" linecolour="#ff0000" y="47" instancename="" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="33" usefillcolor="1" length="1058" xmi.id="417" decon="1" localid="29998" multipleinstance="0" drawasactor="0" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:ObjectWidget usesdiagramfillcolour="0" width="140" usesdiagramusefillcolour="0" x="955" linecolour="#ff0000" y="47" instancename="" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="33" usefillcolor="1" length="848" xmi.id="424" decon="1" localid="29997" multipleinstance="0" drawasactor="0" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:FloatingTextWidget usesdiagramfillcolour="1" width="465" usesdiagramusefillcolour="1" x="28" linecolour="none" y="136" operation="" usesdiagramlinecolour="1" role="700" fillcolour="none" height="27" usefillcolor="1" seqnum="" xmi.id="559" text="Select the best FsFilsystem to work with the filesystem" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:FloatingTextWidget usesdiagramfillcolour="1" width="494" usesdiagramusefillcolour="1" x="22" linecolour="none" y="222" operation="" usesdiagramlinecolour="1" role="700" fillcolour="none" height="27" usefillcolor="1" seqnum="" xmi.id="560" text="Check if the filesystem is mounted as expected (ro OR rw)" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:FloatingTextWidget usesdiagramfillcolour="1" width="530" usesdiagramusefillcolour="1" x="22" linecolour="none" y="279" operation="" usesdiagramlinecolour="1" role="700" fillcolour="none" height="27" usefillcolor="1" seqnum="" xmi.id="563" text="Check to see if the filesystem owner matches our expectations" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:FloatingTextWidget usesdiagramfillcolour="1" width="406" usesdiagramusefillcolour="1" x="22" linecolour="none" y="333" operation="" usesdiagramlinecolour="1" role="700" fillcolour="none" height="27" usefillcolor="1" seqnum="" xmi.id="564" text="Change some defaults for metadata generation" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:ObjectWidget usesdiagramfillcolour="0" width="184" usesdiagramusefillcolour="0" x="1116" linecolour="#ff0000" y="47" instancename="" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="33" usefillcolor="1" length="766" xmi.id="425" decon="1" localid="29996" multipleinstance="0" drawasactor="0" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:FloatingTextWidget usesdiagramfillcolour="1" width="498" usesdiagramusefillcolour="1" x="19" linecolour="none" y="463" operation="" usesdiagramlinecolour="1" role="700" fillcolour="none" height="27" usefillcolor="1" seqnum="" xmi.id="575" text="Get a new connected node object constructed from a path" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:FloatingTextWidget usesdiagramfillcolour="1" width="356" usesdiagramusefillcolour="1" x="29" linecolour="none" y="805" operation="" usesdiagramlinecolour="1" role="700" fillcolour="none" height="27" usefillcolor="1" seqnum="" xmi.id="576" text="Delete an earlier created ConnectedNode" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:FloatingTextWidget usesdiagramfillcolour="1" width="224" usesdiagramusefillcolour="1" x="33" linecolour="none" y="867" operation="" usesdiagramlinecolour="1" role="700" fillcolour="none" height="27" usefillcolor="1" seqnum="" xmi.id="577" text="Select an other filesystem" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />    </widgets>
+    <messages>
+<UML:MessageWidget usesdiagramfillcolour="1" width="276" usesdiagramusefillcolour="1" x="551" linecolour="none" y="159" operation="selectAndInit(path : string, charset : string = &quot;AUTO&quot;) : bool" widgetbid="29998" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="1" widgetaid="29999" textid="549" xmi.id="550" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="195" usesdiagramusefillcolour="1" x="829" linecolour="none" y="191" operation="create" widgetbid="29997" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="2" widgetaid="29998" textid="551" xmi.id="552" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="473" usesdiagramusefillcolour="1" x="551" linecolour="none" y="361" operation="setIgnoreGUids(ignore : bool) : void" widgetbid="29997" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="5" widgetaid="29999" textid="553" xmi.id="554" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="473" usesdiagramusefillcolour="1" x="551" linecolour="none" y="423" operation="setIgnoreTimeStamps(ignore : bool) : void" widgetbid="29997" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="6" widgetaid="29999" textid="555" xmi.id="556" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="473" usesdiagramusefillcolour="1" x="551" linecolour="none" y="244" operation="isReadOnly() : bool" widgetbid="29997" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="3" widgetaid="29999" textid="557" xmi.id="558" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="473" usesdiagramusefillcolour="1" x="551" linecolour="none" y="303" operation="getFsOwner() : uid_t" widgetbid="29997" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="4" widgetaid="29999" textid="561" xmi.id="562" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="473" usesdiagramusefillcolour="1" x="551" linecolour="none" y="489" operation="getConnectedNode(path : string, node : FsConnectedNode **) : void" widgetbid="29997" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="7" widgetaid="29999" textid="565" xmi.id="566" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="181" usesdiagramusefillcolour="1" x="1026" linecolour="none" y="522" operation="" widgetbid="29996" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="create" widgetaid="29997" textid="567" xmi.id="568" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="656" usesdiagramusefillcolour="1" x="551" linecolour="none" y="838" operation="delete" widgetbid="29996" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="9" widgetaid="29999" textid="569" xmi.id="570" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="276" usesdiagramusefillcolour="1" x="551" linecolour="none" y="893" operation="selectAndInit(path : string, charset : string = &quot;AUTO&quot;) : bool" widgetbid="29998" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="10" widgetaid="29999" textid="571" xmi.id="572" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="195" usesdiagramusefillcolour="1" x="829" linecolour="none" y="920" operation="delete" widgetbid="29997" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="11" widgetaid="29998" textid="573" xmi.id="574" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />    </messages>
+    <associations/>   </diagram>
+   <diagram snapgrid="0" showattsig="1" fillcolor="#ffffc0" showgrid="0" showopsig="1" usefillcolor="1" snapx="10" snapy="10" showatts="1" xmi.id="578" documentation="" type="403" showops="1" showpackage="0" name="sequence diagram2" localid="29995" showstereotype="0" showscope="1" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" linecolor="#ff0000" >
+<widgets>
+<UML:ObjectWidget usesdiagramfillcolour="0" width="95" usesdiagramusefillcolour="0" x="270" linecolour="#ff0000" y="47" instancename="" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="33" usefillcolor="1" length="1058" xmi.id="402" decon="1" localid="29999" multipleinstance="0" drawasactor="0" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:ObjectWidget usesdiagramfillcolour="0" width="63" usesdiagramusefillcolour="0" x="94" linecolour="#ff0000" y="47" instancename="" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="68" usefillcolor="1" length="1010" xmi.id="548" decon="1" localid="29998" multipleinstance="0" drawasactor="1" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:ObjectWidget usesdiagramfillcolour="0" width="86" usesdiagramusefillcolour="0" x="414" linecolour="#ff0000" y="47" instancename="" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="33" usefillcolor="1" length="488" xmi.id="587" decon="1" localid="29997" multipleinstance="0" drawasactor="0" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:ObjectWidget usesdiagramfillcolour="0" width="119" usesdiagramusefillcolour="0" x="524" linecolour="#ff0000" y="47" instancename="" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="33" usefillcolor="1" length="591" xmi.id="612" decon="1" localid="29996" multipleinstance="0" drawasactor="0" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:ObjectWidget usesdiagramfillcolour="0" width="95" usesdiagramusefillcolour="0" x="661" linecolour="#ff0000" y="47" instancename="" usesdiagramlinecolour="0" fillcolour="#ffffc0" height="33" usefillcolor="1" length="1064" xmi.id="402" decon="1" localid="29995" multipleinstance="0" drawasactor="0" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />    </widgets>
+    <messages>
+<UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="133" operation="hasContent() : bool" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="1" widgetaid="29998" textid="579" xmi.id="580" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="260" operation="openStream() : void" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="3" widgetaid="29998" textid="588" xmi.id="589" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="330" usesdiagramusefillcolour="1" x="126" linecolour="none" y="292" operation="openStream()" widgetbid="29997" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="4" widgetaid="29998" textid="590" xmi.id="591" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="325" operation="streamRead(buf : char *, count : size_t) : size_t" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="5" widgetaid="29998" textid="592" xmi.id="593" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="330" usesdiagramusefillcolour="1" x="126" linecolour="none" y="356" operation="StreamWrite()" widgetbid="29997" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="6" widgetaid="29998" textid="594" xmi.id="595" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="391" operation="streamRead(buf : char *, count : size_t) : size_t" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="5b" widgetaid="29998" textid="596" xmi.id="597" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="330" usesdiagramusefillcolour="1" x="126" linecolour="none" y="425" operation="StreamWrite()" widgetbid="29997" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="6b" widgetaid="29998" textid="598" xmi.id="599" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="459" operation="closeStream() : void" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="7" widgetaid="29998" textid="600" xmi.id="601" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="330" usesdiagramusefillcolour="1" x="126" linecolour="none" y="492" operation="closeStream()" widgetbid="29997" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="8" widgetaid="29998" textid="602" xmi.id="603" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="330" usesdiagramusefillcolour="1" x="126" linecolour="none" y="526" operation="getHandle()" widgetbid="29997" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="9" widgetaid="29998" textid="604" xmi.id="605" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="330" usesdiagramusefillcolour="1" x="126" linecolour="none" y="560" operation="getDigestPair()" widgetbid="29997" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="10" widgetaid="29998" textid="606" xmi.id="607" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="595" operation="getName() : string" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="11" widgetaid="29998" textid="608" xmi.id="609" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="630" operation="takeMetaMap(map : map &lt;string, misc:MetaValue *> **) : void" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="12" widgetaid="29998" textid="610" xmi.id="611" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="456" usesdiagramusefillcolour="1" x="126" linecolour="none" y="663" operation="create()" widgetbid="29996" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="13" widgetaid="29998" textid="613" xmi.id="614" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="164" operation="isReadable() : bool" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="2" widgetaid="29998" textid="615" xmi.id="616" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="198" operation="isReadOnly() : bool" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="2b" widgetaid="29998" textid="617" xmi.id="618" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="229" operation="unlinkOnDestruct() : void" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="2c" widgetaid="29998" textid="619" xmi.id="620" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="730" operation="isReadOnly() : bool" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="2" widgetaid="29998" textid="621" xmi.id="622" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="765" operation="isRecursivelyUnlinkable() : bool" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="2b" widgetaid="29998" textid="623" xmi.id="624" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="807" operation="unlinkOnDestruct() : void" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="2c" widgetaid="29998" textid="625" xmi.id="626" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="695" operation="hasSubEntities() : bool" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="1" widgetaid="29998" textid="627" xmi.id="628" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="843" operation="resetSubEntityIterator() : void" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="3" widgetaid="29998" textid="629" xmi.id="630" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="877" operation="getCurrentSubEntity(subent : FsEntity **) : void" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="4[ ]" widgetaid="29998" textid="631" xmi.id="632" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="389" usesdiagramusefillcolour="1" x="318" linecolour="none" y="910" operation="create" widgetbid="29995" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="4" widgetaid="29999" textid="633" xmi.id="634" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="1069" operation="getCurrentSubEntityRelation() : string" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="5" widgetaid="29998" textid="635" xmi.id="636" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />
+     <UML:MessageWidget usesdiagramfillcolour="1" width="190" usesdiagramusefillcolour="1" x="126" linecolour="none" y="1109" operation="nextSubEntity() : bool" widgetbid="29999" usesdiagramlinecolour="1" fillcolour="none" height="8" usefillcolor="1" seqnum="6" widgetaid="29998" textid="637" xmi.id="638" font="adobe-helvetica,12,-1,5,0,0,0,0,0,0" />    </messages>
+    <associations/>   </diagram>  </diagrams>
+  <listview>
+<listitem open="1" type="800" id="-1" label="Views" >
+<listitem open="1" type="801" id="-1" label="Logical View" >
+<listitem open="0" type="813" id="645" label="BasicFileDump" >
+<listitem open="0" type="815" id="659" label="closestream" />
+      <listitem open="0" type="815" id="657" label="hasContent" />
+      <listitem open="0" type="815" id="658" label="openstream" />
+      <listitem open="0" type="815" id="660" label="streamRead" />     </listitem>
+     <listitem open="0" type="813" id="447" label="BasicFsConnectedNode" >
+<listitem open="0" type="815" id="476" label="closeStream" />
+      <listitem open="0" type="815" id="492" label="getCharset" />
+      <listitem open="0" type="815" id="481" label="getCurrentSubEntityRelation" />
+      <listitem open="0" type="815" id="480" label="getCurrentSubEntry" />
+      <listitem open="0" type="815" id="678" label="getHardLinkablePath" />
+      <listitem open="0" type="815" id="490" label="getIgnoreGUids" />
+      <listitem open="0" type="815" id="491" label="getIgnoreTimestamps" />
+      <listitem open="0" type="815" id="679" label="getInodeType" />
+      <listitem open="0" type="815" id="484" label="getPath" />
+      <listitem open="0" type="815" id="642" label="getSoftLinkablePath" />
+      <listitem open="0" type="815" id="483" label="getStat" />
+      <listitem open="0" type="815" id="680" label="getSubentName" />
+      <listitem open="0" type="815" id="473" label="hasContent" />
+      <listitem open="0" type="815" id="477" label="hasSubEntities" />
+      <listitem open="0" type="815" id="474" label="isReadable" />
+      <listitem open="0" type="815" id="482" label="isRecursivelyUnlinkable" />
+      <listitem open="0" type="815" id="479" label="nextSubEntry" />
+      <listitem open="0" type="815" id="475" label="openStream" />
+      <listitem open="0" type="815" id="478" label="resetSubEntityIterator" />
+      <listitem open="0" type="815" id="681" label="setCurrentSubEntityRelation" />
+      <listitem open="0" type="815" id="544" label="streamRead" />     </listitem>
+     <listitem open="0" type="813" id="446" label="BasicFsEntity" >
+<listitem open="0" type="815" id="467" label="addMetaValue" />
+      <listitem open="0" type="815" id="665" label="getHardLinkablePath" />
+      <listitem open="0" type="815" id="453" label="getName" />
+      <listitem open="0" type="815" id="664" label="getSoftLinkablePath" />
+      <listitem open="0" type="815" id="460" label="getUnlinkOnDestruct" />
+      <listitem open="0" type="815" id="661" label="hasContent" />
+      <listitem open="0" type="815" id="667" label="hasSubEntities" />
+      <listitem open="0" type="815" id="542" label="isReadable" />
+      <listitem open="0" type="815" id="458" label="isReadOnly" />
+      <listitem open="0" type="815" id="663" label="isRecursivelyUnlinkable" />
+      <listitem open="0" type="815" id="662" label="streamRead" />
+      <listitem open="0" type="815" id="466" label="takeMetaMap" />
+      <listitem open="0" type="815" id="666" label="unlinkOnDestruct" />
+      <listitem open="0" type="815" id="454" label="updateName" />     </listitem>
+     <listitem open="0" type="813" id="321" label="BasicFsFileSystem" >
+<listitem open="0" type="815" id="498" label="canDoDeletedNodes" />
+      <listitem open="0" type="815" id="499" label="canDoSystemNodes" />
+      <listitem open="0" type="815" id="500" label="canDoUnalocatedNodes" />
+      <listitem open="0" type="815" id="494" label="getCharset" />
+      <listitem open="0" type="815" id="505" label="getConnectedNode" />
+      <listitem open="0" type="815" id="527" label="getCurrentSubEntity" />
+      <listitem open="0" type="815" id="528" label="getCurrentSubEntityRelation" />
+      <listitem open="0" type="815" id="520" label="getDevNum" />
+      <listitem open="0" type="815" id="539" label="getFsOwner" />
+      <listitem open="0" type="815" id="495" label="getIgnoreGUids" />
+      <listitem open="0" type="815" id="524" label="hasSubEntities" />
+      <listitem open="0" type="815" id="526" label="nextSubEntity" />
+      <listitem open="0" type="815" id="525" label="resetSubEntityIterator" />
+      <listitem open="0" type="815" id="501" label="setIgnoreDeletedNodes" />
+      <listitem open="0" type="815" id="496" label="setIgnoreGUids" />
+      <listitem open="0" type="815" id="502" label="setIgnoreSystemNodes" />
+      <listitem open="0" type="815" id="497" label="setIgnoreTimeStamps" />
+      <listitem open="0" type="815" id="503" label="setIgnoreUnalocatedNodes" />     </listitem>
+     <listitem open="1" type="807" id="401" label="ClassDiagram Interface + 0.5" />
+     <listitem open="1" type="813" id="644" label="EncaseExportOfFilesystem" />
+     <listitem open="0" type="813" id="649" label="EncaseExportOfFileSystem" >
+<listitem open="0" type="815" id="670" label="getCurrentSubEntity" />
+      <listitem open="0" type="815" id="673" label="getCurrentSubEntityRelation" />
+      <listitem open="0" type="815" id="672" label="nextSubEntity" />
+      <listitem open="0" type="815" id="671" label="resetSubEntityIterator" />     </listitem>
+     <listitem open="0" type="813" id="648" label="EncaseExportTopNode" >
+<listitem open="0" type="815" id="669" label="nextSubEntity" />     </listitem>
+     <listitem open="1" type="813" id="612" label="evidencelib" />
+     <listitem open="1" type="813" id="646" label="FileDumpOfDeletedNode" />
+     <listitem open="1" type="813" id="647" label="FileDumpOfUnalocatedNode" />
+     <listitem open="1" type="813" id="417" label="FileSystemSelector" >
+<listitem open="0" type="815" id="652" label="baptize" />
+      <listitem open="0" type="815" id="654" label="checkIfSameDevice" />
+      <listitem open="0" type="815" id="422" label="getFileSystem" />
+      <listitem open="0" type="815" id="655" label="getTimeSource" />
+      <listitem open="0" type="815" id="421" label="selectAndInit" />
+      <listitem open="0" type="815" id="651" label="selectAndInitEncaseExport" />     </listitem>
+     <listitem open="1" type="813" id="425" label="FsConnectedNode" />
+     <listitem open="1" type="813" id="427" label="FsDeletedNode" />
+     <listitem open="0" type="813" id="402" label="FsEntity" >
+<listitem open="0" type="815" id="406" label="closeStream" />
+      <listitem open="0" type="815" id="411" label="getCurrentSubEntity" />
+      <listitem open="0" type="815" id="436" label="getCurrentSubEntityRelation" />
+      <listitem open="0" type="815" id="656" label="getHardLinkablePath" />
+      <listitem open="0" type="815" id="403" label="getName" />
+      <listitem open="0" type="815" id="641" label="getSoftLinkablePath" />
+      <listitem open="0" type="815" id="416" label="hasContent" />
+      <listitem open="0" type="815" id="408" label="hasSubEntities" />
+      <listitem open="0" type="815" id="541" label="isReadable" />
+      <listitem open="0" type="815" id="404" label="isReadOnly" />
+      <listitem open="0" type="815" id="413" label="isRecursivelyUnlinkable" />
+      <listitem open="0" type="815" id="410" label="nextSubEntity" />
+      <listitem open="0" type="815" id="405" label="openStream" />
+      <listitem open="0" type="815" id="409" label="resetSubEntityIterator" />
+      <listitem open="0" type="815" id="543" label="streamRead" />
+      <listitem open="0" type="815" id="407" label="takeMetaMap" />
+      <listitem open="0" type="815" id="414" label="unlinkOnDestruct" />     </listitem>
+     <listitem open="0" type="813" id="424" label="FsFileSystem" >
+<listitem open="0" type="815" id="437" label="canDoDeletedNodes" />
+      <listitem open="0" type="815" id="438" label="canDoSystemNodes" />
+      <listitem open="0" type="815" id="439" label="canDoUnalocatedNodes" />
+      <listitem open="0" type="815" id="429" label="getCharset" />
+      <listitem open="0" type="815" id="444" label="getConnectedNode" />
+      <listitem open="0" type="815" id="540" label="getFsOwner" />
+      <listitem open="0" type="815" id="430" label="getIgnoreGUids" />
+      <listitem open="0" type="815" id="440" label="SetIgnoreDeletedNodes" />
+      <listitem open="0" type="815" id="432" label="setIgnoreGUids" />
+      <listitem open="0" type="815" id="442" label="setIgnoreSystemNodes" />
+      <listitem open="0" type="815" id="433" label="setIgnoreTimeStamps" />
+      <listitem open="0" type="815" id="443" label="setIgnoreUnalocatedNodes" />     </listitem>
+     <listitem open="1" type="813" id="426" label="FsSystemNode" />
+     <listitem open="1" type="813" id="428" label="FsUnalocatedNode" />
+     <listitem open="1" type="813" id="548" label="Mod" />
+     <listitem open="0" type="813" id="643" label="NtfsAlternateStream" >
+<listitem open="0" type="815" id="675" label="closeStream" />
+      <listitem open="0" type="815" id="674" label="openStream" />
+      <listitem open="0" type="815" id="676" label="streamRead" />     </listitem>
+     <listitem open="0" type="813" id="449" label="NtfsConnectedNode" >
+<listitem open="0" type="815" id="533" label="getCurrentSubEntity" />     </listitem>
+     <listitem open="0" type="813" id="451" label="NtfsFileSystem" >
+<listitem open="0" type="815" id="536" label="getConnectedNode" />
+      <listitem open="0" type="815" id="535" label="getCurrentSubEntity" />     </listitem>
+     <listitem open="1" type="813" id="650" label="NtfsSystemNode" />
+     <listitem open="1" type="810" id="547" label="sequence diagram" />
+     <listitem open="1" type="810" id="578" label="sequence diagram2" />
+     <listitem open="1" type="813" id="587" label="storelib" />
+     <listitem open="0" type="813" id="448" label="UnixConnectedNode" >
+<listitem open="0" type="815" id="532" label="getCurrentSubEntity" />
+      <listitem open="0" type="815" id="677" label="getInodeType" />     </listitem>
+     <listitem open="0" type="813" id="450" label="UnixFileSystem" >
+<listitem open="0" type="815" id="531" label="getConnectedNode" />
+      <listitem open="0" type="815" id="530" label="getCurrentSubEntity" />     </listitem>    </listitem>
+    <listitem open="1" type="802" id="-1" label="Use Case View" />   </listitem>  </listview> </XMI.content></XMI>

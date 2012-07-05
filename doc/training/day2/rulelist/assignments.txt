@@ -1,0 +1,53 @@
+For this exercise we will go back to the day one exercise but will try to
+create a rule-list from scratch. We will do this to get a general feeling
+for using and tuning the rule-list.
+Before we can start, we will need to learn a little about one specific module.
+The 'file' module looks at the header of the files given to it. 
+From this it will extract meta-data that it adds to the evidence.
+One important meta-data field it adds is the field named 'mimetype'.
+For you to be able to do the following exercises, here is a little list of
+mime types that you will have to use in your exercise later on:
+
+	application/tar
+	application/x-tar
+	application/xgtar
+	application/gzip
+	application/x-gzip
+	application/zip
+	application/x-zip
+	image/jpeg
+	text/mail
+	text/x-mail
+
+Note: before doing a new run you can either stop the architecture and restart it, or just kill
+the router and restart it (or in case of casemon have it restarted).
+
+1) We will start of with an empty rule-list. Copy the rulelist.cvs.bare to rulelist.cvs.cursus
+   and update the symlink rulelist.cvs to point to this file.
+
+2) When evidence meta-data is created during kickstart or derivation from files and directories,
+   some basic meta-data is added. The field 'inodetype' can have multiple values, but 'dir' and
+   'file' are the most important ones. Adjust the rulelist so that new 'dir' evidence gets 'committed'
+   to the DSM, while new 'file' evidence gets 'forwarded' to the 'file' module.
+   Any evidence returning from file should contain a meta-data field 'mimetype', and should also be
+   committed to the DSM.
+   Try a run of the tar.gz file from day one using this rulelist, call the item 'rulelist1' and have 
+   a look at the result.
+
+3) In the previous run we see that the tar.gz file gets identified as a gzip file, but no appropriate
+   processing takes place. Add lines to the rulelist to have gzip files forwarded to the gzip module,
+   tar files forwarded to the tar module, zip files forwarded to the zip module, jpeg files forwarded
+   to the exif module, and e-mail forwarded to the mailsplit module.
+   Try an other run of the tar.gz file, call the item 'rulelist2' and have a look at the result.
+
+4) In the result from the previous run we can see that the mailwash module adds the value 'text/x-ocfa-mail'
+   as 'mimetype'. Add a rule to the rulelist that lets these files be forwarded to the mailwash module.
+   Try an other run of the tar.gz file, call the item 'rulelist3', and have a look at the result.
+
+5) The text/x-ocfa-mail meta-data can be seen as a hack to allow the rulelist to work with a single table.
+   Rewrite the rulelist to eliminate the use of this rule by adding the use of an extra table.
+   Try an other run of the tar.gz file, call the item 'rulelist4', and have a look at the result.
+
+
+
+

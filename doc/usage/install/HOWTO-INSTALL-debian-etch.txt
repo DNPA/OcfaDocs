@@ -1,0 +1,219 @@
+!! WARNING: This document has not been updated since the 2.0 OCFA release.  !!!
+
+First make sure you have read HOWTO-INSTALL 
+
+--------------- Install Debian Etch----------------------
+This howto describes how to configure the Linux server
+that forms the core of the open computer forensics architecture
+on a Debian etch linux distribution.
+
+First a litle word about the hardware. It is suggested that you
+use a system with sufficient hard disk space, either internal
+or better yet with a connection to a SAN. Preferably use a local
+system disk of at least 40GB combined with either a small set of 
+big internal disks, or with an external SAN or RAID system that
+should hold at least one or two terabytes of storage.
+It is also sugested that the system should have at least 2GB of
+system memory, preferably more, especialy if it is going to also 
+be running the database server.
+
+You should obtain the installation media from debian.org.
+It is suggested to use the netinstall CD iso image.
+
+Boot from cd and go through the normal installation.
+When partitioning the disk it is suggested that you partition 
+the disk internal main system disk as follows:
+
+1			2GB		swap
+1	/boot		200 MB		ext3
+3	/var/log	10 GB		xfs
+4	/		remaining	xfs
+
+If the disk is smaller then 40GB you may wish to leave out the
+seperate /var/log partition. You should then however be careful
+with using debug logs that might fill up the root partition.
+
+For all remaining disks you should create one large partition
+for each disk, and mark this for usage by logical volume management.
+After declaring these partitions you should set up a volume group
+containing these partitions, and for that group you should then
+define a single big logical volume.
+
+The big logical volume (or SAN slice or RAID volume) should get a single
+partition defined for it:
+
+5	/var/ocfa	full-size	xfs
+
+You may wish to make sure that the /var/ocfa partition be mounted with the 'noatime'
+flag. This will potentially make access to the ocfa repository a lot faster.
+
+When presented with 'Software selection' you should select:
+
+ * File Server
+ * DNS Server
+ * Standard System
+
+You may in addition also want to choose the graphical desktop system if the 
+target system is a desktop. 
+
+When asked to enter a username, DO IN NO CASE ENTER 'ocfa'
+as the username (this will conflict with later installation checks), 
+You can choose any other name you desire. 
+
+You will be asked for a workgroup name for samba, it is suggested that you choose
+'ocfa'.
+
+After reboot, login as root.
+Unless otherwise noted further installation is done as root.
+
+Run 'apt-get update'.
+
+Use 'apt-get install <package> for the folowing packages,
+as an alternative you could use 'aptitude'.
+
+* bzip2
+* libxerces27-dev
+* libtool
+* libboost-dev
+* libboost-serialization-dev
+* libssl-dev
+* postgresql-dev
+* libboost-regex-dev
+* libdb4.4-dev
+* exiftags
+* unzip
+* antiword
+* xpdf-utils
+* libmagic-dev
+* apache2
+* libmime-perl
+* openssh-server
+* netpbm
+* sleuthkit
+* cgicc-dev
+* libace-dev
+* g++
+* libfuse-dev
+* fuse-utils
+* lynx
+
+Optionally you may wish to install the folowing packages that will be required
+by upcoming releases of ocfa:
+
+* libextractor-dev
+* extract
+* mdbtools
+* nrg2iso
+
+If you are installing a stand alone system you will also want to
+install a database server:
+
+* postgresql-8.1
+
+You may however also choose to install and configure postgresql on
+a second server as a more scalable alternative.
+
+While most tools and libraries may be available as debian packages,
+some are not, or are currently only available as an incompatible
+or broken version. 
+First we may need to make sure that your system will be able to find these
+hand-installed packages, to be more precise, able to find the libraries
+we will install from source.
+
+Edit (or create) the file /etc/ld.so.conf and make sure it contains a line
+with the string '/usr/local/lib'. After installing a library please run
+'ldconfig' to make sure the loader can find your libraries.
+
+Now go on and install the folowing packages from source:
+
+* clucene 0.9.16
+* libewf-beta-20061233
+* libcarvpath-0.1.4
+* carvfs-0.2.1
+
+Optionally, if you want to play around a bit with the upcoming carvpath 
+functionality you may also want to install:
+
+* sleuthkit-2.07 with the patches from the carvfs-0.2.1 tree.
+* scalpel 1.60
+
+------------------- Installing OcfaLib -----------------------
+Now build and install the OcfaLib.
+Cd to the OcfaLib directory and (as root) run the following commands:
+
+  ./configure
+  make install
+
+------------------Installing OcfaArch------------------------
+Now we can start with installing OcfaArch:
+
+  cd to the OcfaArch directory
+
+Now we can configure and build OcfaArch
+
+  ./configure
+  make install
+
+During 'make rootinstall' you will be asked two important questions.
+The first question asks if the database should be configured. 
+If you are going to install a separate database server you should 
+choose not to do so. However not configuring a local database also means
+you won't be able to test your installation before you completed the
+database server install.
+The second question asks how you will use the installation, either as
+an evaluation and testing system or as a production system. 
+The difference between these is that a testing system will allow you
+to edit and tune your configuration without administrator priviledges.
+Choose the one most appropriate for your situation.
+If you choose to configure the database, some important changes to the 
+database configuration are made. You will need to restart your database 
+for these changes to take effect.
+
+  /etc/init.d/postgresql-8.1 restart
+
+You now will want to change the password for the ocfa user:
+
+  passwd ocfa
+
+
+------------------Testing OcfaArch-------------------------
+Optionally you may now test the OcfaArch installation.
+Please consult HOWTO-INSTALLTEST for details.
+If you chose to use a separate database, please first install this server 
+creating a user 'ocfa' on this server with proper rights.
+You should also change your /usr/local/digiwash2.0/etc/template.conf file 
+to point to the proper database server prior to running the tests.
+
+
+-----------------OcfaModules install-----------------------
+
+Finally we will install OcfaModules. This will install
+very cleanly:
+
+cd to the OcfaModules directory and run the folowing commands: 
+
+  ./configure
+  make install
+
+
+-------------- Digest database creation ---------------------------
+The 'digest' module is dependent on a set of berkeleydb database files for proper
+operation. In order to use the digest module you need to install the digest
+database files:
+
+If you are installing the publically available ocfa distribution 
+you will not have the pre-build databases available and you will
+thus need to build the digest files yourself. To do this you should
+get the NIST digest database iso files, unpack them on your
+system and use a script provided for building the digest db.
+
+Change your directory to OcfaModules/minimal/digest/init/ .
+Here you find a script called createshadb2.pl.
+Remember where your NIST files are to be found and start
+createshadb2.pl. The script will ask for input.
+Ones the script has finished move the digest files to
+/usr/local/digiwash2.0/static/hashsets/
+
+
+Now you should do a testrun, consult HOWTO-TESTSET.txt for details.
+

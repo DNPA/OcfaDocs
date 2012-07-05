@@ -1,0 +1,15 @@
+<module name="tar">
+  <function>
+     This module uses the tar command to extract files and/or directory trees from a
+     tar archive file.
+  </function>
+  <inputtype metaname="mimetype" metaval="application/x-tar"/>
+  <inputtype metaname="mimetype" metaval="application/tar"/>
+  <inputtype metaname="mimetype" metaval="application/x-gtar"/>
+  <outputnode name="*" multi="true" type="dir">
+        <function>A directory tree extracted from the input file.</function>
+  </outputnode>
+  <outputnode name="*" multi="true" type="dir">
+        <function>A file extracted from the input file.</function>
+  </outputnode>
+</module>

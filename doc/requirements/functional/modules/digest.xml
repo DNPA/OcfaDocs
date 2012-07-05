@@ -1,0 +1,28 @@
+<module name="digest">
+  <function>Compares MD5/SHA1 hash to hashed that are available in a separate db</function>
+  <parsemeta metaname="sha"/>
+  <parsemeta netaname="md5"/>
+  <inputtype metaname="inodetype" metaval="file" parsefile="false"/>
+  <outputmeta metaname="digestsource" optional="false">
+        The name of the database of digests that the digest was found in.
+  </outputmeta>
+  <outputmeta metaname="digestselffirst">
+        If digestsource contains the value SELF, This value is added and contains the xml id of the first
+	occurrence of this evidence in the current case.
+  </outputmeta>
+  <outputmeta metaname="digestselfcount">
+     	If digestsource contains the value SELF, this value contains the number of times the same evidence
+	was processed by the digest module including this time.
+  </outputmeta>
+  <outputmeta metaname="referencename">
+     	This value contains the name this file has in the database refered to in digestsource.
+  </outputmeta>
+  <outputmeta metaname="nistproduct">
+	If digestsource contains the value NIST, this value contains the PRODUCT that this digest was defined
+	to be part of by the nist database.
+  </outputmeta>
+  <outputmeta metaname="nistproduct">
+        If digestsource contains the value NIST, this value contains the PRODUCT TYPE that this digest was defined
+	to be part of by the nist database.
+  </outputmeta>
+</module>

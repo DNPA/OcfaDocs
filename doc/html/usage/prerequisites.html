@@ -1,0 +1,70 @@
+<HTML>
+  <HEAD><link rel=stylesheet type="text/css" href="../main.css"></head>
+  <BODY>
+     <H2>Prerequisites</H2>
+     If you choose to use the seperate source trees without the packages and howto
+     for installation, than you will need to make sure ale prerequisites for installation
+     are satified prior to building and installing.
+     <H3>Partitioning</H3>
+     It is strongly sugested that you choose to have your /var on its own sufficiently
+     large partition. This partition should preferably be formatted with the XFS
+     filesystem. A good alternative to XFS could be Reiser. It is known that the
+     storage library of the open computer forensics architecture has relatively poor performance on
+     ext2/ext3 filesystems, and you are for this reason sugested to choose XFS (or Reiser) over
+     ext2/ext3 for your /var partition.
+     <H3>Prerequisites for OcfaLib</H3>
+     For the installation of OcfaLib you will need to have tehe folowing libraries installed
+     with the complete set of include files available (many distributions put these in a seperate
+     <i>development</i> package for the library)
+     <ul>
+     <li>The Xerces C++ library version 2.6 or higher.
+     <li>The boost libraries with at least the serialization library.
+     <li>The ACE communication framework library.
+     <li>The openssl library.
+     <li>The postgres sql library.
+     <li>The zlib library
+     </ul>
+     Next to these libraries you will need to make sure you have basic building tools like <i>libtool</i> 
+     <i>make</i> and <i>g++</i> installed on your system. The use of the 4.0 version of g++ is discouraged,
+     3.4 or 4.1 are preferable.
+     <H3>Prerequisites for OcfaArch</H3>
+     The main prerequisit for OcfaArch is that you have OcfaLib installed and have the group <i>ocfa</i>
+     defined on your system. Next to this OcfaArch has a few more prerequisites.
+     <ul>
+       <li>The cgicc cgi library.
+       <li>The clucene indexing library.
+       <li>The boost regular expression library
+     </ul>
+     Next to these libraries you will need to have the folowing server software up and running 
+     on your system:
+     <ul>
+       <li>postgress 8
+       <li>apache 2
+       <li>syslogd
+     </ul>
+     Finaly you will need to have the <i>netpbm</i> graphic conversion tools installed on your system.
+     <H3>OcfaArch prerequisites</H3>
+     The OcfaModules consists of a set of different modules each with its own tool or library as a prerequisite.
+     This means you could leave out one or more of these prerequisites, and make do without the
+     related module if need be, you are however sugested to install all of these tools and libraties:
+     <ul>
+         <li>The sleuthkit version 2.04 or higher.
+	 <li>libmagic
+	 <li>berkeley db 4.x
+	 <li>gunzip
+	 <li>bunzip2
+	 <li>objdump
+	 <li>exiftags
+	 <li>unzip
+	 <li>antiword
+	 <li>pdftotext 
+	 <li>strings
+	 <li>tar
+	 <li>perl
+	 <li>Perl modules:<ul>
+                             <li>Mime-tools
+			     <li>TimeDate
+	                  </ul>
+     </ul>
+  </BODY>
+</HTML>

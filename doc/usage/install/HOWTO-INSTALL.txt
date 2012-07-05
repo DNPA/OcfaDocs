@@ -1,0 +1,47 @@
+!! WARNING: This document has not been updated since the 2.0 OCFA release.  !!!
+
+This release, the 2.1.0 version only is distributed as the plain sources
+without the specific packages for specific distributions.
+
+As of the 2.0.5 the installation howto's for platforms other than 
+debian etch are no longer actively maintained. 
+And the klpd (Dutch National Police Agency) has stopped the distribution 
+of binary packages for libraries and tools that are not pressent as standard 
+packages for the given linux distributions.
+
+The base platform that the open computer forensics architecture is developed
+on and for is:
+
+* debian etch
+
+The file HOWTO-INSTALL-debian-etch.txt contains a howto on installing the
+open computer forensics architecture on this platform.
+
+Currently the following Linux distro's have also been confirmed to work with ocfa:
+
+* suse 9.3
+* suse 10.1
+* ubuntu 5.10
+
+This directory contains 'old' howto files on how to install the system on
+these platforms. Please try to use the debian howto as guideline while 
+using any of these unmaintained howto files for suse or ubuntu.
+
+If you find any inconsistencies in the provided howto or packages for these
+distro's please let us know at ocfa@dnpa.nl . If you manage to install
+ocfa on any other distro, please inform us of this and of any additional 
+steps you needed to take in order to get stuff running. We can not test
+ocfa on every distro, so any information you provide could potentially help
+other users of your distro to become able to use ocfa.
+
+After successful installation please consider subscribing to the ocfa-user
+mailing-list. Ocfa is a big project with many dependencies, and we have
+very little resources to support users that are not members of the Dutch 
+national police, especially with dependency issues on different Linux
+distributions and versions. The ocfa-user mailing-list is meant both to 
+keep users informed about new developments and to act as a user community 
+support mailing-list. 
+
+  http://lists.sourceforge.net/mailman/listinfo/ocfa-user
+
+You are strongly advised to join this mailing-list.

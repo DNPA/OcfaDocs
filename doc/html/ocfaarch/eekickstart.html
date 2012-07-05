@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h2>The 'encase export' kickstart module</h2>
+A special variant of the kickstart module is the eekickstart. The eekickstart uses a
+ loadable module of the <A HREF="../ocfalib/fslib.html">fs abstraction library</a>
+to insert evidence from an encase export.<br>
+The
+example below describes the command line usage of the kickstart module.<br>
+<p class="example">Usage: ./eekickstart caseid sourceid itemid path
+charset name<br>
+</p>
+Example:<br>
+<p class="example">./eekickstart thunderstorm2 Box2 HDU1
+/mount/mycase/repos
+LATIN1 thunder_hdu1<br>
+</p>
+Parameters used with kickstart:<br>
+<div class="shout"><span style="font-weight: bold;">Remark:</span><br>
+Use for caseid, sourceid, itemid and name only
+alphanumeric values without
+any special characters.</div>
+<ol>
+  <li>caseid. Describes the case.<br>
+  </li>
+  <li>sourceid. Describes the source. <br>
+  </li>
+  <li>itemid. Describes the item.<br>
+  </li>
+  <li>path. The path from which the ocfa treewalker starts with
+analyzing. <br>
+  </li>
+  <li>charset. Possible values:&nbsp; LATIN1, UTF8, UCS-2,
+UTF-16 and many more (see iconv -l for a complete list).</li>
+  <li>name. A user defined shorthand name describing the case.<br>
+  </li>
+</ol>
+<br>
+<br>
+</body>
+</html>

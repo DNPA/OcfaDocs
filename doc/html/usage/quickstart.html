@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h2>How to get started using the Open Computer Forensics Architecture</h2>
+After you have installed the open computer forensics architecture on
+your system you can start to use it. This page tries to give a short
+introduction how to use the open computer forensics architecture.
+<h3>Setting up hostnames</h3>
+<div class="shout"><b>Example: /etc/hosts</b><br>
+A line from the hosts file could look like<br>
+172.16.4.123 &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; zaak123.ocfa.loc
+</div>
+There are two ways to set up the proper hostnames for your system.
+The
+ideal way is using dns. You simply set a wildcard dns record for <i>*.ocfa.loc</i>
+to point to the ip address of your main ocfa server system. A second
+more limited but rather simple way is by updating the /etc/hosts file
+of both your ocfa server and your web client systems. For each case you
+plan to create, a &lt;casename&gt;.ocfa.loc as name with your IP
+address
+has to be added, so your server and web clients will be able to locate
+your system by its case name.
+<h3>Creating your case</h3>
+In order to be able to run your system, you will now first need to
+create a case. You should log in as (or su to) the user <i>ocfa</i>.
+You will when logging in as ocfa always be asked to name the case you
+will be working on. Answering this only sets an environment variable
+nothing more. Once you are in the shell you should create a case. Lets
+assume you have chosen <i>ocfa</i> as the password for your database
+server for the user ocfa, and that the case you want to create is
+called <i>testcase</i>. Than you create the new case by calling
+<pre class="example">createcase.pl testcase ocfa<br>     </pre>
+<h3>Restarting the webserver</h3>
+After creating a new case, a new database is created on the database
+server and a new configuration for your apache webserver is created as
+an additional virtual host configuration. Your apache server however
+does
+not yet know this. You will thus first need to restart apache in order
+to be able to use the webinterface. After apache has been restarted you
+should be able to use your web browser and go to
+http://testcase.ocfa.loc/
+<h3>Tuning the rulelist</h3>
+The rulelist that is used by the router, a core module of the open
+computer forensics architecture, is a configuration file that
+determines how evidence flows through the different modules. You should
+have a look at this file, ${OCFAROOT}/etc/rulelist.csv after
+a standard install and edit it to meet your requirements. The most
+important issue is to make sure there are no modules configured you
+don't have available in your environment.
+<h3>Starting up the modules</h3>
+There are two ways to fire up the modules, the fast way and the
+educational way. In any case you need to be <i>ocfa</i> again to do
+this, log in again as ocfa or su to become ocfa.
+<h4>Starting up the modules, the fast way</h4>
+The fast way to start up all possible modules is the use of the script
+startcase.pl. This script will parse&nbsp; the router its rulelist and
+will
+start up every conceivable module.
+<pre class="example">startcase.pl testcase<br>     </pre>
+<h4>Starting up the modules, the educational way</h4>
+You may be interested to know what modules actually get used. So rather
+than starting up each module you could start off by just starting the
+anycastrelay.
+<pre class="example">sbin/anycastrelay anycast anycast<br>     </pre>
+Now you should point your browser to
+http://testcase.ocfa.loc/cgi-bin/ppqoverview . This should give you a
+view of any module present, but also of any module required. After you
+submit evidence to the open computer forensics architecture (see below
+the "Submitting evidence" section) you should
+see some modules becoming required (their queues will fill up). If you
+type:
+<pre class="example">ls sbin<br>     </pre>
+you should see many of the modules available. You should keep
+monitoring the web interface and startup any module you see getting
+required by the system.
+<h3>Submitting evidence</h3>
+Now that you have your system running you should be able to use
+kickstart to submit some evidence to the open computer forensics
+architecture. Lets say you had a PC labeled <i>bigbadserver</i> that
+had a couple of scsi disks and two desktop pcs labeled <i>pc1</i>, <i>pc2</i>
+and <i>laptop1</i> each with a single ide disk that you all imaged.
+Kickstarting these images could go as follows
+<pre class="example">kickstart testcase bigbadserver scsidisk1 /mnt/bigdisk/testcase_bigbadserver_scsidisk1.dd<br>kickstart testcase bigbadserver scsidisk2 /mnt/bigdisk/testcase_bigbadserver_scsidisk2.dd<br>kickstart testcase bigbadserver scsidisk3 /mnt/bigdisk/testcase_bigbadserver_scsidisk3.dd<br>kickstart testcase bigbadserver scsidisk4 /mnt/bigdisk/testcase_bigbadserver_scsidisk4.dd<br>kickstart testcase bigbadserver scsidisk5 /mnt/bigdisk/testcase_bigbadserver_scsidisk5.dd<br>kickstart testcase bigbadserver scsidisk6 /mnt/bigdisk/testcase_bigbadserver_scsidisk6.dd<br>kickstart testcase pc1 ide1 /mnt/bigdisk/testcase_pc1_ide1.dd<br>kickstart testcase pc2 ide1 /mnt/bigdisk/testcase_pc2_ide1.dd<br>kickstart testcase laptop1 ide1 /mnt/bigdisk/testcase_laptop1_ide1.dd<br>     </pre>
+<h3>Monitoring what is happening</h3>
+While and after you have kickstarted the image files you should be able
+to monitor what is going on. If you have started the system in the <i>educational</i>
+mode you must monitor in order to know what needs to be started in
+addition to what is running.
+<h4>ppqoverview</h4>
+An important tool for seeing where obvious botlenecks are currently 
+occuring is the ppqoverview webinterface. Point your browser to
+http://testcase.ocfa.loc/cgi-bin/ppqoverview and you should see what
+modules have queues and how big they are. If a module has a large queue
+and is running this means the module can not fully keep up with the
+rest of the system at this time. If a module has a queue and is not
+running you may wish to start an instance of that module. Once you have
+not seen any queue having had any content for a while you may use top
+to see if things are really done or if a dissector that is processing a
+big file (or a slow dissector processing a small file) is still
+running.
+<h4>top</h4>
+With all modules running as the user ocfa, it is simple to monitor cpu
+usage of the open computer forensics architecture for all parts of the
+system on a single server:
+<pre class="example">top -u ocfa<br>     </pre>
+Once there have been no processes consuming any cpu for a while and no
+queues are filled with any jobs either in the ppqoverview, it is
+reasonably safe to assume the system is finished.
+<h4>logfiles</h4>
+While running, the open computer forensics architecture modules will
+occasionally do some logging. By default logging will be done to the
+syslog daemon that will log to a set of files in /var/log/ocfa/ . Each
+log severity level comes with its own output file. If all goes well the
+ocfa.error file should remain empty or at least unchanged in size. If
+it does not, there is something wrong and you should consult the file
+to
+see what happened.
+<h3>Stopping the case</h3>
+Once all evidences are fully processed you should be able to stop them.
+A simple small script is available to do this.
+<pre class="example">ocfahalt testcase<br>     </pre>
+You should point your web browser to
+http://testcase.ocfa.loc/cgi-bin/ppqoverview and wait until the screen
+is empty and all modules are thus stopped. Alternatively you could use
+top and wait until only top and the shell are running.
+<h3>Creating overviews</h3>
+Many of the metadata queries needed to generate overviews are currently
+rather uncomfortable to say the least when run from an interactive web
+interface. The same is true for pages that need to generate a poststamp
+overview of images. To alleviate the problems, a kind of hack has been
+provided where these queries and conversions are run in advance in
+order to create a tree of static html and png poststamp files. After
+you have halted the architecture you should run this script in order to
+be able to query the metadata:
+<pre class="example">makeoverview.pl <br></pre>
+<h3>The web interface</h3>
+Now you should have <a href="../ocfaarch/metagui.html">multiple
+interfaces to the data from the web
+interface</a> at "http://testcase.ocfa.loc/". An interface for browsing
+the tree of xml metadata and where needed the accompanying data files. An
+interface for querying the Lucene text index. And finally an interface
+for locating files based on metadata from the database. Future versions
+will have combined querying for meta data and text data.<br>
+<br>
+<br>
+</body>
+</html>

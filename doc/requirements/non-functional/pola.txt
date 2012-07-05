@@ -1,0 +1,17 @@
+In addition to the 6 NF requirements listed in nf-requirements.txt, the 0.1 version
+of the open computer forensic architecture architectural design implemented an
+additional NF requirement. As the 0.1 design did not document the NF requirements,
+and the 0.3 refactoring was done by another architect, unfortunately the implementation
+of this requirement was nullified in the refactoring process.
+If at any point in the future another round of refactoring will be done on the architectural
+level, then this NF requirement should get re-introduced.
+
+7) Least Authority
+
+   To counteract the security implications of opportunistic development, the architecture
+   must grant 'least authority' to individual opportunistic modules. This means that
+   the library, core modules and the architectural setup should implement the principle
+   of least authority up to the point that module should only have access to the evidence
+   data and meta data that is 'explicitly' designated to it. Further this access should
+   not be allowed to exceed the designed functionality of the module.
+

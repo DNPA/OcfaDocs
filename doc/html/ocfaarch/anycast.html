@@ -1,0 +1,40 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h2>The Persistent anycast messaging relay</h2>
+<div class="shout"><b>Anycast:</b><br>
+Sending messages to module types instead of
+module instances. The relay uses load balancing policies to determine
+the unicast messages to the preferred module instances.</div>
+The anycast relay is a special process that fulfills a <a
+ href="../ocfalib/msglib.html">messaging</a> related task. The
+messaging library allows clients to send anycast messages (messages to
+a module type instead of a specific module instance). The anycast relay
+will accept any anycast message from the messaging clients independent
+of the availability of any module of the specified type. The anycast
+relay has the following tasks to perform for anycast messaging:
+<ul>
+  <li>Load balancing between multiple modules of the same type and by
+using flow-control to each module instance. </li>
+  <li>Buffering of messages and persistent storage of messages not
+handled. </li>
+  <li>Parking of messages sent to a module that crashed
+before the message was marked handled. </li>
+</ul>
+The open computer forensics architecture tries to somewhat increase
+disk cache hits by increasing the priority of evidences and thus of the
+related anycast messages if more processing is done on evidence data.
+The anycast relay makes use of so called persistent priority queues for
+storage of the messages. These queues define multiple priorities for
+the different priorities of anycast messages. A special priority
+(called 'never') is reserved by the anycast relay to store messages
+that were active at the moment some module crashed. This way broken
+modules that crash on particular data can be restarted without crashing
+again on the same data, while after a patch of the broken module, the
+anycast relay can be restarted configured to also process messages
+initially marked for the never queue.
+</body>
+</html>

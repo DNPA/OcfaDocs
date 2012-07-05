@@ -1,0 +1,13 @@
+The (upcoming) synchonizedb tool should implement the following specifications:
+
+* Move any active lucene index file to the WDFE index directory.
+* Move any item not moved earlier from the ocfa database to the WDFE database.
+* Create or update indices on the WDFE database to optimize for usage by WDFE.
+* Create/update convenience tables in the WDFE database for usage by 'overview' functionality.
+* Create thumbnails from any image data and store them as BLOB in the WDFE database for
+  overview functionality.
+* Create/update tables for user supplied metadata and navigation aids.
+
+The tool should deprecate both makeoverview and parkcase.
+
+

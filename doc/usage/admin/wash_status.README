@@ -1,0 +1,33 @@
+﻿Status of a wash process
+
+When is a wash process finished?
+
+There are several places in the ocfa environment where to look for any 
+unprocessed content:
+1. Ppqoverview in browser:
+   Browse with your prefered browser to “Current queues” of the current 
+   case. Check for any messages pending in the queues. 
+   All values should be “0”.
+2. Processing activity of the modules:
+   Check for processing activity of the ocfa modules,  
+   with the following command:
+   top -u ocfa
+   All processes should be idle.
+3. The working directories of the current case:
+   Check for any content in the current working directories, 
+   for example with the command:
+   du -ks /var/ocfa/<casename>/work/default/* 
+   This will return the summed content size in kilobytes of the working 
+   directories. 
+4. The share windows directory:
+   Check for any pending content in the share windows directories, 
+   for example with the command:
+   du -ks /var/ocfa/windows/*
+   This will return the summed content size in kilobytes of the shared 
+   directories.
+
+If all messages are processed, no content is pending in the working 
+directories and windows shared directories, it is save to stop the washing 
+machine with the command:
+	ocfahalt <casename>
+

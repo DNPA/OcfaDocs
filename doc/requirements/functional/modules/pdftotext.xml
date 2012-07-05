@@ -1,0 +1,13 @@
+<module name="pdftotext">
+  <function>
+     Extract the text content part of a pdf file (no meta data). Output data is in utf8,
+     but input has dependancies on european fonts for extracting text.
+  </function>
+  <inputtype  metaname="inodetype" metaval="file"/>
+  <outputnode name="output">
+        <function>The utf-8 representation of the text data chunks of the input file</function>
+        <outputmeta name="mimetype" optional="false">Static metadata, text/plain</outputmeta>
+	<outputmeta name="mimetop" optional="false">Static metadata, text</outputmeta>
+	<outputmeta name="encoding" optional="false">Static metadata, utf-8</outputmeta>
+  </outputnode>
+</module>

@@ -1,0 +1,52 @@
+If you want to do more with the open computer forensics architecture than you can do
+with the standard single image forensic tools, you will need to have sufficient disk
+space available for your database, ppq and most importantly for your repository.
+
+1) If your budget allows you should directly connect your linux application server to 
+   a large and fast SAN solution, giving your application server access to many terabytes
+   of contiguous diskspace.
+
+2) External Firewire RAID solutions are an excelent medium-budget option,
+   but make sure they come with proper cooling, OCFA tends to hit the storage
+   a bit harder than average use.
+
+3) When using a low budget desktop PC based solution, you SHOULD invest in proper
+   cooling for your system and harddisks. Please observe proper spacing between
+   disks, keep your casing closed or use extensive external cooling with a proper
+   amount of airflow. Given that OCFA tends to test your harddisks a bit harder
+   than average disk usage does, your system MUST have proper cooling if used
+   for a prolonged time by OCFA.
+   When using a multiple disk solution, you should if possible use a motherboard
+   that allows RAID setups, preferably with RAID5 support. Without this RAID
+   support you should configure your disks preferably with software raid, or
+   if this is not an option, using LVM. Please consult your distributions manual
+   about setting up software RAID or LVM.
+
+4) If there is no option suitable from the ones abouve, then and only than you could
+   use an NFS version 4 fileserver for your repository. Never use NFS for your
+   working directories however. The 'createcase.pl' script does not take this option
+   into account, thus you will manually have to mount the repository with the proper uid
+   info after running createcase. The mount should be made setting 'ocfa:ocfa' as
+   user and group.
+
+5) You are suggested not to use NFS version 3 for communication with your fileserver.
+
+6) NEVER use a windows or samba server for your repository
+
+7) NEVER use external USB disks, they are a major source of problems.
+
+
+No matter what solution you choose, the XFS filesystem seems to have superior performance
+with the current version of the repository. Thus you should create an XFS filesystem
+on your large device.
+
+With normal non NFS based solutions, you should simply mount the big filesystem
+under /var/ocfa/ if possible and suitable, or /var/ocfa/<casename> if you are using
+different slices for different cases (what should be a matter of policy if nothing
+else). If you are using NFS, mounting under /var/ocfa/<casename>/repository would
+be the only working solution.
+Please make sure that your user id's and permissions match those of the original
+unmounted directory, especially make sure you have your ocfa and group id in sync
+when running with an NFS server.
+
+

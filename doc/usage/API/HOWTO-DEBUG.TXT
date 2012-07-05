@@ -1,0 +1,97 @@
+This howto tries to describe how to debug a module you wrote, or a module
+in the main distribution that is showing unexpected behaviour on your system.
+
+Make sure the domain 'debug.ocfa.loc' points to your machine.
+
+First, su to the user 'ocfa'. When asked for a case name you can choose 'debug'.
+If you get a message that the case 'debug' does not exist, you can create
+the new 'debug' case by running:
+
+  createcase.pl debug ocfa
+
+Replace ocfa with the password you chose for your database.
+After creating the case, you will need to restart appache (as root)
+by running:
+
+  /etc/init.d/apache2 restart
+
+Now you have 3 options depending on if you have an X server available
+and xterm installed, and depending on if your module crashes on startup.
+
+
+-------------------------- Possibility 1: no X --------------------------------
+
+If you don't want to use X, this makes debugging a bit more involved,
+you could potentially use possibility 3 as an alternative, unless your module
+crashes almost directly after startup, but lets start by explaining possibility 
+one.
+
+(As ocfa) you can start all modules except for the module you want to debug.
+You always need to start off with the anycast relay.
+
+  sbin/anycastrelay
+
+After this you can start the router, the file and the dsm module.
+
+  sbin/router
+  sbin/jFile
+  sbin/dsm
+
+Now run kickstart with a file that should be handled by the module you want to 
+debug.
+
+  kickstart debug debugdata attempt1 <path/to/file>
+
+Take your browser to http://debug.ocfa.loc/cgi-bin/ppqoverview, if all goes well
+you should see the file has gone through the router and file module and is awaiting
+handling by your module.
+
+Now before starting your module you will want to make a few updates to the etc/debug.conf
+file. Lets say you are testing and debugging the 'foo' module. You will need to change
+the following two entries in etc/debug.conf:
+
+  foo:syslog=debug
+  daemonize=false
+
+Please note the daemonize flag can only be set globally. This flag is needed to prevent
+the module from going to the background while being run in gdb. The foo:syslog parameter
+sets the logging of your module to the most verbose logging possible.
+
+Now you are ready to start debugging your module.
+
+  gdb sbin/foo
+  
+For more information see the gdb debugger documentation.
+
+---------------------- Possibility 2: with X ---------------------------------
+
+With use of X debugging will be quite a bit less involved.
+
+Edit the file /usr/local/digiwash2.0/etc/debugmodules and add a line naming your module.
+
+Make sure ocfa can access your X server by running:
+
+  xhost +
+
+Now, as ocfa you should be able to run casemon.pl and kickstart as normal, but now, when your module gets 
+activated, the debugger will start with your module loaded. You should start your module
+by hand by typing 
+
+  run
+
+Optionally you could first set some gdb options, breakpoints etc. For more information
+consult the gdb documentation.
+
+--------------------- Possibility 3: attach ----------------------------------
+
+Instead of running your module from the debugger, you could instead choose to attach to 
+your module once it is running. Run ps to find the pid of your running module:
+
+  ps -u ocfa
+
+Now find the pid you are looking for and hand it to gdb:
+
+  gdb sbin/foo <pid>
+
+For more information on using gdb consult the gdb documentation.
+

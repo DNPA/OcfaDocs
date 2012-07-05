@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h2>The configuration file</h2>
+If you create a case using createcase.pl, a basic configuration file
+will get created from template.conf. This page describes most of the
+configuration possibilities you have using this file. The lines in the
+configuration file always consist of a key/value pair. The key itself
+can be a single string naming a configuration parameter, or can be a
+colon separated value containing first the name of the module and/or
+the name of the C++ class the configuration parameter is being set for.
+This way it becomes possible to set a configuration parameter globally
+and overrule it for one of several named modules.
+<h3>logging</h3>
+By default the open computer forensics architecture uses syslog for its
+logging. It is however possible to load an alternative module for
+logging, or to log to the console for debugging purposes. The
+configuration parameter <b>loglib</b> can be used to change to another
+logger. The log4c module is supplied as an alternative to syslog. If
+absolutely no value is defined, the SimpleLogger is used. The
+SimpleLogger logs either to files or to the console depending on the
+value of daemonize. If the SimpleLogger is used and the system is
+running daemonized, the <b>logdir</b> parameter defines the directory
+that logfiles are written to. If the log4c logger is defined to be
+loaded, the <b>log4cxx.propertyfile</b> parameter defines the log4c
+propertyfile path this module should use (for more information consult
+log4c documentation).<br>
+<br>
+The syslog logger and simple logger share the config parameter <b>syslog</b>.
+This parameter determines the <i>minimal</i> severity of a log action
+for triggering the actual logging.<br>
+<br>
+<h4>Logging added to the evidence metadata</h4>
+Next to the global logging to files or syslog, the library also
+provides the possibility to log to the evidence metadata xml. This is
+quite convenient for debugging purposes of rulelists and modules. The
+function used therefore, <b>esyslog,</b> is similar to the syslog
+parameter, and pertains to the usage of logging to the evidence
+metadata xml.
+<h3>foreground or daemonize</h3>
+Normally an ocfa module program will run as a daemon. However, for
+debugging purposes&nbsp; running a program in the foreground is more
+convenient.&nbsp; The parameter <b>daemonize</b> determines if the
+processes runs as a daemon or stays in the foreground.
+<h3>profiling</h3>
+The evidence library has some simple module profiling possibilities.
+The
+<b>profiling</b> parameter can be used to turn this on.
+<h3>xml formatting and checking</h3>
+The evidence library makes use of an xml library that can be configured
+to a large extent. One important configuration parameter is the
+consistency check that the library can perform using an xml schema that
+is provided with the open computer forensics architecture. The <b>schemacheck</b>
+parameter determines whether the schema based xml consistency checks
+should be performed or not. The <b>schemadir</b> parameter determines
+where the schema can be found. This parameter should rarely need to be
+changed.<br>
+<br>
+Finally when producing xml output, the library can make the xml more
+human readable if <b>prettyprint</b> is set to true.
+<h3>Evidence failsafes</h3>
+It is quite easy to make a far reaching mistake in a rulelist for the
+router. Such a mistake could for example lead to evidence or derivation
+running without an end in the open computer forensics architecture. The
+parameter <b>maxparents</b> might help a bit to alleviate some of the
+problems by only permitting an evidence to have a limited set of
+ancestor evidences. A second tool in preventing some of the
+consequences of bugs or configuration errors comes with the <b>moduletwice</b>
+parameter. Logically, many modules should not ever be called twice
+on the same evidence. For these modules, if this parameter is set the
+module will throw an exception if the module is sent the same evidence
+a second time. If during the processing of an evidence an exception is
+thrown by the library or the module, than the parameter <b>failfatal</b>
+determines if this exception is only logged, or if the module exits. It
+is suggested to run new untested modules with this parameter set to
+true in order to do early detection of problems in the code.
+<h3>Filesystem abstraction</h3>
+If the filesystem abstraction library is used on <i>mounted</i>
+filesystems, the library will itself try to determine a suitable module
+to use. It will ask the system what filesystem is running on the
+mounted partition and will use the parameter <b>FileSystemSelector:handler:&lt;fstype&gt;</b>
+to determine what module to use and the parameter <b>FileSystemSelector:charset:&lt;fstype&gt;</b>
+to determine with what character set defined. <br>
+<br>
+For some investigations owner acl and/or directory acl information is
+not really relevant. The parameters <b>ignoreowneracl</b> and <b>ignoredirexecacl</b>
+are provided.
+<h3>Repository settings</h3>
+The <b>storeimpl</b> parameter is used to determine&nbsp; what
+implementation of the store library should be used by the library at
+startup.&nbsp; At this moment there is only one implementation
+available, but you should be free to write your own if it pleases you.
+For the standard library that uses a postgress database, the parameters
+<b>storedbhost</b>, <b>storedbname</b> , <b>storedbuser</b> , <b>storedbpassword</b>
+tell the library how to connect to the database. The library also uses
+the local filesystem. The <b>repository</b> parameter tells the
+library what directory it can use to store its data.
+<h3>Storage hacks</h3>
+When using read only mounted filesystems, it may be desirable for local
+storage efficiency not to make a copy of the data to the repository,
+but use a symlink instead. This however means that some prerequisites
+need to be met for the mounted filesystem. Most of these prerequisites
+can be tested by the library itself, one however can not. The library
+needs to be told if the mounted filesystems will remain available
+during the full life of the case. If they are, than the parameter <b>staticmounts</b>
+can be used to make this known to the library.
+<h3>Messaging</h3>
+A module normally works as a messaging client while an anycastrelay
+normally works as a messaging server and a relay at the same time. This
+is however not hard coded into these modules, but is configurable using
+the <b>msgLibrary</b> and <b>isRelay</b> parameter. If a module is
+configured as a messaging client then <b>routerIP</b> is used by the
+client to determine what IP to connect to.
+<h3>Router</h3>
+The router will need to know where to find its rulelist. The <b>rulelist</b>
+parameter defines the path of the rulelist file. If none of the lines in
+the rulelist matches a certain evidence, a default action will be
+triggered. The parameter <b>defaultatype</b> defines the default
+action
+type and the parameter <b>defaultavalue</b> defines the default action
+target
+value. Triggering the default action is seen as a badly implemented
+rulelist. For this reason a warning will be logged.<br>
+<br>
+<br>
+<br>
+<br>
+</body>
+</html>

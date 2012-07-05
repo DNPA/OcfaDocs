@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h2>Minimal modules</h2>
+In the Open Computer Forensics Architecture modules are processes that
+use the <a href="../ocfalib/ocfalib.html">ocfalib</a> library and do
+some processing on evidence data or on metadata belonging to this
+evidence data. The modules can be
+divided up into 3 main groups, depending on their functionality.
+Depending on the group they are in they
+will require access to specific parts of the <a
+ href="../ocfalib/ocfalib.html">ocfalib</a> API.
+<table>
+  <tbody>
+    <tr>
+      <th>Module type</th>
+      <th>Data read</th>
+      <th>Data create</th>
+      <th>Meta Iteration</th>
+    </tr>
+    <tr>
+      <td><a href="extractors.html">extractor</a></td>
+      <td>Yes</td>
+      <td>No</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td><a href="dissectors.html">dissector</a></td>
+      <td>Yes</td>
+      <td>Yes</td>
+      <td>No</td>
+    </tr>
+    <tr>
+      <td><a href="expander.html">expander</a></td>
+      <td>No</td>
+      <td>No</td>
+      <td>Yes</td>
+    </tr>
+  </tbody>
+</table>
+This means that a module of a specific type will get a kind of
+capability for accessing the relevant parts of the API (In the 1.0
+version these were actual compile time enforced capabilities that got
+factored out in the 2.0 due to several issues not relevant here). Next
+to iteratable metadata that is used by <a href="expander.html">expander</a>
+modules, the <a href="../ocfalib/ocfalib.html">ocfalib</a> API also
+gives access to some very generic non optional metadata. This means
+that a module that does not need access to any of the 3 capabilities
+described above would be a <b>minimal</b> module. Currently the
+distribution comes only with a single minimal module, the digest module.<br>
+<h3>The digest module</h3>
+<div class="shout"><b>Positive or negative hit:</b><br>
+The digest
+of each evidence gives the opportunity to generate positive or negative
+hits,
+depending on the database referencing the found digest. Evidence with a
+digest found in the NIST database can be ignored, but when found in the
+child abuse database
+a trigger should happen.</div>
+The digest module compares the calculated digest against known
+hashsets.
+The <a href="../ocfalib/ocfalib.html">ocfalib</a> library calculates
+the hashes (md5 and sha1) triggered by
+the <a href="../ocfaarch/kickstart.html">kickstart</a>, <a
+ href="../ocfaarch/eekickstart.html">eekickstart</a> or a <a
+ href="dissectors.html">dissector</a> module while inserting or
+deriving the evidence.<br>
+<br>
+Evidence may be known by its digest to one or more software and/or
+data library databases like that made available by NIST. The NIST
+database contains
+the digests of many known software product files. Other digest sources
+might provide the digests of known child abuse image libraries or of
+any
+distinct set of known files. The digest module will request the digests
+from each evidence it receives, and will lookup these digests in a set
+of Berkeley db database files. If it finds the digest, it will add some
+metadata values to the metadata of the evidence data instance, among
+which is the <i>digestsource</i>. Next to this it will record the
+digest of any unknown evidence data it processes so that when a second
+version of the same evidence data is submitted to the digest module, it
+will remember that it has seen the file before and will add metadata
+stating <i>digestsource=SELF</i> to indicate the data has been seen
+and processed before in this case. The <a
+ href="../ocfaarch/router.html">router</a> may use this
+information&nbsp; implemented in the rulelist for further processing.<br>
+<br>
+<h4>The digestdb creation script</h4>
+The digest module uses a Berkeley db file containing some basic
+information about the origins of known files. A script is available to
+convert files in the formatting as defined by NIST for their digest
+sets. In the source distribution you will find this script in
+OcfaModules/minimal/digest/init/, it is named <span
+ style="text-decoration: underline;">createshadb2.pl</span>. In order
+to call this script you should first create a text file that points to
+the location of your NIST style digest information. This file should
+contain a set of lines. Each Line should begin with the name of the
+digest source (for example NIST) followed by the location of the
+relevant product file and the location of one or more digest files.<br>
+<br>
+<br>
+</body>
+</html>

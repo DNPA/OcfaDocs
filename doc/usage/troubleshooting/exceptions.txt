@@ -1,0 +1,489 @@
+This file contains a list of exceptions that can be thrown by the 2.0.6 version
+of OCFA. 
+
+"Could not open config file"
+
+  Most likely you partially deleted the case using the deletecase.sh.
+  Run deletecase.sh again to fully delete the case.
+
+"Scalar::asASCII scalar content does not fit in 7 bit ascii"
+
+  Mostly this points to a broken module, you should notify the author of the module
+  that it apparently incorrectly assumes specific metadata to be limited to the
+  7 bit ascii character set.
+
+"required group is not defined: ocfa"
+"Unable to find the group id of the 'ocfa' group."
+
+  Possibly you did not fully run 'make install' during installation, or some part
+  of 'make install' failed. Normally during installation, the group 'ocfa' will
+  get created. You are suggested to install ocfa again and carefully watch for
+  any indication why the installation is failing.
+
+"We are not a member of the required group: ocfa"
+
+  For normal operation, the ocfa system is run completely as the user 'ocfa',
+  that is a member of the group 'ocfa'.
+  Modules could in some cases be run as a different user, given that the user
+  at least is added to the group 'ocfa'. Apparently your current user is not.
+  You are sugested to try running as 'ocfa' unless you have an urgent reason to
+  run parts as an other user.
+
+"We are not running with the egid of the required group ocfa"
+
+  Normally any ocfa tool is run setgid ocfa. If however you run the tool in gdb,
+  this flag is not honored. The user ocfa however should have 'ocfa' as its
+  primary group. You are most likely running the tool in gdb as an other user than ocfa.
+  You are suggested to run gdb as ocfa instead.
+
+"Problem loading library XXXX"
+
+  The open computer forensics architecture makes use of multiple loadable libraries.
+  Possibly the specified library for some reason did not get built.
+  The library should reside in /usr/local/digiwash2.0/lib/. If it does not, you
+  may want to choose another library for the same functionality in your config file,
+  or you may want to re-install, watching closely why building the library failed.
+  If the file is there, there may be a problem with your library loading enviroment.
+  
+  Installing OCFA on Suse Linux Enterprise Server 9
+  Library loading issues are encountered while installing ocfa on Suse Linux Enterprise
+  Server 9. We solved this problem by adding to environment parameters for the 
+  library search path.
+  This search paths are set in the "/etc/profile.local" file:
+	# Dynamic linked library search path
+	export LDPATH=$LDPATH:/usr/local/lib:/usr/lib:${OCFAROOT}/lib
+	export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${LDPATH}
+
+  It is possibly also a solution to make a link to the library files in the "/usr/lib"
+  directory. But this has not been tested.
+
+
+
+"Could not get DOMWriter from Implementation"
+
+  Possibly the header files you have installed for exerces-c are not for the
+  version of the xerces XML library that you have installed. Try uninstalling
+  all xerces-c packages, search and remove any resident xerces-c files and
+  install the latest xerces-c version from source. You may fetch xerces-c from
+  apache.org.
+
+"DOM exception caught while parsing input"
+"DomHelper::getInstance()->getElementsByTagName returned NULL for meta"
+"No job found in evidence, membuf evidences should hold at least one job."
+"Parse error while parsing xml"
+"SAX exception caught while parsing input"
+"Unable to get the location element from the evidence meta XML"
+"XML exception caught while parsing input"
+
+  This exception means that an xml with evidence metadata got corrupted for some reason.
+  The underlying cause of this may be diverse. One possible circumstance may be that
+  your repository filesystem has either run out of disk space or out of inodes.
+  With the 'df' command you can check if the filesystem has run out of diskspace.
+  Using the 'touch' command to create a set of new empty files, you should be able to
+  check if you have run out of inodes.
+  If neither the diskspace or inodes are exhausted, this points to a combination of a
+  crash of a module with a yet unknown serious bug in the crash recoverability code in 
+  the open computer forensics architecture. If you find such a bug, please report this
+  to the authors as quickly as possible.
+
+"DomHelper::transcode(char *): problem with iconv"
+"DomHelper::transcode(char*): apparent invalid encoding for iconf library"
+
+  This exception may occur if you kickstart a directory specifying incorrectly the use
+  of 'UTF8' for the file and directory names in the directory. It may also occur if a 
+  dissector module incorrectly assumes UTF8 for file and directory names.
+
+"Module has seen this evidence before"
+
+  As a measure against infinite loops, the evidence library implements a guard against evidence
+  being processed twice by the same module. In most cases being run twice by the same module
+  would indicate a bug in your rulelist. In some cases it may however be fully valid, for example
+  a zip file may be created by the zip module as it was part of another zip file, and may later 
+  be processed by the same zip module. For this possibility the config allows to specify 
+  '<module>:moduletwice=ok' 
+
+
+"No job found in evidence, this cant be right as we just added a new one."
+"Unable to create a brand new domtree from implementation"
+"Unable to allocate memory for contentsAsBuf"
+"membuf not created"
+
+  Most likely your system has run out of RAM memory. If you are in luck you may still
+  be able to run 'ps' and type 'm' to check what processes are eating up all resident
+  memory. Possibly you have found a serious memory leak in one of the ocfa modules.
+  Please contact the author of the specific module about the problem.
+  If you are using debian sarge, the iconv library is known to leak memory on this platform.
+  You are sugested to upgrade to debian etch.
+
+"ParentCount would exceed the maximum"
+
+  This exception indicates that most likely there is some infinite loop defined by your rulelist.
+  You may look in the ppq interface to see if you can locate the crashed evidence in the NEVER
+  queue for analysis. You should look closely at your rulelist to fix the problem leading to
+  this loop.
+
+"Schema directory does not exist or is not accessible"
+"Schema directory path does not refer to a directory"
+"Schema file ocfa.xsd does not exist or is not accessible"
+"Schema file path does not refer to a regular file"
+
+  Normally the directory /usr/local/digiwash2.0/schema/ contains the xml schema file ocfa.xsd.
+  For some unknown reason you don't seem to have this file available or it has the wrong
+  access rights set. You may want to re-install the open computer forensics architecture and
+  watch closely for errors.
+
+"Could not open /proc/mounts file to determine filesystem type and mount flags in FileSystemSelector::selectAndInit"
+
+  The fs library currently is the least portable part of the open computer forensics architecture.
+  It uses the /proc/mounts pseudo file to determine how and where specific filesystems are mounted.
+  You may have security addons in your system like grsecurity that dissallow access to /proc/mounts 
+  for the user/group ocfa::ocfa. If this is the case, please consult the grsecurity documentation on how
+  to give the ocfa group access to read /proc/mounts.
+  If you are running a non Linux system, the current implementation of the fs library makes the
+  open computer forensics architecture currently largely incompatible with your platform.
+
+"Can not locate the ro/rw flags for XXXX in /proc/mounts during FileSystemSelector::selectAndInit"
+"Unable to locate the entry for XXXX in /proc/mounts during FileSystemSelector::selectAndInit"
+
+  The open computer forensics architecture fs library is known to have some issues with parsing
+  the /proc/mounts file for filesystems that are implemented in terms of loopbacks.
+  This may especially be a problem if the directory indicated is meant to be used as working directory.
+  As a rule you should always use truly local filesystems as working directory. If possible
+  using the same locally available SAN or RAID device access as used for the repository as this
+  makes things not only work better, it should speed up the system considerably.
+
+"Could not stat XXX in FileSystemSelector::checkIfSameDevice"
+"Could not stat XXX in FileSystemSelector::selectAndInit"
+"Problem calling stat on XXXX"
+"Unable to open dir for reading: XXXX"
+"Unable to open file for reading : XXXX"
+
+  The most likely reason for these specific exceptions is that you are trying to kickstart as
+  a normal user (ocfa?) a filesystem that was mounted as root without specific options to allow the
+  normal user (ocfa?) to read all of the filesystem.
+  There are two resolutions to this problem.
+  The first fully tested option is to add mountflags when mounting the filesystem that explicitly map
+  the filesystem to a specific user id. By doing this you make the filesystem available for complete reading
+  by this uid, but at the expense of some metadata describing ownerships.
+  As an experimental alternative you may add 'root' to the ocfa group, and run your kickstart as root.
+  This possibility is however currently untested and must be viewed as highly experimental, so if you
+  do you are on your own from there on.
+
+"AbstractRepository::Instance : No config entry for 'repository' found"
+"Your repository appears not to have been set in your ocfa configuration file "
+
+  Under normal circumstances your config file should hold a 'repository' entry,
+  pointing to the directory you want to use as repository. Apparently you
+  did not set this entry in your current config file.
+
+"cannot initialize Repository no library given"
+
+  Under normal circumstances your config would refer to the pgrepository.
+  You may want to copy the appropriate line from your template.conf or
+  re-create your case if appropriate.
+
+"Different files with same SHA1 hash encountered"
+
+  You are about to become very famous indeed ;-) The SHA1 hash is intended to be a secure hash
+  with an extremely low probability of collisions, that is it should be virtualy impossible
+  to find two naturally occuring files that produce the same SHA1 digest.
+  The fact that you got this exception indicates that against all statistical probability you
+  actually found such a naturally occuring collision.  
+
+"Error: PGRES_FATAL_ERROR"
+
+  This error indicates a fatal error in the handling of a database query.
+  In the kickstart this error is known to occur when a specific database constraint
+  is violated at the point when an evidence item is inserted with exactly the
+  same combination of investigation id, evidence source id and item id.
+
+"cannot open XXX"
+"Create file failed"
+"chmod failed: XXXX"
+"Cannot create a symlink to XXXX"
+"Cannot copy XXX to YYY"
+"Cannot rename XXX to YYY"
+"cannot stat XXX"
+"Could not open XXX"
+"chmod failed: XXXX"
+"Cannot read from  XXX"
+
+  All these exceptions indicate there are problems with the rights of the current user with respect to
+  the repository or source tree. One posibility is that you chose to use the experimental 'kickstart
+  as root' of root mounted filesystems with complete user metadata. As stated this is largely untested
+  and errors like this may be expected to occur. If this is the case, please report your problems to
+  the authors, and any solutions you may find to these problems yourself are extremely welcome.
+  Another problem will be with multi-partition repositories in combination with working directories on
+  the same filesystem as one of the partitions of the repository. Patches were made to allow the repository
+  to be spread over different filesystems. These patches break however with the so called 'same device'
+  test that is used for the repository, if this test indicates a working directory to be the 'same device'
+  as the repository. Given that a partitioned repository can never be considdered 'some device', you should
+  move your working directories to a completely different filesystem from any of the repository partitions.
+  A better solution than using partitioned repositories would be the usage of LVM or software raid. With 
+  LVM or sortware raid you can compose one big partition for repository and working directories that spawns
+  multiple physical devices. Doing so would result in a large performance boost compared to the multiple
+  partition repository approach.
+
+
+
+"Connect failed in ConnectMessagingEndPoint" 
+
+  This exception most likely is the result of an attempt to start a module without a running
+  anycastrelay.
+
+"Create listen failed"
+
+  This exception, in the anycast would indicate there is already another anycastrelay running
+  on the system.
+
+
+
+"Cannot empty workdir"
+
+ This problem was known to occur when some specific dissector tools misbehaved by making parts of the
+ tree they derived with restrictive owner permissions. This problem is supposed to have been fixed.
+ If you encounter this problem, please make a backup of the module, its working directory and contact
+ the authors of the architecture.
+
+"Could not retrieve filedescriptor"
+"Create file failed"
+
+  This exception indicates a problem with the creation of a new file in the repository.
+  This could the result of one of the following problems:
+  * Your may be out of diskspace for your repository, use df to check.
+  * You may be out of inodes in the filesystem for your repository, create a few files
+    on this filesystem using touch to test.
+  * You may have partially deleted your case, so that the repository does not exist.
+  * You may be running the untested multi-user configuration, and have found a bug with
+    access rights.
+
+"could not retrieve handle"
+"Insert failed"
+"No EvidenceStoreHandle known"
+
+  Database problem, possibly the filesystem your database is on has run out of free space.
+  This would mostly indicate a very hard to solve problem.
+
+
+"Cannot read from  XXX"
+
+  This exception mostly indicates some problem with kickstarting or deriving a directory tree or in
+  a rare instance, kickstarting a file. If you get this exception during kickstart, then the tree contains
+  files or directories that your current user (ocfa?) does not have access to. Probably you are trying to
+  kickstart a read only mounted filesystem that you mounted as root. You can solve this problem in two
+  ways. Either, as is suggested you can mount the filesystem using the mount option to set all uid's to
+  ocfa, or alternatively you could try and use the 'experimental' kickstart as root possibility.
+  For this you should make sure root is in the group ocfa. Please note that doing this will disable
+  the 'staticmounts' storage benefits.
+
+"OcfaException in processEvidenceMessage"
+
+  If you get this exception, this always means the actual problem is indicated by a second exception.
+  The second exception was thrown within the processing of an evidence by the module. 
+  The module can be configured thus that the library would ignore exceptions that occur during this stage,
+  for this you could use the 'failfatal' configuration entry and set it to 'false'.
+  By doing so, the active job of the evidence xml will get closed and the evidence returned to
+  the router in whatever state it was in at that moment.
+  Setting failfatal to false is STRONGLY discouraged, given that you give up the integrity of the module
+  completely, and potentially of the metadata when you ignore exceptions without handling them.
+
+"Rubbish left after processing"
+
+  This exception indicates the given dissector module is broken. A well behaving dissector will leave
+  an empty workdir after it is done processing an evidence file. If it does not, the risk of using
+  this data as 'derived' from some next evidence becomes real. You may force the library to ignore
+  the module is buggy by setting 'failfatal' to 'false', however setting failfatal to false is STRONGLY 
+  discouraged, given that you give up the integrity of the module completely, and potentially of the 
+  metadata when you ignore exceptions without handling them.
+
+"Cannot open /var/ocfa/XXXX/ppq"   
+
+  This exception indicates that the ppq directory is either inaccessible or does not exist.
+  Possibly you partially deleted your case.
+
+"Attempt to use a not yet implemented final action in rulelist"
+"Unimplemented final action"
+
+  Currently the router implements most, but not yet all final actions. Your rulelist uses
+  a line defining an as yet unimplemented action.  
+
+"Cannot open Rulelist file"
+
+  Normaly a rulelist file for the router should exist in /usr/local/digiwash2.0/etc/rulelist.csv
+  This exception indicates that this file is missing. 
+
+"Failed to load rulelist"
+
+  Normally a rulelist file for the router should exist in /usr/local/digiwash2.0/etc/rulelist.csv
+  This exception indicates there was some problem with loading the rulelist.
+  This exception is a secondary exception. Consult the preceding exception to find out what
+  exactly is wrong with the rulelist.csv file.
+
+"Illegal Rulelist Layout: Maximum number of columns violation"
+"Illegal Rulelist Layout: Missing Columns violation";
+
+  The rulelist file /usr/local/digiwash2.0/etc/rulelist.csv has a very strict cvs file layout
+  with a fixed numbet of columns. The current content has one or more lines that violate this.
+
+"Invalid Final Action Type specified in conf file"
+
+  The rulelist file /usr/local/digiwash2.0/etc/rulelist.csv has a limited set of final actions
+  defined. One or more lines in the file define a string for the final action that is not a valid
+  final action definition.
+
+"No default final action type and value found"
+
+  The router requires the config for your case to define a value for both defaultfatype
+  and defaultfavalue. The defaultfatype value defines the final action to take if no
+  rule matches. The defaultfavalue defines the value for this final action. 
+
+"No initial rulelist found in config under name router.rulelist"
+
+  The router requires the config to define a value for 'rulelist' indicating the location
+  of the rulelist. By default this would be
+    /usr/local/digiwash2.0/etc/rulelist.csv.
+
+"Evidence without evidence store"
+
+  This exception indicates a major problem between evidence representation in the database and
+  its storage in the filesystem. Possibly you partially deleted the case, and the database is
+  still there, but the repository is not.
+
+"No fs module found for FsModuleDissector: XXXX" 
+
+  The fsmod module is a simple loader for evidence tree modules (formally known as fs modules).
+  The module is linked with different executable names, and it uses this executable name to
+  find the proper module library to load in its config. This exception indicates that the
+  config is missing an appropriate entry.
+
+"Can not fetch data from an empty fifo"
+"Unexpected eof in final segment of non empty persistent fifo"
+"strsize == 1"
+
+  These exceptions all indicate a corrupted anycast persistent priority queue.
+  If this happens, this indicates a major bug in either the ppq library or the
+  anycast relay. Please inform the authors of your findings.
+
+"Unable to open fifo read file"
+"Unable to open fifo write file"
+
+  This exception may possibly indicate an exhaustion of filehandles per process.
+  The anycast holds a wide range of persistent priority queues, one for each module type.
+  Each queue holds a relatively large set of filehandles. The number of priorities was
+  already kept smaller than desired to avoid these problems, but if for some reason you 
+  are using a real large set of module types, you may still in theory run out of filehandles.
+  There curently is no solution to this problem. Another posibility is that there are access
+  right problems. If you have a limited set of modules, for example just the set that came
+  with the OCFA distribution, then access right problems for /var/ocfa/<case>/ppq may be more
+  likely.
+
+"Unable to load status file in read only mode: XXXXXX"
+"Unable to load status file in r+ mode:" 
+
+  These exceptions indicate access right problems with /var/ocfa/<case>/ppq. Are you running
+  the anycastrelay as ocfa?
+
+"Problem  writing to open fifo writefile"
+ 
+  This exception indicates that the filesystem that you run your persistent priority queue on,
+  has run out of free space. Chances are the ppq will be corrupted by this, so you should,
+  after making more space, delete and recreate the ppq dir with the proper access rights
+  and ownerships.
+  
+
+"Conf-error: w32proxyworkdir not found in config"
+
+  The w32proxy module requires a config entry w32proxyworkdir that defines where the
+  working dir for the win32 satellite system is located. This entry is currently
+  missing from the config.
+
+"ERROR creating w32proxyworkdir dir" 
+"ERROR creating w32proxyworkdir/module dir"
+"ERROR creating w32proxyworkdir/module/output dir",this);
+"Unable to write to w32proxy infile"
+
+  The w32proxy module requires full access rights to the directory specified in the config as 
+  the w32proxyworkdir. Apparently the rights are not set correctly, or you are running the
+  module as the wrong user (running as ocfa would be a safe bet). Another possibility is that
+  your filesystem has run out of diskspace or inodes. You can test this using 'df' and
+  'touch' to create multiple files.
+
+"Digest module needs digestdbdir in onfa.conf"
+"Digest module needs digestdbdirvar in onfa.conf"
+
+  The digest modules require the variables 'digestdbdir' and 'digestdbdirvar' to be set in the config.
+  These directories should contain the location of the static digest db, and of the 'working' digest db
+  for this case. Currently the enty is missing from the config.
+
+"Problem creating db handle"
+
+  This exception indicates that either there are permission problems with the files in  'digestdbdir'
+  and 'digestdbdirvar', or a database file has become corrupted.
+
+"Problem opening adinfodb database"
+"Problem opening digestdb database"
+"Problem opening proddb database XXXX"
+
+  The directory indicated by the digestdbdir config variable should contain the files adinfodb,
+  digestdb and proddb. These files should have been created using the createshadb2.pl script that
+  can be found in the OcfaModules/minimal/digest/init directory of the ocfa sourcetree.
+  The files should be readable and (for some unknown reason) writable. It is smart to keep a
+  backup of these files in case the original files get corrupted.
+
+"Problem opening dyncasedb database"
+"Problem opening dynsrcdb database"
+
+  The directory indicated by the 'digestdbdirvar' config parameter will be used for the creation
+  of the above files. Either the directory is not writable for the current user, or you are
+  running the digest module as another user than you did the previous time.
+
+"Exiftags executable not found on system"
+"Unable to fork: mailwash"
+"Unable to fork: antiword"
+"Unable to fork: bunzip"
+"Unable to fork dls-cp"
+"Unable to fork: gpg -v --list-packets --batch "
+"Unable to fork: pdftotext"
+"Unable to fork: tar "
+"Unable to fork: unzip -P" 
+"Unable to fork: /usr/bin/strings -e");
+
+  The above exceptions indicate that the wrapper module using the indicated tool was unable to
+  start the wrapped tool. This could be the result of the tool having been installed on a system
+  other than the system it was configured on. You may want to re-run configure from the OcfaModules
+  directory and make install again. Don't forget to stop your active run first though.
+
+
+"Unable to open output file in own workdir"
+"Unable to open antiword errorfile for reading"
+
+  This error indicates one of the following two problems:
+  * You are running a module as a user not part of the ocfa group, or are running inside gdb
+    as a user other than ocfa.
+  * The filesystem with your workdirs on it has no more empty space.
+
+"No ocfaroot value found"
+
+  The ocfaroot should either be set as OCFAROOT enviroment variable, or the configuration file
+  identified by the OCFACONF enviroment variable should define a value for 'ocfaroot'.
+  Default OCFAROOT should be set to /usr/local/digiwash2.0.
+  Please note that the profile for the user 'ocfa' should set both OCFAROOT and OCFACONF appropriately,
+  and you are suggested to run as much as possible under the user ocfa.
+
+"Loading of magic MIME file failed." 
+"Loading of magic TEXT file failed."
+"No read access on magic.mime file"
+
+  The file module needs to load two magic files at startup.
+  These files should be in /usr/local/digiwash2.0/etc/magic and /usr/local/digiwash2.0/etc/magic.mime
+  and should have been created on install of OcfaModules. This exception indicates that there is
+  a problem with these files or with the access rights for these files.
+  If this hapens when running the file module as user ocfa, you are sugested to re-install
+  OcfaModules, and to look carefuly for error indications during the instalation.
+
+"Magic MIME cookie intialization failed."
+"Magic TEXT cookie intialization failed."
+
+  This exception indicates a major problem with the installation of libmagic. You are suggested
+  to remove and re-install libmagic and its development files, and after that rebuild the file module.
+

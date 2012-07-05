@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h2>The OCFA inter process messaging library</h2>
+The message library offers the facilities to communicate simple short
+messages between processes within the open computer forensics
+architecture. In a normal configuration any normal module including
+those within OcfaArch is configured as a messaging client, and the <a
+ href="../ocfaarch/anycast.html">anycast relay</a> is configured as a
+messaging server. Basically all clients connect to a single server that
+acts as a relay between addressable nodes (module instances). Messages
+sent between the processes can be of the following types:
+<ul>
+  <li>Unicast messages : messages directed at a specific module
+instance. </li>
+  <li>Broadcast messages: messages directed at all connected modules. </li>
+  <li>Anycast messages: messages directed at 'any' instances of a
+specific module type. </li>
+  <li>Multicast messages: messages directed at all modules that are
+subscribes to a specific channel. </li>
+</ul>
+Normal modules will use Anycast messaging to communicate evidence data
+and metadata with other modules. Special messages like ocfahalt will be
+sent using Broadcast or Multicast. A special process called the <a
+ href="../ocfaarch/anycast.html">anycast relay</a> is able to turn
+anycast messages into unicast messages for specific module instances.
+By using anycasts, a distributed environment can be built where multiple
+instances of a particular module can be run on different computers. The
+anycast will take care of the load balancing, buffering and addresses
+the reliability.
+</body>
+</html>

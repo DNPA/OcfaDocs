@@ -1,0 +1,12 @@
+The casemon program deprecates the older startwash program.
+Casemon should implement the following functionality:
+
+1) Casemon should start the anycastrelay.
+2) Casemon should start ocfa core modules like the dsm and router "on demand".
+3) Casemon should start ocfa modules "on demand".
+4) Casemon should start w32proxies for modules that should be
+   running on the w32 application server "on demand".
+5) Casemon should restart crashed modules.
+6) Casemon should maintain 'health' information on running modules, and should
+   determine if a module is 'broken'.
+7) For modules marked as 'broken' casemon should refrain from restarting crashed modules.

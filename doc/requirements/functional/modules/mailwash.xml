@@ -1,0 +1,35 @@
+<module name="mailwash">
+  <function>
+     Extract header and body-parts from a single e-mail message.
+     Also can be used on mbox files, however the intermediate 'mail' level will not
+     be shown and all headers and all bodyparts will be seen as direct descendants
+     of the mailbox. Finally it can also be used on news messages and plain text news feed files.
+  </function>
+  <inputtype metaname="mimetype" metaval="text/x-mail"/>
+  <inputtype metaname="mimetype" metaval="text/mail"/>
+  <inputtype metaname="mimetype" metaval="message/rfc822"/>
+  <inputtype metaname="mimetype" metaval="text/x-news"/>
+  <inputtype metaname="mimetype" metaval="text/news"/>
+  <outputnode name="headers" multi="true">
+        <function>The header section of an e-mail.</function>
+        <outputmeta name="mimetype" optional="false">static metadata, text/x-ocfa-mailheaders</outputmeta>
+	<outputmeta name="partinfo" optional="false">static metadata, text</outputmeta>
+	<outputmeta name="To" type="array">The values of the addresses this e-mail was addressed to directly.</outputmeta>
+	<outputmeta name="Cc" type="array">The values of the addresses this e-mail defined as carbon copy address.</outputmeta>
+	<outputmeta name="References" type="array">The Message-ID values of messages that this e-mail refers to.</outputmeta>
+	<outputmeta name="From">The e-mail address of the sender of the e-mail</outputmeta>
+	<outputmeta name="Sender">The e-mail address of the sender of the message.</outputmeta>
+	<outputmeta name="EnvelopeTo">The e-mail address in the EnvelopeTo header field of the message.</outputmeta>
+	<outputmeta name="ReturnPath"></outputmeta>
+	<outputmeta name="Message-ID">The globally unique id of this e-mail message.</outputmeta>
+	<outputmeta name="Message-ID">The Message-Id of the e-mail message this e-mail is a reply to.</outputmeta>
+	<outputmeta name="creatime" scalartype="datetime">The timestamp when this e-mail was created</outputmeta>
+	<outputmeta name="sendtime" scalartype="datetime">The timestamp when this e-mail was sent to the first MTA.</outputmeta>
+	<outputmeta name="recvtime" scalartype="datetime">The timestamp when this e-mail was received by the MDA.</outputmeta>
+  </outputnode>
+  <outputnode name="bodypart" multi="true">
+        <function>A decoded body part of an e-mail.</function>
+	<outputmeta name="mimetype">The mimetype of the bodypart</outputmeta>
+	<outputmeta name="mimetop">The top level type pf the bodypart.</outputmeta>
+  </outputnode>
+</module>

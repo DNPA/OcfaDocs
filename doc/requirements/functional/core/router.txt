@@ -1,0 +1,35 @@
+The router program is functionally the configurable core of the open computer forensics architecture.
+It should implement the following functionality:
+
+* The router MUST accept evidence that has the status 'NEW' or 'ACTIVE'
+* The router MUST forward all received evidence to a specific module type
+  that is determined by parsing the rule list. 
+
+The router must, through the rulelist syntax, provide the user with the following functionality.
+
+* The rulelist must allow specifically typed evidence to be forwarded
+  to specific modules.
+* The rulelist must allow the expression of specific toolchains for
+  specifically typed evidence files.
+* Any 'new' 'scalar' 'string' meta data added by any module must be usable as routable typing.
+* A specific forwarding must constitute the committing of evidence.
+* A specific forwarding must constitute the suspension of evidence.
+
+For the (upcoming) xml rulelist the following additional functionality is required:
+
+* Next to strings, integers, floats and daytimes should be usable for routing decisions.
+* Next to scalars, arrays and tables should be usable for routing decisions.
+* Instead of 'substring', matches on meta data should use any of 
+  positive or negative regular expression matches, positive or
+  negative exact matches or comparison (greater/smaller than) matches.
+* The rulelist should allow to take specific actions based on combinations of
+  different meta data fields.
+* The rulelist should allow jumping and returning through different 'tables'
+* It should be possible to use metadata not added by the last module, but by an
+  earlier module in composite decision rules.
+* Next to forwarding, the rulelist must support side actions that influence further processing:
+  * The rulelist must allow adding metadata.
+  * The rulelist must allow adding logging to the evidence.
+  * The rulelist must allow doing regular logging.
+ 
+

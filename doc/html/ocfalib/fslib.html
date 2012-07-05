@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h2>The OCFA Filesystem abstraction library</h2>
+The <a href="ocfalib.html">ocfa library</a> contains treewalking code
+for the traversal of directories with evidence data. The treewalking
+code will traverse a directory tree and gather relevant data and
+metadata along the way. In order to facilitate this treewalking process
+in a generic way for normal directories, but also potentially for any
+type of <i>treegraph</i> the filesystem abstraction library was
+created. The filesystem abstraction library tries to define an
+abstraction layer that should be able to generically map any treegraph
+mappable structure into a such a treegraph, and allow data and
+metadata, whatever this metadata is into a simple API usable by
+ocfalib. The library consists of a core library for <i>normal</i>
+directory access and for baseclasses usable by loadable modules. These
+modules can be explicitly loaded by a module.
+<h3>EncaseExportOfFilesystem</h3>
+The EncaseExportOfFilesystem module is currently the only available
+non-core module for the filesystem abstraction library. It tries to map
+the structure and filenames used by encase export functionality to
+proper tree structures and metadata values. In the near future this
+module will likely get deprecated by a sleuthkit 2.04 based loadable
+module.
+</body>
+</html>

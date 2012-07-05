@@ -1,0 +1,28 @@
+This directory should give you some basic guidelines on using the open computer
+forensics architecture for running your digital investigations with.
+
+It assumes that you already installed and tested a basic ocfa configuration
+successfuly using the documents in the install directory.
+
+You should start off by consulting the file large_repositories.txt, to tell you something
+about how to configure your storage hardware in the best possible way.
+If you are considering using the windows satellite modules,  or you want to make use of
+a fileserver solution, you should next read the file fileservers.txt.
+
+The win32.txt file gives some additional info on acquiring the windows satellite modules
+for law enforcement purposes.
+
+You may also want to read the README file in the troubleshooting directory, just for some
+additional issues you may wish to take extra care to avoid prior to their occurence.
+
+The file case_administration.txt contains instructions on how to take the big actions 
+with respect to running a full investigation with ocfa.
+
+For the processing of individual images, directories and encase exports, within the context of 
+an existing investigation, the file kickstarting.txt gives a concise tutorial. 
+It also discusses how to make processed images and directories avilable to the frontend.
+This last issue can be combined with the optional creation of a metadata based overview.
+The creation of overviews is discussed in the file overviews.txt.
+
+If during the executions of the procedures described here you run into any unexpected
+problems, you should consult the troubleshooting directory.

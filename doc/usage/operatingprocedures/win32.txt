@@ -1,0 +1,15 @@
+For the configuration of a win32 satellite system, please first consult
+the fileservers.txt file, especially item 2.
+
+After configuring the proper fileserver configuration for your local system,
+you should get yourself a copy of the KLPD (Dutch National Police Agency) 'washbrush'. This set of tools
+is available currently to law enforcement. 
+The washbrush currently contains modules for outlook, outlook express,
+excel sheets and ocr that are quite usable as satellite module for ocfa.
+Most of these tools require you to purchase some comercially available 
+software, that the satellite is built as a wrapper for.
+Wider availability of the win32 satellite modules is still under consideration.
+For more information please contact the digital expertise team (TDE) of
+the national crime squad (NR)  of the Dutch National Police Agency (KLPD).
+
+

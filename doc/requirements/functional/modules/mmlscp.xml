@@ -1,0 +1,9 @@
+<module name="mmlscp" state="alpha">
+  <function>Extract partitions from a disk image. The input file MUST be a carvpath entity.</function>
+  <inputtype metaname="fsentity-type" metaval="image"/>
+  <outputnode>
+        <function>A partition (carvpath entity) as identified by the partition table.</function>
+        <outputmeta name="fileinfo" optional="false">static metadata, partition</outputmeta>
+	<outputmeta name="partinfo" optional="false">String describing the type of the partition.</outputmeta>
+  </outputnode>
+</module>

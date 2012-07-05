@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h2>Extractor modules</h2>
+The extractor module class expands the <a href="minimal.html">minimal</a>
+modules with the capability to <i>read</i> the evidence data. This
+capability is used by extractor modules to extract specific metadata
+from the evidence data that is then added to the metadata of that
+evidence data.
+<h3>jFile</h3>
+The jFile or file module is a module that uses libmagic to determine
+the type of a given evidence. If the file is recognized as being
+Microsoft Office it will determine more specifically what type of office
+package (Word, Excel, etc) was used, and will add all found information
+as metadata to the given evidence.
+<h3>luceneindexer</h3>
+The lucene indexer does not add any metadata to the evidence data,
+instead it tokenizes the data and adds any given evidence data to a
+searchable index.
+<h3>pkr</h3>
+In pgp public keyring files a mapping from pgp key id's to names and
+e-mail addresses can be found. The pkr module uses gpg to extract a
+table of relevant metadata from a keyring file and adds it as metadata
+to the evidence data. Ones the <a href="../ocfaarch/dsm.html">data
+store module</a> has stored the data in the database, this can be used
+to expand on any data found by the pgp module.
+<h3>pgp</h3>
+Pgp encrypted files always contain the key-id of the pgp key of the
+person who they were targeted at, Pgp signed files contain the key-id
+of the pgp key of the person who signed the file. The pgp module uses gpg
+to extract these key id's from the pgp signed and pgp encrypted files
+and adds them to the evidence data as metadata.
+<h3>exif</h3>
+Many graphical image files that were made with a digital camera contain
+so called exif information. The exif module extracts most of this meta
+data from the graphical image evidence data and adds it as metadata.
+<h3>objdump</h3>
+Executable files are divided up into sections, these sections often
+have a name, and also have some specific flags. A specific set of
+interesting flags are those stating if the segment contains <i>code</i>
+and those stating if a segment is <i>read-only</i>. If a section is
+code but is not marked as read only, this mostly means that the
+executable is packed. If you are looking for malware on a system
+looking at packed executables is a good way to start. The objdump
+module adds the section names to the metadata and if the executable if
+found to be packed, this information is also added as metadata.
+</body>
+</html>

@@ -1,0 +1,16 @@
+!! WARNING: This document has not been updated since the 2.0 OCFA release.  !!!
+
+Where the i386 version of debian etch works with ocfa using
+the standard etch packages, part of the boost library on
+amd64 does not come with the required shared libraries.
+For this reason, if using the amd64 version of debian etch,
+you should build the boost library from source.
+
+First make sure that you have removed all boost packages.
+After this you should fetch the sources of boost from 
+boost.org, build them with so support according to the
+documentation that comes with boost.
+
+Boost will install in /usr/local, you may need to patch
+your /etc/ld.so.conf file after installation, and/or
+might need to run ldconfig.

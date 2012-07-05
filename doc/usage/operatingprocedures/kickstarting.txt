@@ -1,0 +1,249 @@
+This text describes how to process images, mounted filesystems and encase exports
+within the context of an active investigation. If you do not have an active investigation,
+please consult the case_administration.txt document.
+There are different possibilities for inserting image data into the open computer forensics 
+architecture:
+
+1) Single file dd images
+
+  One simple way of inserting evidence in the open computer forensics architecture, is the
+  direct copy insertion of dd images. You can insert a dd image by running the kickstart
+  command on this image. You should log in or change user (su) to the user ocfa, and as this
+  user you should run the 'kickstart' command.
+  The kickstart command (and most of its kin) require the following set of arguments:
+
+  * The investigation id
+  * The evidence source id
+  * The item id
+  * The path of the evidence file
+
+  Thus an example of a kickstart invocation could be:
+
+    kickstart inv124 server2 hd1 /var/images/inv124/server2hd1.dd
+
+  Please note that the copy insertion is currently the best tested, but slower than
+  the still experimental carvpath kickstart described in 3.
+
+2) Encase files, multi part encase files, option one.
+
+  If the image files are not dd files, but instead are ewf (encase) files, than insertion
+  becomes a bit more involved. There are two options, manual fuse mounting, or the usage
+  of the cp-kickstart tool. Lets first describe the manual mounting using the carvfs tool.
+
+  The carvpath tool is not part of the ocfa distribution, but instead must be fetched 
+  seperately from the sourceforge ocfa project page. We will not be using carvfs for its
+  full intended purpose here, just to allow us to kickstart encase files.
+  The carvfs tool comes with a module that is build around the libewf library. By using
+  this module, you can make ewf files available as virtual dd image, without any storage
+  aditional requirements. Carvfs also allows to address individual partitions and 
+  identified files to be addressed as files without any additional storage requirements,
+  but that feature is as of yet still unused by ocfa.
+  Please consult the carvfs documentation on how to mount an encase image as carvpath mount.
+  We will be undoing the storage advantage of carvfs by using the direct copy kickstart on
+  the CarvFs.crv file within the carvpath mount. 
+
+3) Encase files, multi part encase files, option two.
+
+  Instead of kickstarting the carvfs mounted encase file in the copy mode, another option is 
+  the usage of the yet experimental 'cp-kickstart'. Other than the regular kickstart, cp-kickstart
+  will mount the images 'into the repository' and semi-kickstart it from there. This means that
+  you will not get a full copy of the dd image in your repository. It also means however that you
+  are required to keep your original encase images available and carvpath mounted in the repository.
+  In theory you could remove the original if you are sure there is no further need for the copied dd
+  image, but once the ocfa sleuthkit module gets patched to produce carvpath store entities, this
+  should no longer remain an option.
+
+  The cp-kickstart tool instead of getting its arguments from the commandline, uses the configuration
+  file in /usr/local/digiwash2.0/etc/cp.conf . This file contains all the encase images that should be
+  or get mounted.
+
+  It may be relevant to know that in the repository, the file carvfs/kick.log is used by cp-kickstart
+  to determine if an image was already kickstarted in a previous run. After a reboot you can run
+  the 'reatach' tool to have all images that were kickstarted earlier re-mounted in the repository.
+  
+  One important flag that cp-kickstart has is the -f flag. Without the flag, the investigation id
+  supplied will need to match the investigation id embedded in the encase file. If it does not,
+  than the image will not get kickstarted. By using the '-f' flag, you can force cp-kickstart to
+  ignore the mismatch. It is important to note that this is not recommended, as it may lead to
+  kickstarting images into the wrong investigation. Only use '-f' if you are absolutely sure.
+
+  A second option for cp-kickstart is the '-i' flag. This flag tells cp-kickstart to go into interactive
+  mode. You should considder carefully if you want this or not. Without this flag, any circumstance
+  that requires user supplied information will result in a failure to kickstart an image.
+  With this flag, the user will get prompted for information and the kickstarting of further
+  images in the config file will be defered.
+
+  Now for the most important part of the cp-kickstart, that is the format of the config file.
+  The conf file consists of multiple lines, one line per image. Each line is made up of 6
+  fields that are seperated by semicolons. The 6 fields are the folowing:
+
+  * The investigation id (there may be multiple investigation id's in the config, only the matching
+    lines will get used)
+  * The type of the image (currently only "ewf" is supported, "raw","multiraw","aff","qemu" and "vmdk" are planed, 
+    with the possible future adition of "cow","cloop" and "gfzip".
+  * The path of the image, for ewf this is the directory containing the evidence files (and nothing but
+    the evidence files for 'this' image).
+  * The MD5 of this image, for ewf this should not be needed as it is embedded, for the other formats it should.
+  * The evidence source id. For ewf this will only get used if the ewf metadata does not supply it already.
+  * The item id. For ewf this will only get used if the ewf metadata does not supply it already.
+
+  The only argument needed for cp-kickstart is the investigation id. The -f and -i flags described 
+  abouve are optional.
+
+4) Multi part dd images.
+
+  Currently multi part dd images are not yet supported by either cp-kickstart or carvfs. 
+  The DNPA does however have a tool available called 'antisplit' that can be used for 
+  fuse mounting multi part dd images. Plaeas contact the dutch national police (KLPD/NR/TDE)
+  about obtaining antisplit. We hope to sometime migrate antisplit to a carvfs module as to
+  allow the implementation of "multiraw" for cp-kickstart.
+
+5) Read only mounted filesystems.
+
+  While kickstarting image files is a good option, and has the advantage of getting access to
+  unallocated space as seperate entities, some filesystems are not recognized by the sleuthkit,
+  and thus can not be processed using the abouve kickstart methods. If the result of one of the
+  abouve kickstarts is a fully identified filesystem partition, but the result is only a single
+  big partition file, than changes are that either the sleuthkit does not know how to handle
+  the particular type of filesystem, or the filesystem has been corrupted and can not be read
+  by the sleuthkit for that reason.
+  A good alternative for unsupported filesystems, but also an excellent alternative if you are not
+  interested in unallocated space (and a long-shot for corrupted filesystems) is
+  using linux itself to mount the filesystem in read only mode.
+  The use of mounted filesystems can be an excellent alternative if metadata from the filesystem
+  is relevant, which it often is. The current sleuthkit module does not add many relevant metadata,
+  and neither does the usage of encase exports do so.
+
+  The config allows the setting of a flag 'staticmounts' to either true or false. With static mounts on true,
+  the performance of the repository for kickstarting will go up, as files will not get copied to the
+  repository, but symlinks will get used instead. This however means that you can not remove the original 
+  image after it has been processed, what may be an option if staticmounts is set to false.
+
+  Normally you should mount the filesystem using using the 'uid' and 'gid' flags and both setting them to the
+  id of the ocfa user and the ocfa group respectively. This does mean however that owner metadata will
+  become meaningless. An experimental alternative is adding the root user to the ocfa group and running
+  kickstart as root. This requires setting staticmounts to false, given that symlinks may point to files that
+  ocfa can not access. Please note that kickstart as root is an untested feature in the current release,
+  If you use this feature, please supply us with your (positive or negative) feedback on it.
+
+  For kickstarting the mounted filesystem you can simply run something like:
+
+    kickstart inv124 server2 hd1 /mnt/inv124/server2hd1/  
+
+  By default kickstart will assume the filesystem has its character set as LATIN1. If however, as may be useful
+  when mounting ntfs, you have mounted the filesystem in a way that ensures all directory and file names to
+  be in for example UTF8, you may indicate this by supplying an additional argument indicating the file/dir name
+  encoding used on this mount.
+
+  It is important to note that you should not specify UTF8 unless you are sure your filesystem uses unicode and you
+  mounted it UTF8, otherwise the system will throw an exception on the first filename that violates being
+  a valid UTF8 sequence.
+
+6) Encase exports.
+
+  For filesystems, especialy NTFS filesystems that were found to be corupted by either the failed usage
+  of the sleuthkit module, or the failed usage of linux mounts, the use of encase as a tool to create
+  directory tree exports becomes quite viable.
+  For this, the 'full image' should get imported into encase, and encase should be used to create an export.
+  It is recommended to export to a samba share on the ocfa linux application server, if possible on the same 
+  filesystem that the repository is on.
+  After encase has made the export to the linux system, a special version of kickstart can be used.
+  This kickstart has some knowledge of special filenames that encase uses in its exports for things like
+  unallocated clusters, and it uses this knowledge to add appropriate metadata to allow the router to do
+  appropriate routing of these special files.
+
+  The 'eekickstart' uses the same arguments as the regular kickstart.
+
+7) rw mounted directories.
+
+  Although kickstarting rw mounted directories is mostly considered bad practice at best, there are
+  some extreme circumstances where doing so could be the only option.
+  The first thing you should do before kickstarting rw directories is to think. Think real hard
+  if this is the responsible thing to do and think even harder if you have exhausted all options
+  that would allow you to do the same thing from a read only mount.
+ 
+  Basically the reasons to want to kickstart rw directories can be summed up quite fast:
+
+  * testing of new modules.
+  * encase exports.
+
+  On the off chance that you have found a third legitimate reason to want to kickstart rw mounted
+  images, you may want to consider setting the noatime flag on mounting. This will at least make
+  sure you will be able to replay the kickstart with a high chance of getting the same results.
+  Furthermore don't forget to document that you chose to kickstart a rw mounted filesystem, and why you
+  had to do it.
+
+  Future versions of kickstart will require that the config parameter 'rwmounts' be set to "testrun" for
+  kickstarting rw mounted directories or files using the regular kickstart.
+  After this you should be able to run kickstart on your rw mounted filesystem.
+
+Although kickstarting of most images is relatively straight forward, there are 
+important Issues with corrupted NTFS partitions. If the sleuthkit is unable
+to correctly process NTFS partitions, there are several ways we could attempt to
+work around this:
+
+1) Mounting the filesystem in Linux. ( small success rate)
+
+  As described abouve, you can use the linux system to mount filesystems.
+  It is important to note that most NTFS partitions that fail with the sleuthkit,
+  also fail 'after' being mounted using linux. Thus after mounting the partition
+  in read only mode as ocfa:ocfa, you should run the 'find' command, and check
+  the 'dmesg' for indications of serious errors.
+
+2) Mounting the filesystem using the user space NTFS module (small success rate)
+
+  If the basic linux ntfs support fails, some success has been seen using the NTFS
+  user space fuse module instead. If problems occur with the user space mount, the
+  mount tends to fail rather than usage of the mounted image.
+
+3) Repairing with linux tools (medium success rate)
+
+  The 'ntfsfix' tool can in some cases be used to fix problems with ntfs partitions.
+  In some cases however, they may make things actually worse.
+
+  You should start by making a 'copy' of the NTFS partition using mmls and dd.
+  For details please consult the mmls and dd manual.
+  Before you run ntfsfix, you MUST use the sha1sum tool to calculate the partition image
+  sha1 digest. Record this digest in your external toolchain logs, unfurtunately OCFA
+  has not yet got a way to record such manual repairs currently.
+  On this copy you should than run ntfsfix.
+  After running ntfsfix, use the sha1sum tool again to re-calculate the digest.
+  Again record this digest in your external toolchain logs.
+
+  You can test the hopefully repaired ntfs partition by running the fuse NTFS tool again.
+  If the image apears to be working, you should start from the top by trying to kickstart
+  the newly created repaired copy of the ntfs partition.
+
+4) Repairing with qemu (untested)
+
+  A rather experimental way to attempt to repair the ntfs partition is by attempting to let
+  the original operating system repair the problem for you. Not all images will run in an
+  emulator, but those that do may be able to use the original OS to fix the NTFS partition.
+
+  You should start by using the qemu-img tool to create a 'derived' qcow image of the original
+  image file. This file will be copy on write, and thus will contain only the changes.
+
+  Start the newly created image using qemu, please make sure to disable networking on the
+  qemu command line. If the image starts up successfully, you should try to gracefully shut 
+  it down again as soon as possible. 
+  The boot may fail for a wide range of reasons, differing hardware and lack of special passwords
+  are the most important reasons.
+  If this succeeds, chances are that the repair succeeded.
+  At the moment of writing, the qcow module for carvfs was not yet available, please check
+  the ocfa sourceforge page for availability. 
+  If it is available, use carvfs to make the qcow file available as a virtual dd image, if the qcow
+  carvfs module is still not available, you could now use qemu-img again to convert the qemu image to 
+  a dd image.
+  Please don't forget to record the digests of both the source image file, the qemu file and the new
+  dd file in your external toolchain logs.
+
+5) Using the encase export
+
+  If all of the abouve fails, the only remaining option is the use of the encase tool to create 
+  an 'export'.  As described above, the eekickstart allows you to kickstart such directory trees.
+
+Although the mostly used filesystems are supported by the sleuthkit, there are also
+a large number of not so widely used filesystems that are not supported by the
+sleuthkit. The linux kernel has however support for a very large amount of filesystems.
+This means that if the sleuthkit fails to process for example an XFS partition, you
+can always fall back on mounting the specific filesystem.

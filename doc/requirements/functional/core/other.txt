@@ -1,0 +1,60 @@
+This text describes the functional requirements for a set of small tools found in the ocfa core.
+
+kickstart:	This tool allows a directory tree or single image file to be inserted
+		into the open computer forensics architecture.
+		* The kickstart program should recurse (treewalk) over the directory structure
+		  and insert any file and directory encountered.
+		* The kickstart program should determine the filesystem type of the
+		  directory.
+		* Based on the filesystem the kickstart should add metadata to the
+		  inserted directories and files that it extracts by statting the files
+		  and directories 'prior' to accessing them.
+		* 0.7 : The kickstart should work on read only mounted filesystems only, unless
+		  the config explicitly specifies that it should accept rw mounted filesystems.
+		  (that is rwmounts=testrun).
+		  
+eekickstart:   This tool is equal in functionality to kickstart with the exception that it
+               is used on directories that contain exports of images as made by the encase
+	       tool. 
+
+cp-kickstart/: (0.7) The cp-kickstart tool is used to (re)-mount and optionally kickstart image files. 
+ reattach      Instead of processing paths on the commandline, cp-kickstart uses a configuration file.
+	       * The program must be able to run in either kickstart or reattach mode.
+	       * In reattach mode, the program should re-mount all image files in the sequence as found
+	         in the kickstart logfile. This should be done using the carvfs tool. Mounting
+		 is done directly into the repository.
+	       * In kickstart mode, the program should mount any entry found in the configuration file
+	         that is not found in the kickstart logfile already.
+	       * In kickstart mode, the carvfs mounted filesystem is accessed in such a way to produce
+	         a valid evidence xml, this xml is used together with the carvfs file to kickstart
+		 the carvpath entity into the system.
+
+
+ocfahalt:	The ocfahalt tool sends a message to the open computer forensics architecture triggering
+		it to gracefully shut down all its components and modules.
+
+hideitem :	This tool marks an item as hidden. This will exclude it from the user interface.
+
+deletehidden :	This tool effectively removes everything related to any of the items marked as
+		hidden.
+		* This tool removes all evidences from the database that refers to the items 
+		  marked, and any metadata that is linked to it.
+		* This tool removes all marked items from the database.
+		* This tool removes all metadata from the repository that is linked to a marked item.
+		* This tool refrains from removing data from the repository.
+
+createcase :	This tool creates all files and directories needed for running a new case.
+                * This tool creates a new database for the new case.
+		* This tool creates a new configuration file (from the template config) for
+		  the new case.
+		* If the flag '-k' (keep) is used, any existing config file is maintained.
+		* This tool creates the basic 'var' directory tree for the new case.
+		* This tool creates a new appache virtual host configuration file for
+		  the new case.
+
+deletecase :	This tool removes all case specific data and metadata for a whole case.
+                * This tool removes the case database
+		* This tool removes the apache virtual host file for the case.
+		* This tool removes the 'var' tree for the case.
+		* This tool removes the case configuration file 'unless' -k (keep) is specified.
+

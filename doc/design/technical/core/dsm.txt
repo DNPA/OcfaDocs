@@ -1,0 +1,83 @@
+DSM concept for the 0.3 version of the digiwash implementation.
+
+In order to create a limited query and presentation functionality for the 0.3
+version it is important to be able to search the added metadata in a good and
+efficient way.
+
+A simple DSM can be implemented by operating on the following assumptions:
+
+* The store API saves store meta and evidence entities in a persistent way and
+  keeps them available through handles
+* Evidence XML can be converted to representation for the user by making use
+  of stylesheets.
+* Every module has a fixed and limited set of metadata types.
+* Every evidence should be uniquely identifiable.
+* For the 0.3 version, searches can only be performed on Metadata added by
+  setMeta() and pushBackMeta().
+
+Operating on the assumptions above, the following concept could be usable:
+
+Evidence:
+  * EvidencXML-handle
+  * evidencestore-handle
+  * Case-ID (from evidence API)
+  * Evidence-sourceID (from evidence API)
+  * Item-ID (from evidence API)
+  * evidence-ID (from evidence API)
+
+metatype:
+ * namespace
+ * name
+
+For every record in the metatype table, a table exists:
+
+meta-NNN-nnn:    (NNN=namespace,nnn=name)
+  * evidenceXML-handle
+  * value
+
+For the 0.3 version we can fill the metatype table in advance with all the
+metatype records that are relevant and create the corresponding meta-NNN-T-nnn
+tables.
+For the representation of evidences we can make use of a stylesheet that
+represents the IPC-XML as HTML.
+
+Concept voor DSM t.b.v. 0.3 versie van de wasstraat implementatie.
+
+Voor een beperkte query mogelijkheid en presentatie mogelijkheid benodigd voor
+de 0.3 versie is het metname van belang op een goede en efficiente manier te kunnen
+zoeken in de toegevoegde metadata. 
+Uitgaande van de volgende aannames kan een eenvoudige DSM geimplementeerd worden:
+
+* De store API slaat store meta en evidence entiteiten persistent op en houdt deze
+  beschikbaar via handles.
+* Via stylesheets is evidence XML te converteren naar representatie richting gebruiker.
+* Iedere module heeft een vaste en beperkte set van metadata types.
+* Iedere evidence moet uniek identificeerbaar zijn.
+* Zoeken voor de 0.3 versie gebeurt slechts op via setMeta() en pushBackMeta() toegevoegde
+  metadata.
+
+Uitgaande van deze aannames zou het volgende concept bruikbaar kunnen zijn:
+
+Evidence:
+ * evidencXML-handle
+ * evidencestore-handle 
+ * Case-ID (uit evidence API)
+ * Evidence-sourceID (uit evidence API)
+ * Item-ID ((uit evidence API)
+ * evidence-ID (uit evidence API)
+
+metatype:
+ * namespace
+ * name
+
+Voor elk record in de metatype tabel bestaat er een tabel:
+
+meta-NNN-nnn:   (NNN=namespace,nnn=name)
+ * evidenceXML-handle
+ * value
+
+Voor de 0.3 kunnen we de metatype tabel van te voren vullen met alle voor
+onze modules relevante metatype records en hierbij de bijbehorende
+meta-NNN-T-nnn tabellen aanmaken.
+Voor representatie van evidences kunnen we gebruik maken van een stylesheet
+die de IPC-XML als HTML representeert.

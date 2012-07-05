@@ -1,0 +1,88 @@
+In this assignment we get to work on unallocated data using carvfs and some carvfs
+patched tools. In this example we are only interested in jpg pictures.
+
+1) Scalpel and the sleuthkit patches have not yet been installed. Go to ~/packages,
+   you will find the sources you need there.
+
+   a) build and install scalpel.
+   b) Go to the carvfs dir and read the README.tsk file, follow the
+      directions here to apply the carvpath patches to the sleuthkit
+      source.
+   c) Copy scalpelcp to /usr/bin
+   d) Go to the patched sleuthkit dir and build the patched sleuthkit tools.
+      Copy 'only' the 'cp' versions of the build sleuthkit tools to /usr/bin.
+
+2) In the data directory you find the splitdd sub directory. This directory contains
+   a number of dd images that together form a single disk image.
+   Create a directory 'unallocated' in your home dir. Under this directory create the following
+   sub directories:
+
+   * carvfs
+   * scalpel
+   * data
+
+   Next to the images directory you find the file splitdd.md5 containing the md5 of the 
+   disk image.
+   You should use this digest, and the image files with carvfs in order to mount the
+   image as carvfs under unallocated/carvfs. 
+   Note: you need to use the 'antisplit' module for this.
+   Validate that the digest is correct by involving md5sum on the CarvFs.crv.
+
+3) Now use the patched version of the sleutkit's mmls (mmls-cp) to find the
+   proper carvpath of the file-system that is on this image.
+
+4) Using the regular fls tool from the sleuthkit, look around the file-system,
+   look what files there are and look inside a sub directory.
+
+We are not interested in the 'allocated' files, thus we need to eliminate
+the allocated stuff before we get to use scalpel.
+
+5) Use the carvpath patched version of dls (dls-cp) to find the carvpath of
+   the unallocated disk space of the file-system.
+
+6) Go to the your scalpel directory.
+   Place a copy of the scalpel.conf file from your assignment tree into this
+   directory.
+   Now you should run scalpel with the -p flag. The result should be a sub
+   directory with a single log file in it.
+   
+7) Use the scalpelcp script to populate the directory.
+
+8) List the directory, first using 'ls -la' and than using 'ls -Lla'.
+   Explain the differences.
+
+In our example the listing is not that big, but in real cases, it can be
+very big, and filtering may be a real issue. For this reason we will 
+take 3 actions to reduce the number of pseudo files.
+
+The tool jpgtopnm can be used to convert jpg images to pnm images.
+If the conversion fails, the program will return an exit code to
+indicate failure.
+
+9) Use jpgtopnm to validate all files are real jpg files. If you find bogus
+   jpg files these should be removed. 
+   Note: If your Linux knowledge is insufficient to complete this assignment
+   you can use the jpgbogus script in your assignment tree.
+
+The tool pnmfile can be used (together with jpgtopnm) to find the dimensions
+of an image in pixels. In many cases a PC may contain tens of thousands of 
+thumbnails images that may not be relevant in many investigations.
+
+10)Now validate that there are no thumbnails.
+   Use the jpgthumb.pl script if you need it, or try to use the tools if you 
+   feel up to it combined with for example awk on the command line.
+
+Many files may have been found many times by scalpel on different locations.
+Using the tool 'sha1sum' you can find the digest of a pseudo file.
+
+11) Remove all doubles within the jpg files found. 
+    You can use the jpgdouble.pl script if you want, as doing this
+    on the command line is close to impossible.
+    Use you file browser to look at the images.
+  
+12) Copy all remaining jpg files to your unallocated/data directory,
+    become 'ocfa' and kickstart the data directory as item 'unalloc'.
+
+13) Also kickstart the scalpel directory as 'problem', compare the results
+    of unalloc with problem and try to explain the difference.
+

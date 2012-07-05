@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>OCFA</title>
+  <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h2>Rulelist</h2>
+<p> The rulelist is a semicolon separated file (the operator also may
+use the comma or pipe symbol "|" as legal separator symbols). We
+are planning a replacement of this field based text file by an XML
+rulelist file with more flexibility for the next version of OCFA.</p>
+<p>You as operator can use the rulelist in order to <i>program</i> the evidence flow
+through the Computer Forensics Architecture. That is: to define the sequence of
+modules to process the evidence. </p>
+<p>The idea behind the rulelist is roughly based on the iptables
+implementation. In the source distribution several example rulelists are
+included (an example tells more than a thousand words). After
+installation, the rulelists can be found in the ${OCFAROOT}/etc
+directory. The rulelist actually used during processing is defined in
+the <A HREF="../usage/ocfa_conf.html">ocfa configuration file</A>.</p>
+<h3>Rule lines</h3>
+<p>The current version of the rulelist is a line based text file. Each
+line defines a rule. The maximum number of rulelines is defined in the
+<A HREF="../usage/ocfa_conf.html">ocfa configuration file</A> . The rule line is mainly
+devided into three main parts:</p>
+<ol>
+  <li>Table name (not currently used)</li>
+  <li>Packet section</li>
+  <li>Final action section</li>
+</ol>
+<table>
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">Table name<br>
+      </td>
+      <td style="vertical-align: top;">Packet section<br>
+      </td>
+      <td style="vertical-align: top;">Final action field<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<p> </p>
+<p>Example of three rulelines from an actual rulelist:</p>
+<p class="example">default;DNTCR;mimetype;image/jpeg;DNTCR;ACT_FORWARD;exif;<br>
+default;DNTCR;mimetype;application/msword;DNTCR;ACT_FORWARD;antiword;<br>
+default;DNTCR;mimetype;application/x-zip;DNTCR;ACT_FORWARD;zip;</p>
+<p>In the following section the three fields are further explained.</p>
+<h3>Table name</h3>
+<p>The table name fields is not used for a routing decision at this
+moment.
+The value is set to "<span style="font-style: italic;">default</span>".
+In this implementation only a single table is available and this puts
+some strain on how expressive the rulelist can be built. Future
+versions of the router will include support for jumping between multiple tables
+in order to allow routing on multiple metadata fields and in order to
+allow (per table) routing based on metadata added by modules
+before the previous module.</p>
+<h3>Packet section</h3>
+<p>The router uses the packet section to base the routing decision on. The
+packet section contains four restrictive selection
+fields:</p>
+<ol>
+  <li>The namespace. An exact match on the namespace of the metadata.<br>
+  </li>
+  <li>The type. An exact match on the type of the metadata.<br>
+  </li>
+  <li>The value. A "part of" (substring) match of the actual value of
+the metadata.<br>
+  </li>
+  <li>The module name of the module that added the metadata.</li>
+</ol>
+<p>A match of the packet field will fire the final action defined in the
+same ruleline.</p>
+<p>For each field in the packet section you may use the reserved "DNTCR" value. This
+means "don't care". In the example the value for the namespace does not
+influence the routing decision. All values from the metadata will match
+here. It is not a good practice to use "DNTCR" for all four fields.
+This rule will match for sure and the rulelist will exit at this point,
+never reaching the rulelines following (see matching strategies section
+below) . For this purpose a default routing is defined in the ocfa
+configuration file. Firing the default routing will cause a warning
+message in the logging. A properly constructed  rulelist should prevent 
+the firing of the default rule.</p>
+<h3>Final Action field</h3>
+<p>Future versions of the router shall have support for side-actions
+(logging, adding metadata etc) to make the router even more expressive.
+In the current version of the rulelist the operator can use the action
+field to define the final action on a evidence. The final action has
+three fields:</p>
+<ol>
+  <li>Action type field. See defined actions below.<br>
+  </li>
+  <li>Action target field. The target module to send the evidence to in
+the case of an ACT_FORWARD action type.<br>
+  </li>
+  <li>Action argument field. Optional, not implemented yet.</li>
+</ol>
+<p>In the ocfa configuration file, a rulelist section defines the default
+action in the case no ruleline matches.</p>
+<h4>Action type field</h4>
+<p>The following final action types are defined:</p>
+<ol>
+  <li>ACT_FORWARD. This will send the evidence to the module type
+defined in the target field.<br>
+  </li>
+  <li>ACT_COMMIT. This will store the evidence in the DSM. No further
+processing needed.<br>
+  </li>
+  <li>ACT_SUSPEND. This will prevent the evidence from further
+processing, until a user action is given to continue.<br>
+  </li>
+  <li>ACT_ERROR. Not implemented.<br>
+  </li>
+</ol>
+Planned extensions to this list are:<br>
+<ol>
+  <li>ACT_JUMP. This will trigger a jump action to the table defined in
+the target field.</li>
+</ol>
+The complete ruleline looks like this:<br>
+<table>
+  <tbody>
+    <tr>
+      <td style="vertical-align: top;">table name<br>
+      </td>
+      <td style="vertical-align: top;">namespace<br>
+      </td>
+      <td style="vertical-align: top;">meta type<br>
+      </td>
+      <td style="vertical-align: top;">meta value<br>
+      </td>
+      <td style="vertical-align: top;">last module<br>
+      </td>
+      <td style="vertical-align: top;">action type<br>
+      </td>
+      <td style="vertical-align: top;">action target<br>
+      </td>
+      <td style="vertical-align: top;">action argument<br>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h2>Matching strategy</h2>
+Like the iptables implementation, the rulelist has a top down
+approach. The first best line matching the metadata coming with the
+evidence under consideration will fire the defined final action. Only
+all metadata of the last job will be evaluated against the defined
+packets. <br>
+<br>
+This means that the most specific lines have to been put on top of the
+rulelist and the most general lines on the bottom of the rulelist.
+Don't use a general catch line with all DNTCR values as packet
+parameters. This is already implemented as an ocfa configuration item.<br>
+<p>Back to <a href="router.html">router</a>.</p>
+</body>
+</html>

@@ -1,0 +1,14 @@
+<module name="strings">
+  <function>
+     Extract the text content part of any binary file with some ascii data in it
+     This module uses the strings program to extract 8 bit ascii data, and dependant
+     on the job argument 'endian' the 'big' or 'litle' endian version of 16 bit
+     and 32 bit unicode data within the ascii range.
+  </function>
+  <inputtype  metaname="inodetype" metaval="file"/>
+  <outputnode name="output">
+        <function>The ascii representation of the text data chunks of the input file</function>
+        <outputmeta name="mimetype" optional="false">Either text/x-ocfa-strings or application/empty</outputmeta>
+	<outputmeta name="mimetop" optional="false"/>
+  </outputnode>
+</module>

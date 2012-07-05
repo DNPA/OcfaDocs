@@ -1,0 +1,106 @@
+This short document contains a small tutorial on the usage and the interpretation of logfiles.
+You can log using different levels of verbosity, at different parts of the OCFA architecture.
+The config alows you to set 'loglevel'. As with most config parameters, you can scope 'loglevel'
+to a particular module, to a particular subclass of the OcfaObject, or to a combination of these two.
+Given that modules are by convention named with lowercase names and modules by camelcase names,
+the folowing notations are possible:
+
+loglevel=notice
+kickstart:loglevel=info
+DomEvidence:loglevel=info
+router:RuleList:loglevel=debug
+
+By default logging will be done using the syslog log module. You could also choose a diferent logger,
+if you wish you could even write your own loadable log library,but this tutorial will focus on using
+and working with the syslog logger.
+
+The syslog logger will log all its logging to the 'USER' facility, your syslog configuration should
+be set up in such a way that all 'user' logging goes to a seperate file. The instalation of ocfa 
+will try to reconfigure your syslogd to log all 'user' logging to /var/log/ocfa.log .
+
+During startup, there are some small issues with the logger. Given that the syslog logger is only 
+available after the proper logger has been looked up in the config and has been loaded, the
+logging prior to this is handled by a built-in logger that logs to the standard error.
+This means that at startup you will first get a few lines that are logged to the screen.
+One more startup issue is related to the fact that the module does not fully know what type
+of module it is until after the messaging subsystem has been started. At this point the module
+will 'baptize' its logger with its identity. Prior to this point however, the module will temporarily 
+run 'unbaptized'. This is something that will be represented in the logging, and might need
+some special attention.
+
+Now lets look at some lines in /var/log/ocfa.log 
+
+Apr  2 13:54:04 bjarne unbaptized[25949]: [NOTICE]ocfa:SyslogLogger SyslogLogger::setLevel called
+Apr  2 13:54:04 bjarne kickstart::kickstart[25949]: [ERROR]store:PgRepository PgRepository initialization failed: could not connect to server: Connection refused
+Apr  2 13:54:04 bjarne kickstart::kickstart[25949]: [ERROR]store:PgRepository ^IIs the server running on host "127.0.0.1" and accepting
+Apr  2 13:54:04 bjarne kickstart::kickstart[25949]: [ERROR]store:PgRepository ^ITCP/IP connections on port 5432?
+Apr  2 13:54:04 bjarne kickstart::kickstart[25949]: [ERROR]store:PgRepository
+Apr  2 13:54:37 bjarne unbaptized[26802]: [NOTICE]ocfa:SyslogLogger SyslogLogger::setLevel called
+Apr  2 13:55:07 bjarne unbaptized[27267]: [NOTICE]ocfa:SyslogLogger SyslogLogger::setLevel called
+Apr  2 13:55:07 bjarne unbaptized[27267]: [ERROR]message:ConnectMessagingEndPoint connect failed
+
+
+At first these loglines may look a bit complicated, but with a litle explanation you should be able to interpret them yourself.
+The first part of the logline indicates the time the event took place. After this 'timestamp', the name of the local machine
+is represented. Now comes the important part, who created this log entry. As you can see, the first line has a token 'unbaptized[25949],
+that in the second line is replaced by 'kickstart::kickstart[25949]'. It is important to note that both lines have the exact same number
+in between their square braces. This fact, combined with the relatively close timestamps indicates that the two are in fact the same process,
+and thus that the first line refers to the same 'kickstart' module, while it was still in the 'unbaptized' state.
+
+After the module token we see another set of square brackets, that indicate the severity level of the log message.
+We see that the first line is only at 'NOTICE' level, and thus does not indicate a problem, however the following lines
+have an 'ERROR' level, that indicate a serious problem, in this case they indicate the kickstart could not run as it
+could not connect to the database. The last line indicates yet another error, the fact that some as yet unbaptized module
+was unable to connect to the messaging system. 
+
+In some cases when an error occurs it is just logged. In the case of the kickstart as shown here, the logging is done by
+a commandline tool that can actually return more information on problems to the user directly.
+The majority of the modules however run as background processes and need to send all their information to the logger,
+given that there is no possibility to send this info to the user directly.
+
+In case of seriously exceptional situations, the library or tool may throw an exception. This exception will often be visible
+in the logging at the ERROR level.
+
+
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException Illegal Rulelist Layout: Both moduleinstance and type fields are empty
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException Begin stacktrace:
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException ocfa::misc::OcfaException::saveStackTrace()
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException ocfa::misc::OcfaException::OcfaException(std::string)
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException /usr/local/digiwash2.0/sbin/router [0x8055038]
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException /usr/local/digiwash2.0/sbin/router [0x8055e4c]
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException /usr/local/digiwash2.0/sbin/router [0x80566bc]
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException /usr/local/digiwash2.0/sbin/router [0x805700c]
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException /usr/local/digiwash2.0/sbin/router [0x804fa69]
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException ocfa::facade::TargetAccessor::createEvidenceFromMeta(ocfa::store::MetaStoreEntity*)
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException /lib/tls/i686/cmov/libc.so.6(__libc_start_main+0xc8) [0xb7af1ea8]
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException ocfa::module::OcfaModule::dispatchMessage(ocfa::message::Message const&)
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException End stacktrace.
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException Failed to load rulelist:UNDEFINED:UNDEFINED
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException Begin stacktrace:
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException ocfa::misc::OcfaException::saveStackTrace()
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException ocfa::misc::OcfaException::OcfaException(std::string, ocfa::OcfaObject const*)
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException /usr/local/digiwash2.0/sbin/router [0x80570b0]
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException /usr/local/digiwash2.0/sbin/router [0x804fa69]
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException ocfa::facade::TargetAccessor::createEvidenceFromMeta(ocfa::store::MetaStoreEntity*)
+Mar 29 14:38:36 bjarne core::router[23187]: [ERROR]OcfaException /lib/tls/i686/cmov/libc.so.6(__libc_start_main+0xc8) [0xb7af1ea8]
+Mar 29 14:38:37 bjarne core::router[23187]: [ERROR]OcfaException ocfa::module::OcfaModule::dispatchMessage(ocfa::message::Message const&)
+Mar 29 14:38:37 bjarne core::router[23187]: [ERROR]OcfaException
+Mar 29 14:38:37 bjarne core::router[23187]: [ERROR]OcfaException End stacktrace.
+
+
+As you can see here, a single 'router' process has thrown two exceptions. Each exception begins with a short description ot the problem.
+After  the short description you see something that is known as a 'stacktrace'. This stacktrace can be very useful to developers in order
+to find bugs in the program or library.
+If you encounter a problem and believe it is a bug in the program, you are suggested to try and reproduce it with logging for the module
+set to 'debug' as described above. If the problem is thus reproducable, locate the module token in the logging (in this case 'core::router[23187]'),
+and grep this token within the /var/log/ocfa.log file. If possible give this log, together (if applicable) with the appropriate data file
+to the author(s) with a bug report.
+
+In order to find out if the exception is a bug or a configuration problem or a usage problem, please consult the file 'exceptions.txt'.
+
+

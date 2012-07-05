@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h2>The OCFA Administration scripts and programs</h2>
+<p>OCFA incorporates a range of administration tools. These tools
+can be split into the following sections:</p>
+<ul>
+  <li>Operation</li>
+  <li>Generation</li>
+</ul>
+<h3>Operation</h3>
+Tools used to operate on a case:<br>
+<ul>
+  <li>cleanup database</li>
+  <li>cleanup case</li>
+  <li>create case</li>
+  <li>delete case</li>
+  <li>ocfahalt</li>
+  <li>park case</li>
+  <li>start case<br>
+  </li>
+</ul>
+<h4>Cleanup database</h4>
+A script for cleaning up the database belonging to the specified case
+name.<br>
+Usage:<br>
+<p class="example">cleanupdb.sh &lt;casename&gt;</p>
+<p>This script will first drop the database for the given case, then
+creates a
+fresh clean database for the specified case.</p>
+<h4>Cleanup case <br>
+</h4>
+A script to clean up the specified case.<br>
+Usage:<br>
+<p class="example">cleanupcase.sh &lt;casename&gt;</p>
+<h4>Create case</h4>
+A script to create a case.<br>
+Usage:<br>
+<p class="example">createcase.pl &lt;casename&gt; &lt;password&gt;</p>
+Please refer to the "Getting Started" section for the context to use
+createcase.<br>
+<br>
+<br>
+<h4>Delete case</h4>
+A script to delete a case.<br>
+Usage:<br>
+<p class="example">deletecase.sh &lt;casename&gt;</p>
+The delete case script will clean up the database and all working
+directories for the defined case name. During execution the user will
+be asked for permission to delete the database and the case directories.<br>
+<br>
+<h4>Ocfahalt</h4>
+A command to stop all running ocfa modules. <br>
+<h4>Park midas</h4>
+A script that places the current index in a different directory.<br>
+Usage:<br>
+<p class="example">parkmidas.pl &lt;casename&gt; &lt;directory in which
+current index will be put&gt;</p>
+<div class="shout">Midas is the historical name for the indexing
+module. Ocfa now uses the lucene indexer, but the naming has not yet
+been updated.<br>
+</div>
+The script will copy the index files in
+/var/ocfa/&lt;casename&gt;/midas to the new directory. It will also
+adapt the configuration file so that the index is visible in the user
+interface. The script is useful when you want to start a new index.
+<h4>Park case</h4>
+Script that creates a searchable database for the end-user while still
+allowing new evidence to be scrubbed. Usage:<br>
+<p class="example">parkcase.pl &lt;casename&gt; &lt;directory in which
+current index will be put&gt;</p>
+The script will first park the index. It will then copy the database
+to &lt;case&gt;&gt;parked and optimizes the copy for querying. It will
+then create a new configuration file for the httpd server.
+<br>
+<h4>Start case</h4>
+Script to automatically start all needed modules.&nbsp; The module list to
+start will be extracted from the rulelist.<br>
+Usage:<br>
+<p class="example">startcase.pl &lt;casename&gt;</p>
+Please refer to the "Getting Started" section for further explanation.<br>
+<br>
+<h3>Generation</h3>
+Tools to generate output/overviews. <br>
+<ul>
+  <li>make overview</li>
+  <li>park midas</li>
+</ul>
+<h4>Make overview</h4>
+Usage:<br>
+<p class="example">makeoverview.pl</p>
+Please refer to the "Getting Started" section for further explanation.<br>
+<br>
+<p><br>
+<br>
+</p>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<module name="gzip">
+  <function>Extract an uncompressed version of a gzip (or compress) compressed file.</function>
+  <inputtype metaname="mime-type" metaval="application/gzip"/>
+  <inputtype metaname="mime-type" metaval="application/x-gzip"/>
+  <inputtype metaname="mime-type" metaval="application/compress"/>
+  <outputnode name="output" type="file">
+     <function>The uncompressed version of the input file.</function>
+  </outputnode>
+</module>

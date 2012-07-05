@@ -1,0 +1,46 @@
+<module name="sleuthkit">
+  <function>
+    From a disk image, extract partitions and unallocated space.
+    From partitions with a filesystem known to the sleuthkit, extract
+    directories and files and unallocated space.
+    This module is meant for non-carvpath input, and for now also
+    for carvpath input as long as the sleuthkit carvpath modules
+    are still under active development. Please take note not to
+    route unallocated space to a carver, as this module does not
+    produce carvpath entities and carving will be very storage 
+    intensive.
+  </function>
+  <inputtype metaname="partitioncount" metaval="0">
+     <outputnode name="NO_PTABLE" type="dir">
+         <outputnode name="ROOTDIR" type="dir">
+	    <function>The filedump directory tree export of the filesystem image</function>
+         </outputnode>
+	 <outputnode name="UNALLOC" type="dir">
+            <outputnode>
+                <function>An uninterrupted fragment of unallocated space</function>
+	    </outputnode>
+	 </outputnode>
+     </outputnode>
+     <outputnode name="NO_PTABLE.part" type="file">
+        <function>
+              If no supported filesystem was found, this file holds the partition as a whole again. 
+              Please watch out for loops in the router here,
+        </function>
+     </outputnode>
+  </inputtype>
+  <inputtype metaname="fs-entity-type" metaval="image">
+     <outputnode name="*" type="dir">
+         <function>
+            These directories hold the exports of individual partitions as described above
+            for the NO_PTABLE directory.
+         </function>
+         <outputnode name="ROOTDIR" type="dir"/>
+         <outputnode name="UNALLOC" type="dir"/>       
+     </outputnode>
+     <outputnode name="*.part" type="dir">
+        <function>
+           If no supported filesystem was found, this file holds the partition as a whole again.
+        </function>
+     </outputnode>
+  </inputtype>
+</module>

@@ -1,0 +1,51 @@
+Assignment 1.
+
+ a) Update your /etc/hosts to create a servername for your new case.
+    Use the name the teacher gave you to use for your case.
+    <case>.ocfa.loc.
+    Make the entry point to point to your DHCP address.
+ b) Use su to become the 'ocfa' user, and create the case.
+ c) Become root again and restart appache.
+ d) Go to the web interface and select the ppq view.
+
+You are investigating a number of assasinations that took place recently.
+You need to investigate a few files found on the computer of a well known
+assasin who we already know commited the assasinations. 
+Unfortunately this assasin had a fatal accident with a scateboard just before
+he could have been arrested.
+You should try to find out who ordered the assasinations, if this was one
+person or if the assasin was working for multiple people.
+
+Assignment 2.
+
+ a) Make the /usr/local/digiwash2/etc/rulelist.csv to point to the minimal rulelist.
+ b) Start the anycastrelay
+ c) Run kickstart with assasin.tar.gz. Call your evidence source 'assasin' and your item 'try1'.
+ d) Watch the web interface and see what hapens, if the web interface shows a queue
+    for a module not there, please start it by hand.
+ e) Go to the browser part of the web interface, and watch how the evidence got routed.
+
+Assignment 3.
+
+ a) Stop the router, and update the link to point to the full rulelist.
+ b) restart the router.
+ c) Kickstart assasin.tar.gz, now call the item 'try2'
+ d) Notice that more modules get required, start them on demand.
+ e) Look at the browser interface, try to find what is still wrong with the
+    rule list, what file is not getting processed properly.
+
+Assignment 5.
+
+ Look at the mailbox using the browser interface. Can you find any data that links the
+ people who are mentioned in the first mail with people in the second mail.
+ Can you come up with an hypothesis.
+
+Assignment 6.
+
+ a) Change the rulelist to the one on the server.
+ b) run ocfahalt.
+ c) run casemon.pl
+ d) run kickstart again (from an other console) using 'try3' as item, look at the ppq to see what hapens.
+ e) Look at the metadata for the file that did not get processed properly the last run. Can you
+    find any hypothesis of links between people in the e-mail and people in the public keyring.
+ 

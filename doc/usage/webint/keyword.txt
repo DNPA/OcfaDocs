@@ -1,0 +1,10 @@
+This text gives a short introduction to usage of the keyword search interface.
+
+The keyword search interface can either be accessed directly or (as scoped keyword
+search) from the results page of an overview interface.
+
+The keyword search interface is built on top of the lucene indexer, thus you are
+encouraged to consult the lucene documentation for information on how to construct
+more complex queries for lucene.
+
+JBS->FIXME();

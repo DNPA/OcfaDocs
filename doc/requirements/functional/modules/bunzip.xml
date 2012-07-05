@@ -1,0 +1,10 @@
+<module name="bunzip">
+  <function>Extract an uncompressed version of a bzip or bzip2 compressed file.</function>
+  <inputtype metaname="mime-type" metaval="application/bzip2"/>
+  <inputtype metaname="mime-type" metaval="application/x-bzip2"/>
+  <inputtype metaname="mime-type" metaval="application/bzip"/>
+  <inputtype metaname="mime-type" metaval="application/x-bzip"/>
+  <outputnode name="output" type="file">
+     <function>The uncompressed version of the input file.</function>
+  </outputnode>
+</module>

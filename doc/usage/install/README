@@ -1,0 +1,77 @@
+!! WARNING: This document has not been updated since the 2.0 OCFA release.  !!!
+
+This is the 2.0 release of the open computer forensics architecture (OCFA)
+
+The open computer forensics architecture is designed to fit within the
+concept of the 'digital washing machine'. The concept of the digital
+washing machine is developed in collaboration with the NFI, FIOD and
+the NMA. Its aim is to speed up digital investigations by giving
+tactical investigators direct access to the seized data.
+
+OcfaLib is a c++-library With which processes (modules) can be implemented
+that receive a piece of digital data, process it and send the result
+back. A particular piece of data is referred to as 'Evidence' and
+mostly consists of one file of a suspect computer. An Evidence is
+represented by the data itself and a trace (xml) of the data through the
+different modules. Each module can add its own meta-data to the trace
+when processing an Evidence or derive new Evidences from the evidence
+it was processing.
+
+For example, a zip-module creates new evidences from a received
+zip-file by unzipping it and submitting each file in the zip-archive
+in the system. A file module checks the headers of an Evidence with
+the magic database and adds the mime-type and mime-top to the trace.
+
+On a more macro level, the open computer forensics
+architecture consists of a kickstart, an xml router, a data storage 
+module and a set of auxiliary-modules like the zip-module or the 
+file module. The kickstart starts the run, by submitting seized data 
+to router. The router controls the flow of the Evidences. 
+It checks the last added meta-data of an evidence against its rule-list. 
+If a match is found the evidence is sent to the particular module 
+found in the rule-list. After an Evidence is processed by a module it 
+is sent back to the router, together with any newly derived evidences. 
+When an evidence is fully processed, it is sent to the Data Storage 
+Module which does some processing to accommodate the user interface.
+The Data Storage Module (DSM) does not send its evidence back to the 
+router but ends the tool-chain.
+
+The outcome of all this processing is a web-browsable tree, in which
+all suspect files are tagged with meta-data and recursively extracted
+or converted to plain text. When the indexer module is used, a
+searchable index also exists.  Finally, we have created a simple
+interface on the database with which several kinds of meta-data can be
+queried. GUI improvements are in the making.
+
+INSTALL
+
+!!! Important note !!! : If you blindly install using configure;make;make install
+                         you will surely end up with an unusable system, it is
+			 essential that you read the instalation notes.
+
+In order to install you need to first install OcfaLib, followed by
+OcfaArch and OcfaModules, (after this, you should install the ms-windows 
+modules if you have access to these currently still LEA/NDA licenced modules) . 
+
+You may further wish to get carvfs installed in order to support ewf files. 
+The 2.0.3 OCFA distro has no carvpath efficient support yet, but carvfs can 
+already be used to allow ewf files to be treated as single file dd images.
+
+The suggested installation target OS is Ubuntu or Debian Etch (Etch is 
+currently still the 'testing' variant of Debian, but it seems surprisingly
+stable). A somewhat harder alternative could be the 9.3 or the 10.1 
+distribution of Suse. 
+
+In the HOWTO directory you will find the appropriate installation HOWTO for your 
+distribution of choice. Before reading the distro specific HOWTO, please first
+consult HOWTO/HOWTO-INSTALL .
+
+Next to the HOWTO documents that are mainly for installation and testing, you may 
+want to consult the documentation on the basic system design that you can find
+at http://ocfa.sourceforge.net/ .
+
+If after installation you are interested in writing your own modules for ocfa, 
+note that the include files you need are located under /usr/local/digiwash2.0/inc .
+It is suggested that you look at the modules as implemented in OcfaModules in order
+to get a good entry point into the ocfa API, that is itself documented within
+the header files. 

@@ -1,0 +1,17 @@
+<module name="objdump">
+  <function>
+    This module looks at executable files using the objdump tool.
+    It generates a list of pagenames as defined in the executable file.
+    Further it looks for code pages that are marked as writable.
+    Writable code pages mostly point to the executable being a packed 
+    executables. Some regular software is packed, but almost all 
+    mallware is packed, thus packed executables have a relatively high
+    probability of being mallware. Finaly the executable is checked for
+    being generated as a winzip self extracting archive.
+  </function>
+  <inputtype metaname="mimetype" metaval="application/x-dosexec"/>
+  <inputtype metaname="mimetype" metaval="application/dosexec"/>
+  <outputmeta name="mimetype">Only used for self extracting winzip executable's: application/x-zip</outputmeta>
+  <outputmeta name="packed">Boolean indicating the executable is packed and thus potential malware</outputmeta>
+  <outputmeta name="sectionnames" type="table">Table with all the page names in the executable</outputmeta>
+</module>

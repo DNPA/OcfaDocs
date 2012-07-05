@@ -1,0 +1,50 @@
+-----------  0.3 --------------------
+
+evidence.cgi:
+  Fetch the evidence XML file, prefix it with stylesheet reference
+  * case
+  * src
+  * item
+
+  * id     (if called from a parent evidence or from list.cgi) OR  
+  * child  (if called from a child evidence)
+
+
+list.cgi:
+  List the available sources for a case or items for a source.
+  * case  and optionaly:
+  * src
+
+--------- 0.5 ------------------------
+
+view.cgi:
+  Show the Evidence data using the apropriate mime-type sending/conversions.
+  * case
+  * src
+  * item
+  * id
+
+preview:
+  Output an apropriate "preview" graphic
+  * case
+  * src
+  * item
+  * id
+
+query.cgi:
+  Find matching evidences using an known evidence as reference
+  * case
+  * src
+  * item
+  * id
+  * query  : optional query to be sent to midas 
+  * f:***  : field describing the metadata that should be matched to the reference evidence,
+             the folowing values can be used:
+             + ''  : This meta should not be used for filtering.
+             + eq  : The evidence should have a metadata entry with the same value
+	     + not : The evidence should not have a metadata value with this value
+             + any : The evidence should have some value for this metadata name
+
+
+
+

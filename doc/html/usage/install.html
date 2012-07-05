@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h2>Installing the Open Computer Forensics Architecture</h2>
+<div class="shout"><b>IMPORTANT:</b><br>
+Don't install ocfa on a system serving vital interests! We take no
+responsibility for any harm the installation of ocfa may do. It is advised
+to install ocfa on a system dedicated for this purpose serving no other
+functionality and to make backup copies of any important data beforehand.<br>
+</div>
+When installing the open computer forensics architecture from one of
+the Linux distro specific packages you should simply follow the
+instructions as provided in the accompanying howto for that platform.
+This page describes what to do if you are installing from the separate
+distribution file.
+<h3>Satisfying the prerequisites</h3>
+The first thing you need to do is to make sure that you have all
+depenedancies satisfied in order to continue installing the open
+computer forensics architecture. Please check the <a
+ href="prerequisites.html">prerequisites</a> to make sure you have the
+dependencies all satisfied and are ready to install.
+<h3>The basic install</h3>
+The installation of the open computer forensics architecture will be
+close to what you are used to, but with an important twist. Given the
+fact that the actions needed to do a full install are sometimes rather
+intrusive, and on non tested distributions even potentially dangerous
+to
+your systems usability, these actions have been moved out of the usual
+'make install' into 'make rootinstall'.
+<h4>Installation on <i>tested</i> distributions</h4>
+When installing on one of the fully tested distributions (Debian etch,
+Ubuntu 5.10, Suse 9.3 or Suse 10.1) you can safely use the following
+steps in each of the 3 packages OcfaLib,OcfaArch and OcfaModules
+(please make sure to strictly adhere to the Lib/Arch/Modules sequence):
+<pre class="example">./configure<br>make<br>make rootinstall<br>     </pre>
+Please make sure to check out any warnings that the configure script
+gives. You can safely ignore warnings about libmidas in OcfaModules as
+the midas module is now considered deprecated.
+<h4>Installation on other distributions and platforms</h4>
+If you are installing on any system other than the ones officially
+marked as tested, you need to be a bit more careful during
+installation in order not to break things.<br>
+First you will need to give the configure script a try. Run <i>./configure</i>
+. This script may issue some warnings, please check these out. The
+script will create a file <i>configure.makeinfo</i>, you should have a
+good look in this file to see if anything is obviously wrong here.<br>
+<br>
+After having checked configure.makeinfo for errors you can run <i>make</i>.
+If make runs without errors, which in theory it should, you are most of
+the way to a working environment, we will tread carefully however in
+order to make sure we won't break your system. Instead of running
+rootinstall you should simply run <i>make install</i>. This will leave
+the installation partially broken but at least should keep your system
+intact.<br>
+<br>
+<div class="shout"><b>IMPORTANT:</b><br>
+You are discouraged to just run the scripts, they are
+untested on any but the distributions mentioned in the previous section
+</div>
+Now comes the hard part, you will need to look very closely at the
+makefile and any script called from the makefile. Look at the file
+called <i>Makefile</i> and look for the definition of DISTDIR, you
+should export this in your shell. After this, look at the section
+called <i>rootinstall</i> and check out each of the lines to see if it
+should be applicable for your system. Most regular lines should be applicable and
+you should be able to run these from your shell. Some lines in the
+rootinstall section however will call on scripts that could potentially
+be dangerous. It is essential that you locate these scripts, read their
+content to find out what they intend to do, and then do those things
+yourself by hand. You are discouraged to just run the scripts, they are
+untested on any but the distributions mentioned in the previous section.<br>
+<br>
+<br>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h2>The OCFA library for module creation</h2>
+<div class="shout"><b>OCFAROOT:</b><br>
+The in the shell exported path
+to the root directory of the ocfa installation. For example
+"/usr/local/digiwash2.0/"</div>
+The ocfa library is the library used by all modules to plug into the
+open computer forensics architecture. Basically a program in order to
+become a module will need to subclass from one of the accessor classes
+defined in "${OCFAROOT}/inc/facade/" implying the definition and
+implementation of the pure virtual processEvidence method for this
+class. The main of the
+program should call the run method after instantiating the implemented
+subclass in order to activate the process as open
+computer forensics architecture module.<br>
+<br>
+The OCFA library basically forms the glue between the four main sub
+libraries of the open computer forensics architecture:
+<ul>
+  <li><a href="fslib.html">The filesystem abstraction library</a> </li>
+  <li><a href="evidencelib.html">The xml evidence metadata library</a> </li>
+  <li><a href="storelib.html">The data repository library</a> </li>
+  <li><a href="msglib.html">The messaging library</a> </li>
+</ul>
+Basically the library can receive messages through the messaging
+libraries. These messages contain handles for retrieving xml meta data
+and data from the storelib. The evidence library provides metadata
+access and extension possibilities. If a directory tree (or in the near
+future
+an image) is submitted, the fs library is used to extract the data and
+metadata from this directory and its content. The metadata can then be
+mapped to xml using the evidence library, and can together with the xml
+be stored using the store library. A handle retrieved from the storelib
+is then used to construct a message to send the evidence to the
+intended module.
+</body>
+</html>

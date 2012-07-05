@@ -1,0 +1,9 @@
+<module name="exceldissector" state="alpha">
+  <function>Convert a Microsoft office excel spreadsheed file to html pages.</function>
+  <inputtype metaname="oletype" metaval="MsExcell"/>
+  <outputnode>
+        <function>HTML representation of an excel sheet.</function>
+  </outputnode>
+  <outputmeta name="FIXME" optional="true">Fixme, should describe the metadata field.</outputmeta>
+  <outputmeta name="FIXME" optional="true">Fixme, should describe the metadata field.</outputmeta>
+</module>

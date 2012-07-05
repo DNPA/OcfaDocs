@@ -1,0 +1,78 @@
+!! WARNING: This document has not been updated since the 2.0 OCFA release.  !!!
+------------------Testing OcfaArch-------------------------
+After installation you should have an absolute minimum OCFA system. You may check if
+installation thusfar is successful by performing a litle testrun.
+This section is optional, if you are sure that you dont want to test at this stage then
+please continue with the OcfaModules installation section
+First you will need to prepare your name resolution for the test. Edit your /etc/hosts file
+and add the name 'test.ocfa.loc' to the end of your localhost entry.
+
+Now run:
+
+  su - ocfa
+
+You will now become the 'ocfa' user. The system should ask you for a case you
+want to use, just type 'test'. You will be warned about the fact that there is no such
+case defined, so you continue by creating the case named test. The default db user ocfa
+was created with 'ocfa' as password, you may want to change this later on, but for the
+test just leave it as it is and type:
+
+  createcase.pl test ocfa
+
+Now you have created the case called 'test'. Log out again, and restart apache.
+
+  /etc/init.d/apache2 restart
+
+Now you can already go to your browser and type the adress http://test.ocfa.loc/ .
+You should choose the 'Current queues' link and keep the window open to see what hapens.
+
+Again log in or su to the user ocfa. Again choose the case 'test'.
+Now the first thing you need to do is start up an anycast relay server.
+
+  sbin/anycastrelay anycast anycast
+
+No actual modules are running yet, but the anycast is there to hold on to anything
+you would be sending to the modules until the modules are there. You should now
+kickstart a directory with a few hundred files in it:
+
+  kickstart test testevidence testitem2 /usr/local/digiwash2.0/
+
+When looking at the web page, you should see a queue for 'router' that should have a few
+hundred items in it. There is no router running yet, so we start one:
+
+  sbin/router
+
+Now you will see all items moving from the router queue to the dsm queue. Lets also start
+the dsm:
+
+  sbin/dsm
+
+Now the interface will show that all queues will eventually empty. After the queues are empty wait
+a few minutes and type:
+
+  ocfahalt
+
+If you now push the back button of your browser and choose 'Bekijk de boom' (this is dutch for view
+the tree), you should be able to browse the metadata.
+Now run:
+
+  makemetaindex.pl
+
+This script will create an index page based on meta data, go back to the main page and select
+'Database Metadata View'. Given that there are not any modules running, just the router and the
+data store module, there should be litle to select, but make some selections and view the result.
+
+If all has gone well you should have been able to search and browse the metadata, and you should
+be able to move on to the OcfaModules package. Before continuing however, lets remove our test
+data and database:
+
+   deletecase.sh test
+
+Now you may continue to the installation of OcfaModules, once finished you may repeat the
+tests described abouve starting the aditional modules as required. 
+You need to note that you should not kickstart twice using the same case/evidencesource/itemname
+combination. (The reason for this is that the system derives unique evidence identifiers from
+the case/evidencesource/itemname identifiers, and couples this to the toolchain trace for this
+unique evidence. Thus in order to prevent ambiguity, each unique case/evidencesource/itemname should
+be kickstarted only ones. ) 
+(FIXME: Why not kickstart twice?)

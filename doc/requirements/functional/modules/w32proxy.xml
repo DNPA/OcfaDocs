@@ -1,0 +1,17 @@
+<module name="w32proxy">
+  <function>
+    The w32proxy module is a proxy to different non-ocfa dissector modules running on the win32
+    platform. A set of these win32 modules can be found in the washbrush project of the dutch national
+    police agency, that amongst others includes modules for outlook and outlook express files.
+    This module implements a simple directory tree based handshaking protocol between the open computer
+    forensics architecture and simple win32 based modules that don't need or generate meta data.
+    This handshaking protocol is based on a simple set of naming conventions for files and directories.
+  </function>
+  <inputtype metaname="inodetype" metaval="file"/>
+  <outputnode name="*" multi="true" type="dir">
+        <function>A directory tree derived by the win32 module from the input file.</function>
+  </outputnode>
+  <outputnode name="*" multi="true" type="dir">
+        <function>A file derived by the win32 module from the input file.</function>
+  </outputnode>
+</module>

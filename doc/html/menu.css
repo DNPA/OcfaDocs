@@ -1,0 +1,17 @@
+body {
+	background-color: #c0e0c0;
+	font-family: URW Bookman L;
+	font-size: 80%;
+}
+
+a:link {
+      color: #000000;
+      background-color: transparent;
+      text-decoration: underline;
+}
+
+a:visited {
+      color: #809080;
+      background-color: transparent;
+      text-decoration: underline;
+}

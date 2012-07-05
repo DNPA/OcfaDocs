@@ -1,0 +1,40 @@
+1) Take the rulelist from the rulelist assignment and remove the final semicolon from the one of the rules.
+
+2) Start a terminal, become root and start a use 'tail -f /var/log/ocfa.log' to follow what is going on.
+
+3) Start the anycastrelay, and the router.
+   Make sure the logging is visible when you start the router.
+
+4) Try to understand the lines in the log file, what do they tell you, and can you reason how this
+   would result from the change to your rulelist?
+
+5) See if you can find more info on the problem in the exceptions.txt file in your documentation tree.
+
+6) The router should have died, while the anycast should still be running. Use 'ps -u ocfa' 
+   to make sure of this. Now update the config file for your case. 
+   Change the syslog level to 'debug'. Now restart the router.
+   Watch the syslog output, it has become quite a bit more verbose.
+
+7) Determine the process id of the crashed router. Now use grep to create a debug file containing all
+   the log lines for this run of the router. If the output of 5 did not give you sufficient info, possibly
+   the more verbose output will. Don't worry if a lot of the low level output does not make any sense to you.
+   If the output does not give you a clue to what is going on, or clearly points to a programming error,
+   the developer of the module and/or your (community) support may be able to help you if you supply them
+   with this trace.
+
+8) Restore the syslog level to 'warning', again validate that the router has stopped while the anycastrelay 
+   is still running.
+
+   a) Locate the file rulelist.cpp in your source tree. In this file somewhere the "Rulelist violation" error
+      is given. It can be any of two lines. Determine the two line numbers. If you can read C++, take note of
+      the line variable 'szLine', this variable holds the line of the rule list file being processed.
+   b) Now update your config so that daemonize is set to 'false'. This will allow you to run the router inside
+      of the debugger without it escaping into the background.
+   c) You should now load the router into the debugger  using 'gdb. sbin/router'.
+   d) Set the two breakpoints using the line numbers as found in a. For example if you found the line to be
+      42, you would type 'break rulelist.cpp:42', set the proper two breakpoints.
+   e) Type 'run' to start the router inside the debugger. The router should break on your breakpoint.
+   f) Type gdb to see ho the router arrived at your breakpoint.
+   g) Type 'print szLine.c_str(), you should see the line in the rulelist from what the error originated.
+
+

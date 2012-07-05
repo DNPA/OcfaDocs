@@ -1,0 +1,46 @@
+If a module crashes there are 3 possible scenario's:
+
+  * The module crashes on startup, even if there are no jobs available to it.
+  * The module crashes on each and every evidence sent to it.
+  * The module crashes with some specific evidence files.
+
+Given that most modules were thoroughly tested before deployment, the first type
+of crash would therefore always point to some configuration error.
+The second type of crash also mainly points to a configuration error, however
+it would also be possible that the evidences sent to the module are in fact
+all disjunct as a subset from the evidences the module was tested against.
+The casemon.pl script tries to work along this way of thinking, and allows modules
+to crash a limited number of times after successful startup.
+The last type of crash, although annoying can in some cases be seen as acceptable
+if the number of crashed evidences is relatively low compared to the number
+of successfully processed evidences.
+
+If a module crashes for whatever reason, most of the time there will be some logging.
+With normal crashes, the program will have thrown an exception, which is logged
+in the logfile.
+In some extreme situations, the program or library may however also have a bug
+so severe that the program actually segfaults. In this case, the only way to
+find out the problem is by running the specific module in a debugger (gdb),
+and to let it crash within gdb. If the program crashes within gdb with a
+segmentation fault, the 'bt' command will show a stacktrace that would be very
+useful to the developer to receive along with your bugreport, if possible and applicable
+with an example of an evidence file and metadata that caused the crash.
+
+The ppq web interface may show a link to the appropriate metadata and data in the
+'NEVER' queue of the crashed module.
+
+The casemon.pl script has a problem distinguishing between crash on startup and
+not starting as a result of the fact that the module is not present.
+If the module is not there at all, casemon will still try to start it until
+after 3 times it marks the module as bad. There will be no trace of such a module 
+in the log, given that the module was never actually started.
+The anycast persistent priority queue for the module will however get created for the
+module, and if the module gets built later, it can be started separately to process
+the pending evidences.
+
+It is important to note that the OcfaModules 'configure' will search your system
+for required tools and libraries, and will not build modules that will most
+probably fail due to missing tools. For this reason there may be modules
+in the rulelist not available on your system.
+The windows proxy module will get built independantly if you connect a win32 satellite
+to your environment.

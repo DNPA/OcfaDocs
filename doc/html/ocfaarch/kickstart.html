@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h2>The kickstart module</h2>
+One of the core modules is the kickstart module. The kickstart module
+is used to insert the evidence into the running ocfa system.&nbsp; The
+example below describes the command line usage of the kickstart module.<br>
+<p class="example">Usage: ./kickstart caseid sourceid itemid path [
+charset ]</p>
+Example:<br>
+<p class="example">./kickstart MyCase Box2 HDU1 /mount/mycase/repos
+LATIN1</p>
+Parameters used with kickstart:<br>
+<div class="shout"><span style="font-weight: bold;">Remark:</span><br>
+Use for caseid, sourceid and itemid only
+alphanumeric values without
+any special characters.</div>
+<ol>
+  <li>caseid. Describes the case.<br>
+  </li>
+  <li>sourceid. Describes the source. <br>
+  </li>
+  <li>itemid. Describes the item.<br>
+  </li>
+  <li>path. The path from which the ocfa treewalker starts with
+analyzing. <br>
+  </li>
+  <li>charset. Optional. Possible values:&nbsp; LATIN1, UTF8, UCS-2,
+UTF-16 and many more (see iconv -l for a complete list). When not
+specified, the kickstart will try an automatic guess.<br>
+  </li>
+</ol>
+<br>
+</body>
+</html>

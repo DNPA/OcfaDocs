@@ -1,0 +1,17 @@
+<module name="file" binaryname="jFile">
+  <function>
+    This module will try to extract filetype information by comparing the
+    file header with magic fingerprints of known filetypes.
+    For ms office files, additional processing is done to determine the office file type.
+  </function>
+  <inputtype metaname="inodetype" metaval="file" parsefile="header"/>
+  <outputmeta name="mimetype">The best guess for the mimetype of the file based on the file header.<outputmeta>
+  <outputmeta name="mimetop">The leftmost part of the above mimetype<outputmeta>
+  <outputmeta name="mimeinfo">If the magic library appended extra info to the mimetype this data is saved here.<outputmeta>
+  <outputmeta name="oletype">
+    If the mimetype is application/msword, the file could be in fact any type of ms-office file.
+    This value represents the actual type of office file.
+  <outputmeta>
+  <outputmeta name="fileextention">The original extension of the file.<outputmeta>
+  <outputmeta name="fileinfo">The human readable verbose file info. <outputmeta>
+</module>

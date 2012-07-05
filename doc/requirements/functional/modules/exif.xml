@@ -1,0 +1,25 @@
+<module name="digest">
+  <function>Extract exif metadata from photo files.</function>
+  <inputtype metaname="mimetype" metaval="image/jpeg" parsefile="header"/>
+  <outputmeta name="CameraBrand"><outputmeta>
+  <outputmeta name="CameraModel"><outputmeta>
+  <outputmeta name="CameraSoftware"><outputmeta>
+  <outputmeta name="ImageOrientation"><outputmeta>
+  <outputmeta name="HorizontalResolution"><outputmeta>
+  <outputmeta name="VerticalResolution"><outputmeta>
+  <outputmeta name="DateTimeCreated"><outputmeta>
+  <outputmeta name="ExposureTime"><outputmeta>
+  <outputmeta name="FNummer"><outputmeta>
+  <outputmeta name="ExposureProgram"><outputmeta>
+  <outputmeta name="ISORating"><outputmeta>
+  <outputmeta name="ExposureBias"><outputmeta>
+  <outputmeta name="MeteringMode"><outputmeta>
+  <outputmeta name="LightSource"><outputmeta>
+  <outputmeta name="Flash"><outputmeta>
+  <outputmeta name="FocalLength"><outputmeta>
+  <outputmeta name="ColorSpaceInformation"><outputmeta>
+  <outputmeta name="Width"><outputmeta>
+  <outputmeta name="Height"><outputmeta>
+  <outputmeta name="CompressionSetting"><outputmeta>
+  <outputmeta name="MacroMode"><outputmeta>
+</module>

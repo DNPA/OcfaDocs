@@ -1,0 +1,33 @@
+<!ELEMENT module (function,parsemeta*,inputtype+,outputnode*,outputmeta*)>
+<!ATTLIST module
+	name		NMTOKEN #REQUIRED
+	binaryname	NMTOKEN #IMPLIED
+	state		(concept | planned | development | alpha | beta | stable ) "stable"
+>
+<!ELEMENT function (#PCDATA)>
+<!ELEMENT inputtype (function?,parsmeta*,outputnode*,outputmeta*)>
+<!ATTLIST inputtype 
+	metaname	NMTOKEN #REQUIRED
+	metaval		NMTOKEN #IMPLIED
+	parsefile	(false|true|header) "true"
+>
+<!ELEMENT parsmeta (?function)>
+<!ATTLIST parsmeta
+	metaname	NMTOKEN #REQUIRED
+	required	(true|false) "true"
+>
+<!ELEMENT outputnode (function?,outputnode*,outputmeta*)>
+<ATTLIST outputnode
+	type		(file|dir) "file"
+	name		NMTOKEN #IMPLIED
+	optional	(true|false) "true"
+>
+<!ELEMENT outputmeta (#PCDATA)>
+<ATTLIST outputmeta
+	name		NMTOKEN #REQUIRED
+	type		(scalar|array|table)  "scalar"
+	scalartype	(int|float|datetime|string) "string"
+	optional        (true|false) "true"
+>
+
+	

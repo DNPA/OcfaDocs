@@ -1,0 +1,43 @@
+This short document lists the main non functional requirements for the
+open computer forensics architecture. These requirements have been implicit
+for almost the whole duration of the project:
+
+1) Stable
+
+   The architecture should provide a high level of stability, even if individual
+   modules don't provide this.
+
+2) Opportunistic
+
+   The architecture should allow for a maximum possibility for oportunistic development,
+   allowing modules to be created from existing tools and libraries, independently of the
+   platform these tools or libraries require and/or language these tools or libraries
+   were written in. 
+
+3) Scalable
+
+   The architecture should be scalable up to a point where a setup with many (30..50)
+   different modules is able to process an amount of 1TB of typical disk images in
+   an roughly 64 hours (1T/weekend). This performance should be maintainable
+   as to process 10TB in an amount of time of 720 hours (10 TB/month).
+   The user interface should be able to maintain user acceptable response times after
+   at least 20TB of typical disk images are fully processed within a single case.
+
+4) Fault Isolation
+
+   If a single module implementing a particular functionality fails at any point in time, 
+   the architecture should keep running with all remaining functionality intact.  
+
+5) Recoverable
+
+   If a module implementing a particular functionality fails, the data and metadata should
+   be recoverable, and ones the functionality is patched should be able to continue normal
+   operations.
+
+6) Portable
+
+   The architecture must be portable up to the point that the full architecture
+   should be portable between up-to-date linux distributions. Further it should be portable up
+   to the point to allow modules to be implemented on any platform.
+
+

@@ -1,0 +1,90 @@
+This text gives you a short description on how to use and how to interpret the
+browstree interface.
+
+The browstree interface consists of two levels:
+
+* The case browser level.
+* The item browse level.
+
+The case browser level allows the user to select an evidence source, and from an 
+evidence source select an item, at which time the item browse level is activated.
+(At this moment there is also still a top-level 'investigation' node).
+
+The item browse level gives a browsable interface within a single item.
+The interface is basically a graphical (html) representation of an evidence
+xml metadata entity. If an evidence traverses different modules of the open
+computer forensics architecture, the xml metadata entity is used to record
+the toolchain and all actions done within specific modules within that toolchain.
+
+If evidence gets 'derived' from other evidence, or if during kickstart or derivation a
+treegraph structure is traversed, this is both represented as a parent child relationship
+that is browsable. Thus if a zip file is processed by the zip module and produces a directory
+tree, the browstree interface will allow that from the zip evidence, the top level
+of the directory tree will be a browsable link. With each link, the interface will show
+what module derived the child evidence, and thus a single evidence node may hold links
+to derived evidence where multiple modules derived different child evidences from the
+same parent evidence.
+
+Next to just child/parent relations, the browstree evidence also shows the toolchain.
+You can watch some distinctly colored headers identifying for example the evidence
+that went through a toolchain as in the following example:
+
+ * kickstart
+ * router
+ * digest
+ * router
+ * file
+ * router
+ * pkr
+ * router
+ * pgp
+ * router
+ * dsm
+
+ In most situations this may not prove very useful, but in order to validate that
+ essential modules actually get used, this could be very useful information.
+
+ Lets say we know we could gather crucial information out of for example PGP public keyring files,
+ and we know the location of a particular keyring file. We would want to make sure that this keyring file 
+ actually got processed by the pkr module that has as its sole task to parse keyring files.
+ Lets now say that instead of the 'expected' toolchain above we encounter the folowing toolchain:
+
+  * kickstart
+  * router
+  * digest
+  * router
+  * file
+  * router
+  * strings
+  * router
+  * indexer
+  * router
+  * dsm
+
+With our knowledge about the expected toolchain we can then see that apparently the router chooses a 
+wrong path after the evidence has been processed by the 'file' module.
+This could point to one of two problems:
+
+  * The rulelist is incomplete and does not route the evidence to the pkr module correctly
+    based on correct metadata provided by the file module.
+  * The file module does not provide the correct metadata to route pkr files to the proper module.
+
+As you can see in both reasons, the clue to figuring out the source of the problem lies in looking 
+at the metadata as provided by the file module. The browstree interface will show metadata
+that was added by each module in the toolchain. This metadata in most cases will be a simple 
+key/value combination identifying both the name and the content of the metadata.
+Next to its use in finding problems with modules and/or routing, some metadata may be essential
+to the human interpretation of the evidence itself. 
+
+For example the binutils module may add a metadata value 'packed' that indicated if an executable 
+is packed. Such information should allow an investigator to see if the binary is likely to be
+malware. The digest module might as an other example add a 'digestsource' with a value of 'CP'
+indicating an image or video file is known to be classified as childporn, something that might
+be of great interest to an investigator.
+
+You can see that all metadata is completely scoped to the job, and thus to the tool/module where it
+was created. Combined with the toolchain and parent child relationships this should allow for
+a full record that could be used when required to reconstruct any findings by reconstructing the
+proper toolchain.
+
+

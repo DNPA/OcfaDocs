@@ -1,0 +1,54 @@
+This short text describes the usage of the persistent priority queue webinterface.
+
+This webinterface is usable for a few different purposes:
+
+* Tracking run progress.
+* Checking the validity of the rulelist.
+* Checking the correct working of specific modules.
+
+The webinterface offers a quick overview into the persistent priority queues
+of the anycastrelay. In order to understand this overview, we will need to explain
+a bit about the workings of anycast messaging, anycast flowcontrol and anycast
+crash recovery.
+
+Basically an evidence file that needs a particular type of processing, is sent
+to a suitable module for that type of processing. There could be multiple instances
+of a particular module present on either a single, or on multiple machines,
+and anycasting will take care of load balancing between those instances, but
+from the sender point of view there is only one module.
+
+If the first instance of a particular module is started, the anycastrelay
+will create a priority queue for that module. Alternatively, if an anycast message
+is directed at a module for which there is no instance, a priority queue is created
+awaiting the startup of that module.
+
+The priority queue for a module uses a number of priorities. The priority of 1
+indicates the highest priority for evidence files, and priority 5 the lowest
+priority for evidence files. Priority 0 is reserved for special non evidence
+messages with a very high priority, and priority 6 for special non evidence
+messages with a very low priority. In addition, the priority 'NEVER' is defined.
+If a module crashes while processing a particular evidence file, than the
+message for that evidence file is put into the NEVER queue of the crashed module,
+and if the module is restarted, the evidence that made the module crash would thus
+be effectively skipped.
+
+It is important to note that not all anycast messages are at all times visible in
+the web interface. The anycastrelay uses a flow control mechanism with a window
+that is currently set to 10. This means that a module may be sent up to 10 messages
+that are not yet processed, but neither are counted.
+
+The web interface allows the user to click on a particular queue priority. Depending
+on if the priority currently has content, and depending on the amount of evidences
+already processed, the link may show any of the following:
+
+*  A list of all evidences currently in the queue.
+*  A list of all evidences that have been processed.
+*  A list of evidences that have recently been processed.
+
+Any entry in any of these lists is a link to the meta data of the particular evidence.
+These links basically give you a deeplink into the browstree interface. Please
+consult browstree.txt for more information on this interface.
+This metadata could be very useful for validating the correct working of the rulelist,
+and the correct working of specific modules. It should also allow to identify specific
+evidence files that could be used by developers to debug modules that show incorrect
+behaviour.

@@ -1,0 +1,50 @@
+Normally this file will be the first file in this directory you will be reading,
+thus this is the place where we will discuss 3 of the most common sources of
+problems experienced with the usage of the open computer forensics architecture.
+These 3 problems are not actually OCFA issues, but issues aggravated by OCFA's
+heavy use of system and network resources.
+
+1) Flaky network fileserver/client implementation.
+
+The number one issue with using the open computer forensics architecture has been when using
+kickstarting directory trees on SMB fileservers and/or MS based NFS servers.
+We have never quite figured out what was to blame with this, but using NST or SMB between
+Linux and Win32 has proved to have major limitations and has proved to be a source of
+constant headache. The biggest problems occur if multi linguality is required and if 
+large directory structures with many small files are addressed in 'staticmount' mode.
+
+* It is strongly suggested NOT to use windows as a fileserver !!
+
+2) Flaky hardware.
+
+The second issue we have seen way too much in usage of the open computer forensics architecture
+is the usage of flaky hardware. If you are having strange problems with OCFA, please consult
+your 'dmesg' of any unexpected harddisk issues. OCFA really tests your harddisks to their limits
+with respect to disk IO. You should have your system properly cooled and be very careful to
+properly put some proper airspace in multiple disk systems. Many problems were the result of 
+the usage of desktop style hardware stacked to the limit with harddisks. These systems tend to
+overheat if all disks are heavily loaded simultaneously as they are by OCFA.
+Another hardware issue apears to exist with external USB connected disks. Avoid these disk systems
+for use with OCFA, at least as repository or as data source with 'staticmounts' on.
+
+* You should not use poorly cooled harddisk packed desktop hardware with OCFA. 
+* You should choose firewire disks anytime over USB disks.
+
+3) Exhausted filesystem resources.
+
+One final issue with the usage of ocfa is the underestimation of the required disk resources.
+If your system runs out of resources for database, repository, digest db, lucene index or
+persistent priority queues, than in many cases part of your OCFA system will get corrupted.
+
+* Dont allow the filesystems to get completely filled up during a run
+* Plan ahead and get yourself sufficient storage, you don't want to run an investigation on
+  a single 400GB disk.
+
+
+
+4) Real OCFA issues.
+
+If your problem is not one of the 3 issues abouve, you will have run into a real configuration
+error, or maybe even a bug in OCFA. Plaese consult the other files in this directory to find
+out more.
+

@@ -1,0 +1,118 @@
+This document describes the config paramaters that are used by
+the ocfa libraries.
+
+MISC:
+
+  The ocfamisc library uses the following config parameters:
+
+  syslog=debug|info|notice|warning|err|crit|alert|emerg ;default=notice
+      This parameter defines the minimal severity that calls to the logger should
+      have in order to be actually logged.
+  logdir=[path] ; default=<ocfaroot>/log
+      The directory path to what logfiles should be written by the SimpleLogger
+      given that daemonize== true
+  daemonize=true|false ; default=true
+      The SimpleLogger uses this parameter to determine if it should keep logging
+      to stderr, or should start logging to a non visible logging facility.
+  loglib=filepath ; default = empty
+      the path to the file to the shared object file that contains an implementation of an
+      OcfaLogger. If left empty, the simple object logger is used.
+
+      // the following settings apply to the log4clogger.
+   log4cxx.propertyfile=filepath ; default empty
+       name of the log4cxx propertyfile that is used to further specify logging. If not present, 
+       the default logging parameters will be used
+
+EVIDENCE:
+   
+   the ocfaevidence library uses the folowing config parameters:
+
+   esyslog=debug|info|notice|warning|err|crit|alert|emerg ;default=notice
+       This parameter defines the minimal severity that calls to the evidence 
+       logger should have in order to be actually logged into the evidence XML.
+   profiling=true|false|verbose ; default=false
+       This parameter determines if extra profiling information is added to the
+       activejob xml tags.
+   schemacheck=true|false ; default=false
+       This parameter determines if in parsing the XML evidence, the XML is validated
+       using the schema that desctibes a valid evidence XML.
+   schemadir=[path] ; default=<ocfaroot>/schema
+       The directory path where the ocfa.xsd schema file is to be found.
+   prettyprint=true|false ; default=true
+       This parameter determines whether or not XML that is returned from the evidence API is
+       formatted in a more human friendly form with spaces, returns and indentation.
+   moduletwice=fail|ignore ; default=ignore
+   	This parameter detemines if an exception should be thrown by the evidence 
+	if an attempt is made to activate an evidence by a module that already
+	processed the evidence in an earlier job.
+   maxparents=size_t value ; default=200
+        This parameter determines the number of parents a derived evidence could have
+	within reason. If this number is about to be exceeded when deriving a new
+	evidence, an exception is thrown, indicating there is an apparent loop in the
+	rulelist resulting in this large amount of parents.
+
+
+FS:
+
+   the fs library uses the following config parameters:
+
+   ignoreowneracl=true|false ; default=true
+   	This parameter detemines if owner ACL's should be ignored, or added as metadata.
+   ignoredirexecacl=true|false ; default=true
+        This parameter detemines if directory execute rights should be ignored or added
+	as metadata. In many cases the x and r flags on directories are needed to normally
+	access a directory. In some cases however these flags may be important.
+   FileSystemSelector:handler:<fstype> = CLASSNAME
+   	The FS library allows for dynamic loading of filesystem modules. These lines define 
+	a specific module to use for the specified fstype.
+   FileSystemSelector:handler:root:<fstype> = CLASSNAME
+        The FS library allows for dynamic loading of filesystem modules. Some of these
+	modules only work as superuser. These lines define a specific module
+	to use for the specified fstype when run as root. These lines will override
+	the ones specified in the non root section.
+   FileSystemSelector:charset:<fstype>
+   	By default the charset used by a filesystem is assumed to be LATIN1 unless the
+	library is able to auto detect that it is UTF8-LE. These lines allow for
+	specific filesystem types to override the LATIN1 defaults. 
+
+STORE:
+   storeimpl: filename without lib extension ; default empty (MUST BE DEFINED)
+        stores the library that contains the specific implementation of the store.
+
+   The following parameters pertain to the pgrepository (libpgstorelib)
+   
+   storedbhost: ip-address ; default is localhost
+        Defines the host on which the database resides that will be used by the store to 
+	store references between handles, metadata and data.
+   storedbname: string ; default = name of calling user.
+        Defines the name of the database that is used by the store to 
+	store references between handles, metadata and data.
+   storedbuser: string ; default = current user.
+        determines the login name that is used by the store to log to the database described above.
+   storedbpassword: strign ; default = ""
+        determines the password that is used by the store to log to the database described above.
+   repository: directory ; default = "" (Must be defined.).
+        determines the directory in which the files in the store will be stored. The directory 
+	will be created if it does not already exist. The application must be able to create 
+	the directory
+
+MODULE
+  staticmounts=true/false default is false
+     When staticmount is true, the module assumes that evidences can be softlinked 
+     into the repository and will not copy them.
+
+MESSAGE:
+
+
+msgLibrary: example: /usr/local/digiwash2.0/lib/libServerMessageBox
+            Used by MessageBox::createInstance() to load a concrete messagebox.
+            You have the choice of loading either a ServerMessageBox or a ClientMessageBox  
+isRelay : y/n 
+            Used by the CustomMessageBox to determine whether it should act as a relay or not.
+	    It also is used to determine which other relays are present. 
+routerIP: ipaddress, default the ipaddress of localhost.
+	  Used by custommessagebox to determine ip address of router.
+isAnycast: y/n
+	Used by messagebox to determine whether it should act as a anycast
+relay. You want it probably set to 'n' for all modules except the anycast
+relay. 

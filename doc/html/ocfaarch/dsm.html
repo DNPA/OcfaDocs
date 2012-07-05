@@ -1,0 +1,19 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h2>The data storage module</h2>
+The data store module is always the <i>final</i> module in the life of
+a piece of evidence. During its stay in the open computer forensics
+architecture, the metadata belonging to a particular evidence data only
+exists within the xml representation as administered by the <a
+ href="../ocfalib/evidencelib.html">evidence library</a>. Once the <a
+ href="router.html">router</a> has determined it has no further modules
+that could extract or expand metadata or data from the evidence, it is
+finally sent to the data store module (dsm). This module will parse the
+xml through the evidence library and will store relevant metadata
+within the database for the active case.
+</body>
+</html>

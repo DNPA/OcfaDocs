@@ -1,0 +1,23 @@
+The documentation is ordered accrding to the following basic structure:
+
+requirements
+  * non-functional	The non functional requirements for the project.
+  * functional		The functional requirements for the project.
+design
+  * architectural	The basic architectural design
+  * functional		Some snippets of the functional design
+  * technical		Some snippets of the technical design
+usage			Some docs on system usage.
+  * install		Howto's on installing the system.
+  * operatingprocedures Some basic information on using the system.
+  * webint              Documentation for usage of the web interface.
+  * troubleshooting     Concrete handles and pointers on troubleshooting.
+  * admin               Admin tool documentations for specific tools. 
+  * API                 Documentation for people wanting to write their own
+                        modules.
+
+html			A html tree containing some of the usage and design in a structure unlike
+			that of the abouve.
+
+Please note that not all documents in the document tree are equally up to date.
+

@@ -1,0 +1,14 @@
+<module name="zip">
+  <function>
+     This module uses the unzip command to extract files and/or directory trees from a
+     windows compressed zip archive file.
+  </function>
+  <inputtype metaname="mimetype" metaval="application/x-zip"/>
+  <inputtype metaname="mimetype" metaval="application/zip"/>
+  <outputnode name="*" multi="true" type="dir">
+        <function>A directory tree extracted from the input file.</function>
+  </outputnode>
+  <outputnode name="*" multi="true" type="dir">
+        <function>A file extracted from the input file.</function>
+  </outputnode>
+</module>

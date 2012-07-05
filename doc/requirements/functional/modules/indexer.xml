@@ -1,0 +1,10 @@
+<module name="indexer" binaryname="luceneindexer">
+  <function>
+     This module extracts text tokens from the input file and adds them to a
+     large index for usage by the search user interface.
+  </function>
+  <parsemeta metaname="mimetype"/>
+  <parsemeta metaname="encoding"/>
+  <inputtype metaname="mimetop" metaval="text"/>
+  <inputtype metaname="mimetype" metaval="text/x-ocfa-mailheaders">
+</module>

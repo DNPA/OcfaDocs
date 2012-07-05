@@ -1,0 +1,57 @@
+This file is meant for people needing to implement a module and are not sure what type
+of ArchBroker would be appropriate. The following is a list of planed or existing modules, and
+the type of broker they are conceptually :
+
+MinimalModule:
+* digest     X  : Searching digests in sets of known files and identifying the set/subset (R:0.3)
+
+Dissector:
+* strings    X  : converting binary files to ascii sub (R:0.3)
+* gzip	     X  : uncompressing gzip files (R:0.3)
+* zip	     X  : uncompressing and unpacking zip files (R:0.3)
+* tar	     X  : unpacking tar files (R:0.3)
+* eml	     X  : extracting headers and files from eml files (R:0.3)
+* doc2txt    X  : Extracting the text portions from word files (R:0.3)
+* pst2eml    X  : Converting pst files into eml (R:0.3)
+* pdf2text   X	: extracting text from PDF files (R:0.3)
+*
+* rfilendb	: Mounting encase files and submitting the mountpoint as derived evidence (R:0.5)
+* dbx2eml    -  : Converting dbx files into eml (R:?.?)
+*
+* dictlist	: translating utf8/ascii files with non english known languages into english dictionary lists (R:?.?)
+* iconv		: Converting text files that are in non utf-8 charsets into utf-8 (R:?.?)
+* foremost	: Extract files from disk raw images (could also be excavate/findhead) (R:?.?)
+* uudecode      : Locate and extract uuencoded portions from text files (R:?.?)
+* yenc          : Locate and extract yenc encoded portions of (text) files (R:?.?)
+* bodycat       : Reassemble the bodies of e-mail and news files that were part of multiposts (R:?.?)
+
+Extractor:
+* exif	      - : Extract exif info from graphics files (R:0.3)
+* file	      X : Determining file type of unknown files (R:0.3)
+* midas	      X : Indexing (R:0.3)
+* pgpinfo     X : Extract basic info from PGP files about the keys used (R:0.3)
+* pkr         X : Extract address and name and key info from PGP KeyRing files (R:0.3)
+* docpasswd	: Detect if a word file has password protection. (R:0.5)
+* partinfo	: Determining partitioning info of disk images. (R:0.5)
+* charset	: Determining the character set of unknown text files (R:0.5)
+* lang        X : Determining the most likely languages of an ascii/utf8 text file. (R:0.5)
+* officefile  X : Determine the file type of an ms-office document.
+*
+* officemeta	: extract meta data from MS office files (R:0.7)
+* virus		: detect virus (R:?.?)
+* txtclasify	: Classify utf8/txt documents of known interesting language (R:?.?)
+* stringextract : Extract possible phone numbers, addresses, IP's ICQ numbers etc from text files (R:?.?)
+* sercor	: Helping to detect specific file types where serial correlation gives useful numbers (R:?.?)
+* spam		: detect spam eml (R:?.?)
+* registry      : extract lotsa meta from windows registry (R:?.?)
+* etc           : extract lotsa meta from some of the more standard unix */etc/* files (R:?.?)
+
+Expander:
+* timesync      : Determining the min and max skew between different time sources by analyzing sequential timestamps (R:?.?)
+* ripe		: Lookup of european Ripe info from IP adresses (R:?.?)
+* phonenormal	: Normalize phone numbers (R:?.?)
+* phonecy	: Lookup of location information from phone numbers (R:?.?)
+* emlpgp	: Try to correlate pgpinfo with e-mail header info  (R:?.?)
+
+
+????????:

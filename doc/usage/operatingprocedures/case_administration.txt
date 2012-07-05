@@ -1,0 +1,166 @@
+This short tutorial describes the case administration steps for creating new investigations
+in your ocfa system, preparing a case for the frontend, and for deleting a case once you are
+completely done with it and want to clean up your system before starting to work on a new 
+investigation.
+
+Creation of a new investigation (case)
+
+  To create a new case, first you should take care of your hostname.
+  There are multiple ways to do this.
+
+  1) Edit the systems /etc/hosts file, and the hosts file of your client system if applicable.
+  2) Alternatively, if your infrastructure uses DNS for name resolution,have an entry added to 
+     your local nameserver.
+  3) Alternatively If your infrastructure uses NIS/NIS+/LDAP for name resolution, have the entry 
+     added to the NIS/NIS+/LDAP server hosts map.
+
+
+  Your hosts file, DNS config or NIS/NIS+ config should make the name <casename>.ocfa.loc
+  resolve to the IP of your linux ocfa application server.
+
+  After your case servername resolves, you should be ready to create your case.
+  Log in as ocfa, or su to ocfa with the '-' option, to make sure that the .profile
+  gets run and thus that your enviroment variables get set appropriately.
+
+  If your profile gets run successfuly, you should get prompted for a casename.
+  If you supply the new investigation name, you should get a warning that the case does not
+  yet exist. 
+  You should run the createcase.pl script, again specifying the name of the new case.
+  For example:
+
+    createcase.pl testcase
+
+  Now your new investigation has basically been created.
+
+Tuning your storage.
+
+  After you created your case, you should have a directory /var/ocfa/<casename>, for example
+  /var/ocfa/testcase. All the storage for each underlaying directory will initially be within
+  the same filesystem, that is, the filesystem that is used for /var/ocfa.
+  If /var/ocfa is a real big SAN slice that can hold multiple investigations, or if you only 
+  have one active investigation at a time, then this would be the right option.
+  If however you use a seperate slice for each investigation, you should move the content of
+  your /var/ocfa/<casename> directory to that slice, and use the now empty /var/ocfa/<casename>
+  as mountpoint for that slice.
+
+  If for some reason LVM and (software)RAID are no options, you may wish to set up a somewhat
+  slower multi-filesystem repository. In order to build a multi filesystem repository,
+  you should take a number of big filesystems, and populate each with directories with all
+  the possible 2 digit lowercase hexadecimal directory names.
+  Now you should go to your /var/ocfa/<casename>/repository/ directory, and create symbolic
+  links to these directories. You should give the symbolic links the same name as the
+  directories they link to. Please take care to make sure that each filesystem is referenced
+  from a comparable set of symbolic links.
+
+Tuning your configuration.
+
+  After you have created your new case, you will have a a configuration file in your 
+  /usr/local/digiwash2.0/etc directory that has the same name as your investigation.
+  This file is created from a standard configuration template, and has some sane values
+  for many configuration parameters. It is still essential for you to validate
+  if you need to update the configuration to your own specific needs.
+  You may want to consult the configparameters.txt document for some additional information
+  on the specific configuration parameters.
+
+Tuning your rulelist.
+
+  Next to your basic config, the standard rulelist may not be fully suitable for your specific 
+  needs. Chances are that you are especially interested in particular file types and need to use
+  your own modules for that. You should not be afraid to try and create your own modules, especially
+  if you already have tools to convert these files or to extract specific metadata from them.
+  The open computer forensics architecture was designed with the idea of 'wrap-it' development,
+  thus creating a wraper module around your own tool or library is relatively simple.
+
+  If you create your own modules, or have an other reason for wanting other routing than that bundled
+  in the default rulelists, then you will want to create your own rulelist.
+  The best way to do this is by making a copy of an existing rulelist that most matches your need.
+  You could call this rulelist rulelist_<casename>.conf, and set a symlink from /usr/local/digiwash2.0/etc/rulelist.csv
+  to this rulelist. Make sure to always keep /usr/local/digiwash2.0/etc/rulelist.csv a symbolic
+  link. That way you are able to keep a wide range of individually tuned router rulelists for your
+  specific needs.
+
+Restarting your webserver.
+
+  Before you can access the web interface of your new case, you should make sure your apache webserver
+  gets restarted first.
+
+Prepairing for usage
+
+  If before you worked on an other case, it is possible you will need to do some minor cleanup before you
+  can run data through the system for the new case.
+  First you need to make sure that there is no remnant process running for the old case.
+  If your process table is clean, the only thing that might need cleanups would be the windows proxy/satellites 
+  system. Given that there is only one windows share point, and the windows satellites have no knowledge about
+  investigations, first you will need to make sure there are no windows satellites running on the windows
+  satellite server. If there are you need to shut them down first.
+  After this you will need to check the /var/ocfa/windows dir to make sure there are no remnants of the
+  old case still in this directory. If there are you will need to force remove these directories and files
+  first.
+
+Running the architecture.
+
+  After you have prepared your case for usage, you should bring up the basic architecture.
+  Given that the tool for starting and running the architecture is to be running for a long time,
+  it would probably be wise to either do this locally, or to do it from a screen session.
+  For information on screen please consult the screen manual.
+
+  In your screen session, log in as ocfa or become ocfa using 'su - ocfa'. You should be prompted
+  for your case name. After being logged in you can now run 'casemon.pl'. 
+  
+  Ones casemon.pl is running you should probably first go through the first kickstart before
+  detaching from your screen session.
+  
+  You should be ready to start inserting evidences into the open computer 
+  forensics architecture. for more information on this, please consult the kickstarting.txt file.
+
+Preparing the case for the frontend.
+
+  After you have kickstarted all the evidence files, and the open computer forensics architecture has 
+  fully processed all data, you will want to prepare your case for usage by the frontend.
+  The procedure for this is currently being reconsidered as there are some problems with this setup,
+  but currently the following needs to be done to fully prepare your case to be used by the frontend
+  effectively. First we should stop the running architecture. For this we should reattach to our
+  casemon.pl screen, and with ctrl-c stop its execution. With casemon stoped, the architecture is still
+  running, thus we use ocfahalt to stop the architecture.
+    ocfahalt <casename>
+
+  It should take some seconds before all modules and the anycast have stopped. You can check
+  if anything is still running using:
+
+    ps -u ocfa
+
+  The parkcase tool:
+
+    JBS->FIXME();
+
+  The parkindex tool
+
+    JBS->FIXME();
+    
+  Next to tools that optimise the database for basic queries using db indexes, there are currently some
+  essential overview queries that prove to be too time consuming to be acceptable in the user interface.
+  At some point we hope to be able to add additional database tables, and a database based user interface to
+  do so, but currently we have a rather underperforming script that creates a static html tree with these
+  overviews. This tool 'makeoverview.pl', should create a large set of overview pages with distinctive
+  metadata values, thumbnail views, calender views etc. The tool is however not very fast, so we should
+  again run it in the screen session, and only run it as last step, or at any point in time that there
+  are no images being processed.
+
+Deleting an existing case.
+
+  First of all make sure there are no more processes running for this case. You may want to shutdown
+  your webserver also to make sure no web access keeps the database locked from being deleted also.
+
+  If you want to delete a case, normally all you would have to do is to log in as ocfa and run the deletecase.sh
+  script. There may however be another action required.
+  If you have kickstarted evidence using the cp-kickstart tool, than you will have active fuse mountpoints in
+  your repository that deletecase.sh does not take kindly to.
+  In that case you should use the following command on each mountpoint.
+  
+    fusermount -u <mountpoint>
+
+  You can use the df command to check for mountpoints in your repository.
+
+  After all fuse mountpoints in your repository are gone, you c
+
+FIXME: You c?

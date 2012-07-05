@@ -1,0 +1,10 @@
+<module name="dlscp" state="alpha">
+  <function>Extract unallocated data blocks from a filesystem. The input file MUST be a carvpath entity.</function>
+  <inputtype metaname="fileinfo" metaval="partition"/>
+  <outputnode>
+        <function>A continuous (carvpath entity) block of unallocated data from the filesystem.</function>
+        <outputmeta name="fileinfo" optional="false">static metadata, Unallocated</outputmeta>
+	<outputmeta name="partinfo" optional="false">static metadata, Unallocated</outputmeta>
+  </outputnode>
+  <outputmeta name="fsfound" optional="true">boolean indicating if any filesystem was found on the partition.</outputmeta>
+</module>

@@ -1,0 +1,13 @@
+The base OCFA distribution contains basic modules within the OcfaModules directory tree.
+These modules contain the base functionality for some generic filetypes, and no work 
+other than bugfixes will be done after the 2.1 release of OCFA.
+The OcfaArch tree comes with a simple and complete but archaic and sometimes slow 
+frontend, and after the 2.1 release no work other than bugfixes will be done.
+
+Next to these modules, the KLPD is now actively working on some more specialized and/or
+optimized modules, and on a more up to date and fast frontend. Both of these will not be 
+distributed with the GPL/LGPL licenced publicly available ocfa distribution, but instead 
+will be made available only under NDA. For information on nda disclosure of OcfaNDAModules
+and DUIF please contact ocfa@dnpa.nl
+
+

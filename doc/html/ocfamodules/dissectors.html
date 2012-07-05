@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="../main.css">
+</head>
+<body>
+<h2>Dissector modules</h2>
+Dissector type modules can do a little more than the <a
+ href="extractors.html">extractor</a> type modules. They are able to <i>derive</i>
+evidence data from evidence data that is handed to them. Basically a
+dissector dissects a file into one or more files.
+<h3>antiword</h3>
+The antiword module is a simple wrapper around antiword program, used
+to extract the text from a Microsoft Word file.
+<h3>pdftotext</h3>
+The pdftotext module is a simple wrapper around pdftotext, used to
+extract the text from a pdf file.
+<h3>bzip</h3>
+The bzip module is a simple wrapper around bunzip2 used to decompress
+bzip2 compressed files.
+<h3>gzip</h3>
+The gzip module is a simple wrapper around gunzip used to decompress
+gzip compressed files.
+<h3>tar</h3>
+The tar module is a simple wrapper around tar used to dissect a tar
+archive into its components.
+<h3>zip</h3>
+The zip module is a simple wrapper around unzip used to dissect a zip
+archive into its components.
+<h3>mailwash</h3>
+The mailwash module is a wrapper around a perl script that extracts
+files and metadata from e-mail files. This module also works with unix
+mbox files, however the parent child relationships will not work as
+expected.
+<h3>sleuthkit</h3>
+The sleuthkit module is a wrapper around a perl script that itself
+again is a wrapper around the 2.04 version of the sleuthkit. The script
+tries to unpack image files (encase,dd,aff) into a directory tree.
+Please note that this module is seen as a temporary quick hack to get
+support for encase and dd images into the open computer forensics
+architecture. In the near future this functionality will move to <a
+ href="../ocfalib/ocfalib.html">ocfalib</a>. The <a
+ href="../ocfalib/storelib.html">storelib</a> will then use <i>libewf</i>
+and <i>libaff</i> for direct efficient storage of encase and aff
+files, while the <a href="../ocfalib/fslib.html">fs abstraction</a>
+library will get a loadable module for access to the different
+sleuthkit libraries. Until these fixes become available, encase,dd and
+aff support will be limited to the data-only export provided by the
+wrapper script.
+<h3>strings</h3>
+The strings module is a simple wrapper around the strings program. It
+is used to try and extract text content from arbitrary content.<br>
+<br>
+<br>
+</body>
+</html>

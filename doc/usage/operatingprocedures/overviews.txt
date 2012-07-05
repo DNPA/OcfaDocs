@@ -1,0 +1,24 @@
+After you have processed all images of an investigation of at least a substantial part of the images,
+you may desire to have access to some metadata based overviews. 
+It is important to note however that the current tool to create such an overview suffers from
+scalability issues, and will need to be replaced in upcoming versions. 
+For this reason it is suggested to run the script 'makeoverview.pl' only after the case has been
+largely processed by the main architecture. 
+The script should be run as the user ocfa with the proper enviroment settings (run the profile).
+The overview script will create a directory tree with the following metadata views:
+
+ * A generic view with distinct metadata values and the number of occurences, linking
+   to a search result page with the matching data files.
+ * For each 'timestamp' metadata type, a calender view linking to search results
+   with matching data files for particular dates.
+ * A thumbnail view of all found images.
+
+These are all quite useful views, but as the script is not very scalable and takes up
+processing resources, it is suggested to only run it when a large portion of the images
+has been fully processed.
+
+Further it is strongly suggested, as the script may run for weeks, that the script is
+started from a screen session (for information on screen consult the screen manual).
+
+Upcoming versions of OCFA should divide and integrate the overview functionality
+into the frontend and the frontend database migration tool.
